@@ -1,4 +1,12 @@
+__pycache__/
+.vscode/
+.claude/
+.pytest_cache/
+
 actionformer
 mm-hsd
-
+runs
 videos
+video_features
+audio_features
+text_features

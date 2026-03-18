@@ -1,0 +1,9142 @@
+{
+  "database": {
+    "4V0KGql_fUI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": []
+    },
+    "5snzFreG79c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": [
+        {
+          "segment": [
+            30.0,
+            39.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "EyE82W10wgk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "booWGzwRBOs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "1P9ZSzSS14I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "3v7239cr4z0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            46.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "LgPnUK567xg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "-7MtNUa-zRA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "MYZHHZlPHSk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "o5SVi1iEcSM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "ZhEmKckbPXo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": []
+    },
+    "MJqJaTgSM9A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "TZRqW_SDxW4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "a7maE5RoFPk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Z2L6VTY7PSs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Pywnms7RoBs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": []
+    },
+    "4JUFqX-okGc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "wEHCyODs45w": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "zK2fH9ZKCas": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "IbHu0XGqH6M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            30.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "zULXbRSOslk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "mLV9209I9Po": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "5lx44-lko-U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "yF4hjLPhV_s": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "w2K-y-UA1po": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            29.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "u8jPjTXK2yE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "PWsELh8yk7o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "gaOtEpYGmQY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "vKUMDFcHLlw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 61.0,
+      "annotations": []
+    },
+    "2CiUE95cOr8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "uqnqHKANAqc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "e-XqcRbBVi4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "jThPo4J_lRU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Jq8VzqMS9ew": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "kAWKX340Jlk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            18.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "PByXn9KYTKU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "WEABal38TxQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": []
+    },
+    "cWZvaoU_9Ro": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "14opKv7h25A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "lO8wsXT8nxU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            23.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1W2naexzq00": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "acsvIrAkjSw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "mT9XGmzb8Q0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            37.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "h-T7n3bg3II": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 4.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Ms_qU0sGbOg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "aJkRFyyZ0x4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            8.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "n6YTbpnaLnA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "TmdUQEkgO_w": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "Q71Q2KAVfCI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ZAKqmNu6me0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "I6BFT83wAUg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "YNf2tZgh4WM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            51.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Nlj1oFJQ6OY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "hdwHZQck-a8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "tEjo0caOYFc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "p1TRuS3zDa0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            39.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "vvqMoeAPhn4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KkVOBnyy0v8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "UZNQGQviDYI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "KGwa8mZkPg0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            33.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "0q1PET_IDGc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "AGc1co-qk_4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "6YAkk99MH7Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            35.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "HShq6I_t_3M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": []
+    },
+    "EuGF6X7Jsb8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "4BkwQWsVgGg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            50.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Cmj0CtsEEdU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": [
+        {
+          "segment": [
+            16.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "g-MEsUQ8CI4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": []
+    },
+    "L4jWjeq0P30": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "yiRMFLbRabg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "4zro4VEcY4A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "XeROfeXGs_E": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "nJM7eyLW0QE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "gfjM6wiUppo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": []
+    },
+    "ZOIF6HGRu0A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "FrC1Eyyklck": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "r9qV2z0JciI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "j-cUTF18bEg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": []
+    },
+    "BTq7E17OebY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 61.0,
+      "annotations": []
+    },
+    "mh1RmfccGfo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "dzL9ula0pqU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "RMT7nUmAQnY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "VyuyhTiWimA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "9D2OUn0xaZ0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "fBBmMOfQXw8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "TdoMUnQVem4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "tuaHPvzQmgM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ynwj6N6ETqo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            35.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "oPDUomtm2Zk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": []
+    },
+    "I8RIc8l86Gs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Dn53NIFuIvc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "ojhQmOXvwPE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "92uVzchnUSE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "R00SubUJkoI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "BvTG2iZplew": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": [
+        {
+          "segment": [
+            3.0,
+            24.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "uJGLauZ9xwg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "YW3EBhwwFzA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "mRCN4sLHUn0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GpbG1bVa8ks": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "2AwE3llMDSw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "BvJmlxx4Tlc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": []
+    },
+    "Omd7eBhSsvQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "45BbYviR05s": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "CC5pGVtt8Hc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "Y820o0dsEHM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "XI60jkDRwvA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "9b1WF9eFPR8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            51.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "h2avBqqXTK4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "7iWKZEvbwL8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "tldVobkLUI8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "CwFnAXuPLGA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "MPm_98rJOuM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": [
+        {
+          "segment": [
+            14.0,
+            17.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KIUtGQH3ZDc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "3Li2uRDDywQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "-vMmCsaazR8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "rbM5rkHdorc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "MnLng0Sop2M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "RfYKpbtEsSw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            43.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "I0cxV-KxvRM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "tenwWTmdRrg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "eHqtB-7nJQk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "R_l5fdciNiM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "uUfCMetfeCg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": []
+    },
+    "czJc7Oo_mcQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": []
+    },
+    "aI2PteS3QDk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "7U6KgRTPi3Q": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            24.0,
+            33.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "FRnejTNX73g": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "0S5FZW0pFRs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "OC7D6mi_Dao": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            19.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "A_K23161zDo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "W6VOTWg-i4U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "pzXX4LUKO_U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            28.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "xxVA9m73dmU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "P2tWL5sOAGM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            44.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fbUFncl8oGA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            38.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "FV3tM2XX4Qo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            12.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "5q5JviSnukI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "yHJ66Appkm8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "BrtS_6vHPz4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "EAzcjDSPYAc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "GhSl8X9nYQY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "OuFVgVo43Do": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "7Gqgbj9mIH4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": []
+    },
+    "znuUJ_06V-Q": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "EditcOVg6kc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "FpONjY0jWE0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            37.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1oEQlFqed8I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "aY7XU37Ate4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ISBGfgYfinI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "Fi_y9rcKaXE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "ZGyNjEwQSTw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "hClEHWsv9Hk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "xVFcng2Y-cc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            53.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "11dBwxuAA_A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "VeugKgvAd9I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "TOM2nvEOLFc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "x5lljednNDU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "MafAV_qxoBI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            57.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1Dpv_CJsa-g": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "TRFp4a4lD0o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": []
+    },
+    "1Iwvjy1coBQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "NCTbu-kkge8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "L3mWNjVezJU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "IdPqOFapPB8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "1NcYq-8dalM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "tBe1xOgqAMY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "P_QohCDBdwU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "YGMvfNIIL7A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            4.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            7.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            12.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            19.0,
+            34.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            45.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "U8BAidGbpTc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "MNYWTjtxPlQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Bv7x-jcQoH0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            7.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "0KbLMxZV92Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": [
+        {
+          "segment": [
+            33.0,
+            37.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "5zmsggoz9SU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "8gdkfUP_UlI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": []
+    },
+    "k3z2jLnSaOo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": []
+    },
+    "Mqq5JiYQI04": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lvVTj_d-9ZI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Tc20odJbbOc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "ZCgzPvcUdsk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "THSCStmcjLE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "jVDnJ828G6I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            46.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "NQV9x-Z92tQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "9bNH5IkY5LM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Hd9ebI66Quw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "1lw5iOUTf80": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": []
+    },
+    "KGciYuJW-uQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            12.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "_0Y7PNNHGYU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "khdx6Crc168": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": []
+    },
+    "aB6XKqhRvsc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            7.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "sNrEAWcpbEk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "8tFwJcTykaY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Uc7kp53sL28": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "HtgpQAqLgFs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            57.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "f5gGCRHKQIg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            28.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "CWqz1PooWi4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "w8F9Nma-gpg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "RAJzeOR0Lpc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            36.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "7AtxFixKvkY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "46rQ9lkI77o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cQcQuX8TVwc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "Tdgsz72XAAo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "PbAnl5hzhVw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "368Yjs36K8g": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "d6ZHui-RYOg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "OoiieqpVdnw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "iDhEYQmyAlM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": []
+    },
+    "o2ow7ow4U8s": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "TGsPi247Zqg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "hcT_icMFNDo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": []
+    },
+    "H26h1z3AIC0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "N7Lh2YB5Qk8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "kausC0Rtr30": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "bgpy-4F8ixM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": []
+    },
+    "YOfYdXIlOX8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "UWoGy468-m4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "My5PVJLP6Bg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            44.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "RXySlp7-Crk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": []
+    },
+    "3g_W_0QN7ns": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            18.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fKDOZzX32t0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": []
+    },
+    "QVADhddHcr0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "t4WDNF0H4J4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "qe2sOu2Eq14": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "7SiFD5FMDhY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            15.0,
+            53.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "JdAJIQxJUZo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "NRFsn9h5VBo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "cdTnicui088": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": []
+    },
+    "T3uOWb9Chd4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 4.0,
+      "annotations": []
+    },
+    "gU1kdxnJKdw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "K7BfqS8_yAc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "Thyq7p4af4k": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "RYPFai_OtnI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "-bEJl9j0eNQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": []
+    },
+    "sPkWqmTT3d8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": []
+    },
+    "QvPp8Q7QhWE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": [
+        {
+          "segment": [
+            17.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "JqFZcFDCZyQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": [
+        {
+          "segment": [
+            43.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GeBLF5AENcI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "wCj0lPSg1Uc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "euHbI8Wcmik": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "HWG0MQsBjIg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "ZpmlKZfrRDU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "MJJs3rkfaOc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "Y7SnO8XKvik": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "bnk5gc8_TEc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "qtsXdG0wPyY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "RE0aIBsFzKA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": []
+    },
+    "dd9Qx5WDKvg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "g3sjNzCJO74": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            3.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Hr7GRZb5iIU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "de4NWDu3GeY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "9FCZvqiCPaY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            38.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "5VisVz27rm0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "-tM2hrqdREQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "U1RWRsmPCcg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            34.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "k9E_ymKq-c4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "sjCFO94p1Lk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "M-HSCFDUOGY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            21.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ZwlNcvC2EbA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "MZFOUge3kM0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "DQHLqVi9guE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "-r_-_tSd30g": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "-wrkLbbsh3Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "URI5BUQYpPk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "LsKG5mcd6Go": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "K8rfVDUwbNA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": []
+    },
+    "SndcsW7GrJY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "8Pim0TnLQDQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            29.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lGRlXJZeOWc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "PaPyby_xXFQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            16.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GgZBFhWbyiA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": []
+    },
+    "viE5xqixMzw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 55.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            55.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "s_pbSEKKse0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "WgqaN-Dm3LQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            21.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cvISsZA2RHc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "GCTnb9sES5E": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "6ARA-oI2RXA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "r0jg3pdXQFA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "xmbRep5n97g": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "sh_2sQJwtMk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "jOyBv0jzfp8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "M1keacZWdEo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            19.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "b71aLLcyO-E": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "EaNpusPfOOw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "0KUorONDAkg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lZi9C8xQyWU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "gnJ9_iricSo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "DTcm4d7S4Fs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            53.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "vsO1iq-tHlE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": []
+    },
+    "iGcImKmRT3c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "Xc9xcAuyvos": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "5pURKyb6GXY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "uP_UT10_WHM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 61.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            12.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            27.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            35.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "HvcCqislCus": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "J16NDM-YPk4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "xdEAfNB7gT4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "3ztVjk8JFQU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "S-VfGlPZQj0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "Or9QD-elJws": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": []
+    },
+    "xaSV0H082RM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": []
+    },
+    "2ytDPK74q28": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            16.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "uvgb_MVPmF4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": [
+        {
+          "segment": [
+            4.0,
+            6.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "-0IpEC2xXT0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            21.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "6mZzB--pat4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "V087PAAN24A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            44.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "-K95mnj40Yo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            6.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "YxTdks4asJU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "UexokW6FBkQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": [
+        {
+          "segment": [
+            3.0,
+            7.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "QxGfKEWOipQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "WSv2cbUxtNw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            11.0,
+            43.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            50.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "hE9X5ucEVSE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "rWcNhEpJRag": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": []
+    },
+    "D2biX8TJymM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "Kl0nQznib7k": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "p0bCOV7bt6Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            2.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            5.0,
+            16.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "8v6mbFg8vgA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ikqRXSJLQiY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": []
+    },
+    "MyrsHPvrBBY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "Vu7GXVxExfk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "w4dNy1DkyE8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "buP691m8TU8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ybMcxzKXc5A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "aSY6qiW7wQQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "gUxNpUjRSSs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "kJO7eFqD3S0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "NNeWDl7qxoQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "AyQOtwf-YWw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            15.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GF8FUKNuPLo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "uzTXl2-8rww": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "eAlK_t-1Jq8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            42.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            50.0,
+            56.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "scJdG086bgg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            34.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "3XIbRoKJ1GE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            53.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "tFWUcy9Y5ho": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "4VWkZMlZZSQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "IC03a8kvPhU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": []
+    },
+    "IwI7Q79te5Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": [
+        {
+          "segment": [
+            4.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "kHP0DXg3hlU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "JZUI6-HiZNo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            8.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "UBKG4daNAaQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "G4Ntk1YLHoA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 4.0,
+      "annotations": []
+    },
+    "aeOm9oT0_qk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            19.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "oPJA-IL7E_c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "b7WbQg-4LCY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "NhgCZ7E8hUQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "kcfizQQ7H5I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "Z7i6M38h3dU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "O3At8U1WWKc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "qwa1Q4Qdyko": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": [
+        {
+          "segment": [
+            23.0,
+            32.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Jszml4ziVHk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "tCI-xwrr_gQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "3QFmFQyyeEE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "oA0jCQ_mzQg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "4yRzcIW6BB4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            17.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "tEeQ50P7TTg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "Ksb0I22-CQw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "olrEjNig8RU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "KqfSVdmducQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "eQH6_vPjpoI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "yJbOLA2naeQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            6.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "VUybGxIoxMM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "hKwgFaE7fbQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ICw0Y6FSDVI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "U-6L2TfHRSY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "rd0AHHzGvfo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": []
+    },
+    "zLWs2bHW2bQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "IrO4bFN6jno": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": []
+    },
+    "dUuRZuf5KFg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "5wX7GZG6MA4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            28.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "w2h1_AmtnBM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ZVxp-WLE6yY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Ny9yUfQVW4M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "juVhLupSKmU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "eJHXrhLyvW4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "smRgIWI741A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "3Opelm1sQDw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "mZi1RHA9dMs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "D0PmPDQpY1E": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "KtaWoCzMoIA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "8RJeMSuJ3to": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "eM9bSoOszAg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "VBSUf12Wnog": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "RyM7PoGJD5o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "NJYRPdPo32U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            42.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "SOgRPRJiR6Q": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "So1KCZnfohQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "TLpsP8pJehI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "zrKWJc4elOQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "UPG99ifsalw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            45.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "4ncG92uEVy4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "AErnu838cZU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 61.0,
+      "annotations": []
+    },
+    "vmomA2iKSIs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "sl5T7u4_TFI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "MKXhyxJ1wB4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "_pncuXfYwcw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "e96hxoQPWgQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "DrbgoyeP_us": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "GddMPWUznpk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "9QOg7qmglOQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "C46T6IWiFwo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "XT0l0dF2pFc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            55.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "CAW9wB-S7cM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "T5RZVNRhUBo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "ZvQHy3L7Ff4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": []
+    },
+    "VQDWIU7QBM0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "5RgxOgm0NPg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": [
+        {
+          "segment": [
+            24.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "TambfepWQ6o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "WqTqZ9w6vZw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "aAmfaE237i0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": []
+    },
+    "mW8tZli-fdE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            25.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "zMv7YA8Hp3M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "ePAI0sI5Z-M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "a5egb4XqzKk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": []
+    },
+    "_g-tMpJ_YDs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            23.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "6hFEc1MLZC0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "bKcC0pE0b7c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": [
+        {
+          "segment": [
+            7.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "22_Ke43yIgU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": []
+    },
+    "v_oNCUeJC1w": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "l3eUapefQog": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "UzNowZE-F50": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "KDk4TdTdkHU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "uo5hz-BtwMg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "UzNhibosChY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": []
+    },
+    "0dZgwdjo7DA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "_gfbZYCrMNM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "zX1fn56DJHw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "SV2tUum00Xk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ngMOvkfcL_8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "gnUh61WjgUs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "Ri-ds6VKJg4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "9op067bRp9A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "Xmm3qqLyJW8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "qSv9oQ2Q324": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "dzpYgBJk_0s": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "wlzEd1F0S4Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "Pr2H89YJp24": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "FrMkNOgVm-0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "tbIh9AxtZLk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "gLDz7IvH4HU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": []
+    },
+    "dF6ntZKChz4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "k8IMDVgrnDY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "RQ-4PbPlMjo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "H99WNJQkuc4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "xr5GXMCMt70": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "49do-nXsgyk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "mIQzC7t_RHY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 3.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            3.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KhKRln1vs9A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "7w5xCkEiO6A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "3QmNMKMLEKE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "sPPxWVGU2Ro": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            36.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Ms1jmbrLbmU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            41.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "viiD8joODDY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": [
+        {
+          "segment": [
+            35.0,
+            42.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pcDuPqqsM14": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "dBpoLSPh774": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "lNCfDw80YSQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1WI2s3ctQnY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            7.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "SskF-2mpGCI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": [
+        {
+          "segment": [
+            9.0,
+            19.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            22.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "IM90prUQlqY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "rwP8t2lQXI0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "hoipizee2Eg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "Q_pXHqnJBJk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "MfU-Eh52VFg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "8S1OVYwoGBQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "oB0mIUfLmW8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            33.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "s7djODOhhjg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "bHoBMW8ecEg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "MOJVx9y9V-U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": []
+    },
+    "Fmr4W-nmxPw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": []
+    },
+    "B7T8Vv8Mm5A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ZaR89XYnI9E": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Ud5WRT8Ymx4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": []
+    },
+    "YbN6r7MJuqg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "-MkO3AEHK4Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "aTw6lMOXOjc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "sbNdkr9KuIQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            38.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1FWfqrdMgsk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "3qpIYT2EMFM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "nYemLUq582I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": [
+        {
+          "segment": [
+            15.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "7Sq7VoJW3FE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "g2tskhrNkxI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "ytkxeYhjup8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            19.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "H_dqS8HBRNQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "_3VRhImovFY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": []
+    },
+    "fG5oeqbh7_c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "DG8mgAMixV8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            6.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "32TfTCGagxo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "4rOegNB6CXg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "C1NYlIk5TwQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            39.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "w6e54goKPY8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": []
+    },
+    "UP-reCOJ2JQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "1KDeAD7jbvY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "EnKpDExGxqs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            41.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1i644VRK6-A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "PPxW_R9P8HM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "9MlJlIIpFi8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "0xojTE2scqc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            37.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "otf-f7km56U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "4jGCkUnmPLA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "cMcWWOVUPF4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            56.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "V_GvwplnhPA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": []
+    },
+    "l_wqVFSiDlA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "qbhcRwfOrJk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": []
+    },
+    "Xa0MscJaPTM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 55.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            54.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "sR9-DFtHf9Q": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "rAgVbfyD9_Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            51.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "CjRsGhP65tk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "5d3ccUbVUO8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "dcrX2-oto8Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Mx5TMVcZnzU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "rgtyEu7uweY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "xZ_wjW21zcY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "qvNsi-go_80": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "TBPLkZzJdmI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fGng_nrDB0o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "_zxWd8UZtJg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            7.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "FcwlRxa8hXw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "krc1m-ABwmc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "frb4SFAs3lU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            46.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "QN68zOyyzos": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            52.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "8dlxQ8QqwCo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "3240rThr6AA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            35.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fYqGqmoy8qI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "kYLwjo0WiRQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            12.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "iaB59zpCijQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "7I4uFpJH9fs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "pR-Blu4--0U": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "givOqgEF8Xw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "Rq1yIAoZHEo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "Ec2FDPGzfG8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "sG_GbYU0iH4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "cdqWL8se0jI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "EU-dip0ITa4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GHQH2dizCfE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "IQhlEYCXDA4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "QfKJoYYSNq0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "BH_7lAvQb4o": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "gXBLigBpbzQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            24.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cDLD2y_7ufE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "YmCLjVMi8Kw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "XScP1AiMkNM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 2.0,
+      "annotations": []
+    },
+    "MISAXroVeWA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "F4tiBfuzvXI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            6.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pTCHSaafK40": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": []
+    },
+    "AIycAIQ9Gxs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            34.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KfF30YPUsPg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "QihIpSnlOzM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": []
+    },
+    "FcQpUN1unhk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "nJxrfUm7kog": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Npu3G0MWuSo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "g216VeFsStw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "uvvZvLafwQ8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            45.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "phdy7Lxvnx8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 55.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            54.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "570qwJffjyo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "erDc5dqttVo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "ZHeVp9S6DNQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "uFqdpifgHO0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "eyXtOXYvP_8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "8wr4PbZhBMg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "EXmKCMF5CJI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "qmxBffFBWQQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": [
+        {
+          "segment": [
+            3.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            17.0,
+            19.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "jFgzktmZ7lo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": [
+        {
+          "segment": [
+            30.0,
+            40.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "vv-N-PtRtGE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            8.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GSvTsPjX2D4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "7_-y8KAjfWs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            41.0,
+            53.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "QUNmG_vC8uE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "jZpMmaAa5_E": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "Mx9o6gszc1Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "J5FT1Sn3SY4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": []
+    },
+    "NOeoyLISeIc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "mR5Z2DsedwA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "f5EbhsfW0fY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "S21l-KjBUfs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "5qSnVozTOhw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            54.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Hc60UoTg4js": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            17.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pStxFSBkFDQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "O_i2jeFqsCQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            23.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "dTzo3jYfzT4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "BXyxXsudwxs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KmU2WkOkt1s": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            13.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "DZ_m4aSY_ts": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "2zWxOhTeGas": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": []
+    },
+    "rY1GlQTDtnI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": []
+    },
+    "eU5rOZ_9T_I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "m_aR033m3kI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "bieXlq9caTo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            54.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pHArKGnbWI0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cdwCE58o0ms": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "pBzCWoBqeBw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "HAplQvSs_hQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "hMNAJL6rYoY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "mKI_F9aD_3I": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "4cqbTtjcUEc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "NgVPuOVF3to": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "Uf46jwTyQXU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": [
+        {
+          "segment": [
+            19.0,
+            23.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "aHQxfDHVSc0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "F2Fzt8y_gi4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": []
+    },
+    "FUQdH1RSWS4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "xnzoj9Y9cpQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ZcuoMJmnUHE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": []
+    },
+    "pmlRRVUhRHM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "oL5NOZ9iznk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            54.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fa7GfedR-2M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "bSeLIntMfBQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "CJs0SPOnRmg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "qfauUXHFxRw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            15.0,
+            25.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Kz3M_kw6oGQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "0hYe60sZ1kU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "7P8Qf0rbR6s": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "ZwXC4vfDr8c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            48.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ONtbRTOvg3k": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "aXB3a9Ouvjw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            55.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "saWNlKRThKA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "KV49pENhk4c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "XsgULojC6AA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": [
+        {
+          "segment": [
+            3.0,
+            17.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "jys4mdPgcts": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "x0QfoSEV-Sg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "0IQ-W2_0PS0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "L3m3B8QUsoo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 4.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "3L30Uz2WGps": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lv8elRv03u0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "g1Qefe7W0oY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "IRjicQku3w0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "5q17d933Cm4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "JzpHgvg1EvM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "BaxDwsKzwMk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "hWdd4YaGxaQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "oZIc-6NFg2Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "8LhbS6G-xNM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "1PEr_STq3jk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": [
+        {
+          "segment": [
+            18.0,
+            35.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KJ7FY0vjfSQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "W1-Xlw_Q8cQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "ceIhrPgjJXY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            8.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "D0oUNSw4Rb8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            37.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "r3y64Z8ScUY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            23.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "gTpQcw2IXtw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "cu6OG3YsYBE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "1mWWYQhzaAE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": []
+    },
+    "VuIGw1nQ2jY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "P-nZjOeWKis": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "GIbu4VTCQF8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "Wyoym9GWiQ8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "HhZKvCSSueI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "KGFgzLxt0d0": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            24.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "alDztAZskbY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": [
+        {
+          "segment": [
+            12.0,
+            29.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "RzHmJ32vGMI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "BjPMfwDftTE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "yEhiLe8J3GQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "r0FhqzNA3TE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "IET_tUu8u0Y": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "gYyNXeZXSI8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "bdJ-dKZ4Oes": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 61.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "t2KWh5O9798": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "QUNmycJNpIE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "Ft4Fy8vWs-w": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": []
+    },
+    "TVw55EP9LYY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            6.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "hbOsjwNDS2M": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Xs3283TKTWs": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": [
+        {
+          "segment": [
+            12.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "zG1iAo2-BXQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "7juVc0cMr14": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "I0gPws4B-_4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "wIOygasuA9c": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "us5pnF5V_QI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "aixtu01HQH8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            57.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "UuAI1BvA9sA": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "qfp0d1aSgko": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "AsA_JYCI6w8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "HPW66bO3FPE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "HKNcReoWUQ4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "uhQ7sWT2bEE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "zomnSnFLabY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            56.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "k9OtaMbK0Ac": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            21.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "khltIkpsgQg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "HSagMoE5lqU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "Bo_dk7KbEJY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "Z2Cs5Oqm9iU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "bMJ5kp8wFdM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "k85dG3DE9jI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "iKcETp5BbAo": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "ZMyHaXRKMXk": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "USMsXPveyoE": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "FusxEUi2MK4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "iIXubV-fD5k": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "f_xgJghPnz8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": []
+    },
+    "npTjICcizk8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "vSDi0amTMH4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            17.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "T4ZOhdnqGVU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "8TPmlhvB_tw": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "A2pvhBoMG2k": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "Kg8GW7DhKeI": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "hUrk26CM-uc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "IbFyBSUmZ3Q": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fOzWzzN7sBQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "scvkQNv0DI8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "T6aVK_Hgc-A": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 61.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ev7pTIf53lc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": [
+        {
+          "segment": [
+            36.0,
+            41.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "INriNGhbyxY": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": []
+    },
+    "MfyJKBPBhdc": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Rn9tUbFqQmQ": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 49.0,
+      "annotations": []
+    },
+    "My7tiIelSD8": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": []
+    },
+    "p3ZoxJ-9uCM": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            21.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "BZDDQtrK9Bg": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": []
+    },
+    "Y05AKSPwElU": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            15.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "SHBU2djL75g": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            22.0,
+            28.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            51.0,
+            57.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "2OrFHiDWxZ4": {
+      "subset": "train",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "fuUtL4mbTDU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "ZZOSLjm0LqE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "pQbEa24u-HM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Z_ZWeKZKTgk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "QklYyo0rikg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            23.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Yno9qxkTTvM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "PhVnj0UF3k4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "4F9UD2bAIIQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "e5m7Ax_AFQU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "64BDOh1HHaU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "l9r033xA3Rw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "8NmwS_WIzY4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Cfu58ju1MyQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "ubAYuG838wo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "0BqXuLbTxks": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": [
+        {
+          "segment": [
+            28.0,
+            35.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "VFGkut1nqF0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "RPf2D-N7sSs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "eYArSyKRb_A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "azxYoeLskEM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "YLUQBKOOGHc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 4.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "iw1ff5VCJ5Q": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "9Dt4OMbIl4A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "XqtLSBJcpdU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "n8-ygPa5Ob4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "T1fp3aNf93g": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "vJ_kVd__NBo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "bONmkrUFgNs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "0ATva49qP4w": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "MmqgRbGKWrM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "GJ-rInI2s84": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "w_i0irNrcCo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "BjWYvE7TWok": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "DGHdkvdOFIQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "uAEdVB7e4UM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 55.0,
+      "annotations": []
+    },
+    "71rkI9DYrso": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "JBJHtOr6gdQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            12.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            42.0,
+            52.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cCQfIjokAAY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": []
+    },
+    "YTyluq4vCF4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            25.0,
+            50.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ZWMf9t8G30M": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            16.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "PGYj2Y7fDYs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "bcmsJU1YVqc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "6YJlcoEadZ0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "HNS7ZOyZeKM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Dasds3_l9Q0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "lUZDahwzuX4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            11.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "J3Bu08x934E": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            40.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "xFaKt1tyvcE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            48.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "XWrKWANI2ZU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "9w0S72WCER8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "o0AzXXiIRNw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            7.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "FvF_Lf26K74": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "Wtt9N403mHY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lUGsvUFtmy8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            56.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "qpW_A7WHlFY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "OHvIsQUDvnw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "_0W4cgpQDbY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "PDIR3yEIS2M": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 4.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            4.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "tykqKl9Bxco": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "LJZOcfIX4kk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            24.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "R3MyKwoElm8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "1fglv1fiibc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            55.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cclrUXh1IBo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            56.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ErKUxauiAXU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "cME9naxSvoc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lobOqmXIP8I": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            50.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "EJHtOJ6na1M": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            16.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "K0IiSoUPzBI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            52.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "QXc-Ben76JE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "wmcc7PHa8MQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "Ovzcaf1-x-s": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "jLL5GS39U8A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 19.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            18.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "L6XBuMmlgrw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "bHtgDu5hZNM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            45.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "kec4e6w697w": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "0Kl7xyaajoU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "6WSRaKFyeYI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            56.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lpH2cbkr82M": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "6nyI-ZflSRU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "c_Ewd_d6mho": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": []
+    },
+    "p8g2SwtLnZY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "CJ0gc2eeVt8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": [
+        {
+          "segment": [
+            13.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "EhMF81wOIf4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "JRHKZYFHVJ0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "0scBnSdMVAo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cLF-B7u3kNE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "Y9pw80eiFPs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "MUbzLI4R54s": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "ahV2_roFKOI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "CuNnSl1BuFc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "h9DF1Fmp6JA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "E-1rMabEwfQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "qb8uWCVm6Vw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lYBarMGqOvU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 54.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            53.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "uw_doUh2HHE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "fuiAOZOrVqE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "AIqIN75NS-0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "M0DwobyOi20": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "TzyUjbjvXPg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "BmNV7oheZLA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "1LtRdg8dmFI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            4.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "tOsD1F--EEo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "St4XlNgPlJQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "pKeIcylm_B0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 3.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            2.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "sRpd4CCtnGM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "8oESJEeo7_o": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": []
+    },
+    "g8VZhiDSkXI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": [
+        {
+          "segment": [
+            6.0,
+            38.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "hXv7bR9i5Q4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            21.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "T570ggHDH7A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            27.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Z7UT0RTGiNQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "WYJ3_pvq0aw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": [
+        {
+          "segment": [
+            4.0,
+            6.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "e8ixmdMfSxw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "_zN8X3htrs8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "16g5DLajtKc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": [
+        {
+          "segment": [
+            13.0,
+            27.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "xd3_H2qTwAg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "71zppfNBrMY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "IQEqNUqtfqg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": [
+        {
+          "segment": [
+            2.0,
+            38.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "GM0X46DYdwU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "bVQcoSLoapc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "TNURW08307g": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "XlJCNPi5inM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "LONbP1JDep0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "klirgVzagPM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "c_7Hwq9E0NE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "pGumu1UDeGw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "fSjD_BJEvrQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "UwLhLuZ3C9U": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            41.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lze0d5_MZmE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "C8VGhCg3gE0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "YDEsYXYlB8o": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            25.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "dazAmRoS17Y": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "68gvhiQVzDI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            25.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "yEgFUrFnc4k": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "Hdtjslt1kTI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            32.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "uye-VeVA3LY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "1HYp_bfklBI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "-HhjARCqLhE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 6.0,
+      "annotations": []
+    },
+    "UyD-J6KMVHw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "xGH6GhEn72k": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "58XKDvS0zE0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Hiayb2dlc8c": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "T9OlXnaLiTo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "ndqGWFON2Dk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "DxcRdnzBZoo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "UeRqjzlI4jY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            44.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pofgIFZpR7c": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            28.0,
+            32.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            45.0,
+            48.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            56.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "d1s_eLvyEOY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "NmMrESRM134": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "PeTT5P9Mk-A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "i5E3SJKTD5g": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            37.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "43wAmNR5EBM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "8pEa6Jfz8bA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": []
+    },
+    "y1nu1w5qVaM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "JlRVUempEB0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "6tT_NoDOOsQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "i1TLBkALlsE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "-cgm2EZcLC8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "yPahIP7vl4A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "jOXgjum3E-A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "Jocr_4Py5-U": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "TfPv2KiLOrs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": []
+    },
+    "ULMNmXpwQg8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "fPDloZIZ_xk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "fjTnc9TDCC4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "4QP3y5JrtlU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": [
+        {
+          "segment": [
+            7.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "qqBqadanajY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "zEBmhb3qikQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "WETQcPxy7y0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 39.0,
+      "annotations": []
+    },
+    "pY4Sj2WuzoU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "gCIk9MfWM44": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "sYpThqzEIVE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "eGJEZ-7h8A4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "yjNHjAZPs9Y": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "I557gVaQ_rE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            7.0,
+            54.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            55.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "uPJtlBAOT_U": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "4KGV-_zXj14": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "KO7VtYzDy2M": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "xqgjkn3uh0w": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            57.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "fzFdxJSUvNo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 44.0,
+      "annotations": []
+    },
+    "rlJYN0JNSJs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "8G6jryooPXY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "j_foVftOOs4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "90eY2NKYmzM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "us7_-V0ufC4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": []
+    },
+    "ga1r2cweP80": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "35ptr5z4bOQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": []
+    },
+    "m4SVUBK5Vyc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "u8hXM66USy8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            60.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "FPJEPj9bPM0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": []
+    },
+    "YdRuekAOX-Y": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            20.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "S8JYqfUN13Q": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 55.0,
+      "annotations": []
+    },
+    "cYQyH7hbNnw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "KDcCiUU8q5E": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "suVF3Skd0bo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 60.0,
+      "annotations": []
+    },
+    "9Fd8Gv_A2V4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "ZlLYK7YUkgk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": [
+        {
+          "segment": [
+            17.0,
+            31.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "OMSByZ-o3Ww": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 32.0,
+      "annotations": []
+    },
+    "01ygFLVdj8s": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ltuGQ7RBmEU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": []
+    },
+    "zNax7GDZl0g": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": []
+    },
+    "0cQfCBk2Ms0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "zvqFZAYn4fg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "IahCMMYyy4w": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            41.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "LMOHDiG5XQg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            34.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "MLLpat4uIhk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            44.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "B0HFN9lqM6o": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            30.0,
+            52.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "xqilG4oMvvI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": []
+    },
+    "GlG00bvAlxg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "EEC98aHSgIY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "7XHjuDq2Z-Y": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "cXRgVEENkPA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            47.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "zh8HoJ0IDUY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "AaNb5fHAZxc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": [
+        {
+          "segment": [
+            10.0,
+            15.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "_n255LpenGA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lzKJ_AWegCc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            27.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "wq2cJV5Bz_0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "3QxiLLhTIto": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "4TTf2oVQQhM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 47.0,
+      "annotations": []
+    },
+    "FVmB8_eI3uA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 11.0,
+      "annotations": []
+    },
+    "x69_QIsFXuU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 46.0,
+      "annotations": []
+    },
+    "CdeJBx1r6qY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            55.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "JzPjPMgiBSU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "8zLoOqXvk64": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 58.0,
+      "annotations": []
+    },
+    "FuXd3OYtlQU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": []
+    },
+    "sVA-q76vNBo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "fGuwjlTzk5w": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            16.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "2NVIA_WFoWg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 36.0,
+      "annotations": []
+    },
+    "zmRLP8zaJ6w": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            35.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "j6tCb7d_py4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 26.0,
+      "annotations": []
+    },
+    "eVCfklm-Lr4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 31.0,
+      "annotations": []
+    },
+    "JwN1RvbQlAQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "Vz2YUiZSp_k": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "R3Xt1__7TwQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 23.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            22.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "AJWo6Xl3PD4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": []
+    },
+    "_qldaPBgkk0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 7.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            7.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "6EL3gDMlve4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            59.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "IFP0l5EUO70": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            11.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "Kd_3R1H4YoU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "0EbjPffoUmE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 17.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            17.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "N68vmAE5s_g": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 38.0,
+      "annotations": []
+    },
+    "6IZVj1joK6Q": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 24.0,
+      "annotations": []
+    },
+    "naQ1l1ipDes": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 13.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            13.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "jEdH8-AZ3aU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": []
+    },
+    "EwWb0HDH3Ag": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": [
+        {
+          "segment": [
+            47.0,
+            49.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pVGBplnEhl4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": []
+    },
+    "zQcti8IVngQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": []
+    },
+    "9Utc_ujZSx4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 48.0,
+      "annotations": []
+    },
+    "MvB-lgB8jRo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 25.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            24.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "8Q_G8n049yM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": []
+    },
+    "RAGvPqMoW-4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 16.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            7.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ogsMoRZXFuk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "AdBmBcp7ni0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "h_wKRDyoG_c": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "Xw47KThr2ZQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "hYyxxngdwRY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": []
+    },
+    "zgeX2EnIbhY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 5.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            5.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "CChPIZ7vOzY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "VCLZPcfJrjc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": []
+    },
+    "AtE-wavoBkY": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            9.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "lnsoi9nh8LI": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 27.0,
+      "annotations": []
+    },
+    "afzExEHISB4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "Z4xwQ4SRUAs": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 45.0,
+      "annotations": [
+        {
+          "segment": [
+            6.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "2-oUaI3Jb2c": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "gPSs769EvLQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 33.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            32.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "sXirjIds0Dk": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 29.0,
+      "annotations": []
+    },
+    "UEsC4gjQUMw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 8.0,
+      "annotations": []
+    },
+    "pCKGKSEPG_4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 35.0,
+      "annotations": []
+    },
+    "HO8ndDCRe_A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": []
+    },
+    "L3yvq4Q0A5I": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "ZI_jbZWzW1A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": [
+        {
+          "segment": [
+            7.0,
+            10.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "gnDhz9NQP7s": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 37.0,
+      "annotations": []
+    },
+    "dtyQhHPShtQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 43.0,
+      "annotations": []
+    },
+    "ulze2hXRwJg": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 14.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            14.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "ko0Ub2dTh-U": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 22.0,
+      "annotations": []
+    },
+    "tjqpB_PPGPo": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 53.0,
+      "annotations": []
+    },
+    "e4LYf0H3uQ0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "TvuSOkN7OrM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 42.0,
+      "annotations": []
+    },
+    "ufBW_I83ObM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "vQ9wQego_8A": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 10.0,
+      "annotations": []
+    },
+    "dK43yHIUMKA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 51.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            51.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "cFieP70WDRc": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 56.0,
+      "annotations": []
+    },
+    "5aBoXKjdSXE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": []
+    },
+    "lUSBN2p04iA": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": []
+    },
+    "pDa1bXEsGaM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 34.0,
+      "annotations": []
+    },
+    "qLa59rRqxaE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "P9zJKqrSclM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 21.0,
+      "annotations": []
+    },
+    "pOV_1-vWVrE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 20.0,
+      "annotations": []
+    },
+    "8E3cYSx7-iw": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 41.0,
+      "annotations": []
+    },
+    "1mVlHrkpcKQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 15.0,
+      "annotations": []
+    },
+    "rpI_ys_Jy1U": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 28.0,
+      "annotations": []
+    },
+    "qFnOYeOmPFQ": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 50.0,
+      "annotations": [
+        {
+          "segment": [
+            1.0,
+            26.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        },
+        {
+          "segment": [
+            31.0,
+            49.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "684mcs3Ktb4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 12.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            12.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "msWtrZSVUis": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 40.0,
+      "annotations": [
+        {
+          "segment": [
+            15.0,
+            39.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "LYrlk0uy6WM": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 30.0,
+      "annotations": [
+        {
+          "segment": [
+            20.0,
+            30.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "eEbGvqzYVxU": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 18.0,
+      "annotations": []
+    },
+    "BwoLkMTngDE": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 9.0,
+      "annotations": []
+    },
+    "Xl0MBxtw788": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 0.0,
+      "annotations": []
+    },
+    "03qOelm_dK8": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 52.0,
+      "annotations": [
+        {
+          "segment": [
+            31.0,
+            51.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "pQmPw9Q9uW0": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 57.0,
+      "annotations": [
+        {
+          "segment": [
+            5.0,
+            57.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    },
+    "tTJvScuxpZ4": {
+      "subset": "val",
+      "fps": 1.0,
+      "duration": 59.0,
+      "annotations": [
+        {
+          "segment": [
+            0.0,
+            58.0
+          ],
+          "label": "hate_speech",
+          "label_id": 0
+        }
+      ]
+    }
+  }
+}

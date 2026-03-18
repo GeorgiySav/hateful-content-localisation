@@ -1,0 +1,103 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Default configuration for HateMM Temporal Hateful Content Localization
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dataset
+dataset:
+  name: "hatemm"
+  # Paths to per-modality feature directories (one .pt file per video each)
+  video_feat_dir: "../../data/hatemm/video_features"
+  audio_feat_dir: "../../data/hatemm/audio_features"
+  text_feat_dir:  "../../data/hatemm/text_features"
+  annotation_file: "../../data/hatemm/dataset/annotations.json"
+  num_classes: 1                         # 1 = binary hate/no-hate
+  feature_fps: 1.0                       # features per second (from extraction)
+  max_seq_len: 512                       # covers 97% of videos without cropping (p99=807s but p97≈512s)
+  # Input feature dimensions (must match extraction script output)
+  input_dims:
+    text: 768                            # HateBERT CLS
+    audio: 1024                          # Wav2Vec2 Large
+    video: 768                           # CLIP ViT-L/14
+
+# Cross-modal fusion
+fusion:
+  d_cma: 128                             # CMA internal / output dimension (= backbone input)
+  num_heads: 2                           # attention heads in CMA (appropriate for 128-dim)
+  dropout: 0.1
+  query_modality: "text"                 # text is query (semantic hate signal)
+  key_modalities: ["audio", "video"]     # audio + video as key/value
+  zero_out_missing_query: true           # zero CMA out when text is absent
+
+# ActionFormer backbone
+backbone:
+  d_model: 128                           # internal feature dimension after projection
+  n_proj_layers: 1                       # Conv1D projection layers (fused_dim → d_model)
+  n_layers: 3                            # total transformer blocks (stem + branch)
+  n_heads: 2                             # self-attention heads per block
+  window_size: 17                        # local self-attention window size
+                                         # set to -1 to use global attention
+  downsample_start: 1                    # index (0-based) of first downsampling block
+  downsample_ratio: 2                    # downsampling factor per branch
+
+# Decoder heads
+heads:
+  n_layers: 1                            # total conv layers per head (incl. output)
+  kernel_size: 3
+  use_layer_norm: false                  # no intermediate norm when n_layers=1
+
+# Regression ranges per pyramid level (seconds at 1 FPS)
+# [min, max)  —  max of last level is effectively infinity
+# 3 levels match strides [1, 2, 4] from n_layers=3, downsample_start=1, downsample_ratio=2
+#
+# IMPORTANT: label assignment uses max_regress_distance = max(t-start, end-t) = D/2
+# so ranges here are compared against HALF the segment duration, not the full duration.
+# Ranges chosen for ~equal segment coverage per level (measured on training set):
+#   [0,16)  -> D/2<16  -> D<32s:  ~55% of segments  (stride 1  handles short/medium)
+#   [16,64) -> D<128s: ~27%                          (stride 2  handles medium-long)
+#   [64,∞)  -> D>=128s: ~17%                         (stride 4  handles long)
+regression_ranges:
+  - [0,   16]
+  - [16,  64]
+  - [64,  100000]
+
+# Loss
+loss:
+  focal_alpha: 0.40          # HateMM positive anchor rate ~2.9% (vs COCO ~1% where 0.25 was derived)
+  focal_gamma: 3.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0  # was 1.5; gives ~33% more positive anchors per segment (3.0->4.0 at stride 2+)
+
+# Training
+training:
+  batch_size: 8
+
+  epochs: 50
+  learning_rate: 1.0e-4
+  weight_decay: 5.0e-4
+  warmup_epochs: 5
+  lr_scheduler: "cosine"               # "cosine" or "multistep"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  cls_prior_prob: 0.01                 # classifier bias initialisation
+  dropout: 0.5
+  droppath: 0.3
+  label_smoothing: 0.1
+
+# Temporal augmentation (training only)
+augmentation:
+  enabled: true
+  feature_noise_std: 0.01        # Gaussian noise σ added to all modality features
+  temporal_mask_prob: 0.5        # probability of applying temporal masking per sample
+  temporal_mask_num: 2           # number of masking windows applied when triggered
+  temporal_mask_max_len: 3       # max frames per mask — p10 segment is 3s, avoid masking entire short segs
+  segment_jitter_sec: 0.5        # max ±jitter (seconds) — reduced from 1.0 since p10 segment is only 3s
+
+# Inference
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.4
+  nms_threshold: 0.1
+  max_detections: 200

@@ -30,26 +30,22 @@ project/
 │   │   └── ...
 │   └── ...
 └── data/
-    ├── extract_features/
-    │   └── extract_features.py      # My existing feature extraction script (DO NOT MODIFY)
+    ├── extract_features.py          # My existing feature extraction script
     └── hatemm/
-        ├── dataset/                 # Pre-extracted .npz feature files live here
-        │   ├── hate_video_1.npz
-        │   ├── non_hate_video_1.npz
-        │   └── ...
-        └── scripts/                 # YOUR OUTPUT — the adapted model goes here
+        ├── dataset/                 
+        └── scripts/                 
             └── (empty, to be created by you)
 ```
 
-**Read and understand `actionformer/`, `mm-hsd/`, and `data/extract_features/extract_features.py` before writing any code.** All new code goes under `data/hatemm/scripts/`. Do not modify anything outside that directory.
+**Read and understand `actionformer/`, `mm-hsd/`, and `data/extract_features.py` before writing any code.** All new code goes under `data/hatemm/scripts/`.
 
 ---
 
 ## Pre-Extracted Features (ALREADY HANDLED — do not reimplement)
 
-Feature extraction is handled by `data/extract_features/extract_features.py`, which I have already run. You do not need to implement any feature extraction code. Just build the model and dataset classes that consume the output.
+Feature extraction is handled by `data/extract_features.py`, which I have already run. You do not need to implement any feature extraction code. Just build the model and dataset classes that consume the output.
 
-The script extracts **three modalities** at 1 FPS, aligned to a common timeline of T timesteps (T = number of sampled video frames). The existing script saves individual `.pt` files; I have converted these into per-video `.npz` bundles in `data/hatemm/dataset/`.
+The script extracts **three modalities** at 1 FPS, aligned to a common timeline of T timesteps (T = number of sampled video frames). The existing script saves individual `.pt` files; update them into per-video `.npz` bundles
 
 ### .npz file format
 
