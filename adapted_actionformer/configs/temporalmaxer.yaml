@@ -1,0 +1,104 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# TemporalMaxer configuration for HateMM Temporal Hateful Content Localization
+#
+# Backbone: MaxPool1D (TemporalMaxer, arXiv:2303.09055)
+#   Replaces self-attention with parameter-free local max pooling.
+#   ~2.8x fewer GMACs, ~3x faster inference vs ActionFormer/transformer baseline.
+# Neck   : FPNIdentity (layer norm only, same as default)
+# Head   : Standard classification + regression (same as default)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dataset (unchanged from default)
+dataset:
+  name: "hatemm"
+  video_feat_dir: "../../data/hatemm/video_features"
+  audio_feat_dir: "../../data/hatemm/audio_features"
+  text_feat_dir:  "../../data/hatemm/text_features"
+  annotation_file: "../../data/hatemm/dataset/annotations.json"
+  num_classes: 1
+  feature_fps: 1.0
+  max_seq_len: 512
+  input_dims:
+    text: 768
+    audio: 1024
+    video: 768
+
+# Cross-modal fusion (unchanged)
+fusion:
+  d_cma: 64
+  num_heads: 4
+  dropout: 0.3
+  query_modality: "text"
+  key_modalities: ["audio", "video"]
+  zero_out_missing_query: true
+
+# TemporalMaxer backbone
+backbone:
+  type: "temporalmaxer"        # <-- MaxPool1D backbone
+  d_model: 128
+  n_proj_layers: 1             # projection convs before the MaxPool branch
+  n_layers: 3                  # total levels = n_layers (stem ignored for MaxPool)
+  n_heads: 2                   # unused by MaxPool backbone (kept for API compat)
+  window_size: 17              # unused by MaxPool backbone
+  downsample_start: 1          # n_branch = n_layers - downsample_start = 2
+  downsample_ratio: 2
+  pool_kernel_size: 3          # MaxPool kernel size (TemporalMaxer paper uses 3)
+
+# Neck: identity (layer norm only)
+# Set type: "fpn" to use full Feature Pyramid Network with lateral convs.
+neck:
+  type: "identity"
+
+# Decoder heads (unchanged from default)
+heads:
+  type: "standard"
+  n_layers: 1
+  kernel_size: 3
+  use_layer_norm: false
+
+# Regression ranges (unchanged)
+regression_ranges:
+  - [0,   16]
+  - [16,  64]
+  - [64,  100000]
+
+# Loss (unchanged)
+loss:
+  focal_alpha: 0.40
+  focal_gamma: 3.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0
+
+# Training (unchanged)
+training:
+  batch_size: 8
+  epochs: 10
+  learning_rate: 1.0e-4
+  weight_decay: 5.0e-4
+  warmup_epochs: 5
+  lr_scheduler: "cosine"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  cls_prior_prob: 0.01
+  dropout: 0.5
+  droppath: 0.3
+  label_smoothing: 0.1
+
+# Augmentation (unchanged)
+augmentation:
+  enabled: true
+  feature_noise_std: 0.01
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 2
+  temporal_mask_max_len: 3
+  segment_jitter_sec: 0.5
+
+# Inference (unchanged)
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.4
+  nms_threshold: 0.1
+  max_detections: 200

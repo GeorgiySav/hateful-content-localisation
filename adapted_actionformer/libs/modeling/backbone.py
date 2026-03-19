@@ -1,38 +1,60 @@
 """
-Multiscale Transformer Encoder (feature pyramid backbone).
+Multiscale backbone implementations for temporal action localisation.
 
-Directly ported from ActionFormer's ConvTransformerBackbone with these changes:
-  - No registry decorator (standalone module)
-  - Removed multi-input projection path (we always receive a single fused tensor)
-  - use_abs_pe defaults to False (no positional encoding per ActionFormer recommendation)
-  - Docstring updated for this project's context
+Three backbone types are available (selectable via backbone.type in config):
 
-Architecture:
-  arch = (n_proj_convs, n_stem_blocks, n_branch_blocks)
-        = (2,           1,             5)              by default
+1. ConvTransformerBackbone  (type="transformer") — ActionFormer-style
+   Ported from ActionFormer with minimal changes. Uses windowed multi-head
+   self-attention for temporal context modeling.
 
-  embd[0..1]  : 2x MaskedConv1D projection,  fused_dim → d_model
-  stem[0]     : 1x TransformerBlock (no downsampling, local attention)
-  branch[0..4]: 5x TransformerBlock (each with 2x downsampling)
+2. MaxPoolBackbone  (type="temporalmaxer") — TemporalMaxer (arXiv:2303.09055)
+   Replaces self-attention with parameter-free MaxPool1D blocks. No learnable
+   parameters in the backbone itself. 2.8× fewer GMACs, 3× faster than ActionFormer.
 
-  → Feature pyramid with 6 levels at resolutions T, T/2, T/4, T/8, T/16, T/32.
+3. SGPBackbone  (type="sgp") — TriDet (CVPR 2023, arXiv:2303.07347)
+   Uses Scalable-Granularity Perception (SGP) layers with dual-branch depthwise
+   convolutions. Addresses the "rank loss problem" of self-attention.
 
-Sequence-length constraint for local attention (window_size w, window_overlap = w//2):
-  Each level's sequence length must be divisible by 2 * window_overlap.
-  For w=19: every T//2^i must be divisible by 18.
-  For w=-1 (global): no constraint.
+All three share the same interface:
+  forward(x, mask) → (out_feats, out_masks)
+  where out_feats is a tuple of L feature maps (B, n_embd, T_i),
+  and L = 1 + n_branch_blocks.
 
-Differences from vanilla ActionFormer backbone.py:
-  1. n_in is always a scalar (not a list/tuple); multi-input projection removed.
-  2. No registry.
+Factory function:
+  build_backbone(backbone_type, **kwargs) → nn.Module
 """
 import torch
 from torch import nn
 from torch.nn import functional as F
 
 from .blocks import (
-    MaskedConv1D, LayerNorm, TransformerBlock, get_sinusoid_encoding
+    MaskedConv1D, LayerNorm, TransformerBlock, get_sinusoid_encoding,
+    TemporalMaxerBlock, SGPBlock,
 )
+
+
+def _init_weights(module):
+    """Initialize bias to 0 for all Linear and Conv1d layers."""
+    if isinstance(module, (nn.Linear, nn.Conv1d)):
+        if module.bias is not None:
+            nn.init.constant_(module.bias, 0.0)
+
+
+def _build_projection_layers(n_proj, n_in, n_embd, n_embd_ks, with_ln):
+    """Build projection conv layers (embedding network) shared by all backbones."""
+    embd = nn.ModuleList()
+    embd_norm = nn.ModuleList()
+    for idx in range(n_proj):
+        in_ch = n_in if idx == 0 else n_embd
+        embd.append(
+            MaskedConv1D(
+                in_ch, n_embd, n_embd_ks,
+                stride=1, padding=n_embd_ks // 2,
+                bias=(not with_ln),
+            )
+        )
+        embd_norm.append(LayerNorm(n_embd) if with_ln else nn.Identity())
+    return embd, embd_norm
 
 
 class ConvTransformerBackbone(nn.Module):
@@ -74,6 +96,7 @@ class ConvTransformerBackbone(nn.Module):
         path_pdrop=0.0,
         use_abs_pe=False,
         use_rel_pe=False,
+        **kwargs,  # absorb backbone-type-specific kwargs (e.g. pool_kernel_size for MaxPool)
     ):
         super().__init__()
         assert len(arch) == 3
@@ -92,18 +115,9 @@ class ConvTransformerBackbone(nn.Module):
         self.relu         = nn.ReLU(inplace=True)
 
         # ── Projection conv layers (embedding network) ──────────────────────
-        self.embd      = nn.ModuleList()
-        self.embd_norm = nn.ModuleList()
-        for idx in range(arch[0]):
-            in_ch = n_in if idx == 0 else n_embd
-            self.embd.append(
-                MaskedConv1D(
-                    in_ch, n_embd, n_embd_ks,
-                    stride=1, padding=n_embd_ks // 2,
-                    bias=(not with_ln),
-                )
-            )
-            self.embd_norm.append(LayerNorm(n_embd) if with_ln else nn.Identity())
+        self.embd, self.embd_norm = _build_projection_layers(
+            arch[0], n_in, n_embd, n_embd_ks, with_ln
+        )
 
         # ── Optional absolute position embedding ────────────────────────────
         if use_abs_pe:
@@ -140,13 +154,7 @@ class ConvTransformerBackbone(nn.Module):
                 )
             )
 
-        self.apply(self._init_weights)
-
-    @staticmethod
-    def _init_weights(module):
-        if isinstance(module, (nn.Linear, nn.Conv1d)):
-            if module.bias is not None:
-                nn.init.constant_(module.bias, 0.0)
+        self.apply(_init_weights)
 
     def forward(self, x, mask):
         """
@@ -191,3 +199,272 @@ class ConvTransformerBackbone(nn.Module):
             out_masks += (mask,)
 
         return out_feats, out_masks
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# TemporalMaxer backbone (arXiv:2303.09055)
+# ──────────────────────────────────────────────────────────────────────────────
+
+class MaxPoolBackbone(nn.Module):
+    """
+    MaxPool-based backbone from TemporalMaxer (arXiv:2303.09055).
+
+    Replaces transformer self-attention with parameter-free MaxPool1D blocks.
+    The backbone has no learnable parameters beyond the initial projection convs,
+    resulting in 2.8x fewer GMACs and 3x faster inference vs ActionFormer.
+
+    Architecture:
+      embd[0..n_proj-1]     : n_proj MaskedConv1D projections  (n_in -> n_embd)
+      branch[0..n_branch-1] : n_branch TemporalMaxerBlocks (each scale_factor downsampling)
+
+      -> Feature pyramid with (1 + n_branch) levels.
+
+    Args:
+        n_in            : Input feature dimension.
+        n_embd          : Internal / output feature dimension.
+        n_embd_ks       : Kernel size for projection conv layers.
+        max_len         : Maximum sequence length (unused by this backbone).
+        arch            : (n_proj_convs, n_stem_ignored, n_branch_blocks).
+                          n_stem is accepted for API compatibility but ignored;
+                          all pyramid levels are produced by the MaxPool branch.
+        scale_factor    : Downsampling factor per branch block (default 2).
+        with_ln         : If True, LayerNorm after projection conv layers.
+        pool_kernel_size: MaxPool kernel size (default 3).
+    """
+
+    def __init__(
+        self,
+        n_in,
+        n_embd,
+        n_embd_ks=3,
+        max_len=2304,
+        arch=(1, 1, 2),
+        scale_factor=2,
+        with_ln=True,
+        pool_kernel_size=3,
+        **kwargs,
+    ):
+        super().__init__()
+        assert len(arch) == 3
+        n_proj   = arch[0]
+        n_branch = arch[2]
+
+        self.arch         = arch
+        self.max_len      = max_len
+        self.scale_factor = scale_factor
+        self.relu         = nn.ReLU(inplace=True)
+
+        self.embd, self.embd_norm = _build_projection_layers(
+            n_proj, n_in, n_embd, n_embd_ks, with_ln
+        )
+
+        self.branch = nn.ModuleList()
+        for _ in range(n_branch):
+            self.branch.append(
+                TemporalMaxerBlock(
+                    kernel_size=pool_kernel_size,
+                    stride=scale_factor,
+                    padding=pool_kernel_size // 2,
+                    n_embd=n_embd,
+                )
+            )
+
+        self.apply(_init_weights)
+
+    def forward(self, x, mask):
+        """
+        Args:
+            x   : (B, C, T)
+            mask: (B, 1, T) bool
+
+        Returns:
+            out_feats: tuple of (1 + n_branch) feature maps (B, n_embd, T_i)
+            out_masks: tuple of (1 + n_branch) masks (B, 1, T_i)
+        """
+        for idx in range(len(self.embd)):
+            x, mask = self.embd[idx](x, mask)
+            x = self.relu(self.embd_norm[idx](x))
+
+        out_feats = (x,)
+        out_masks = (mask,)
+
+        for block in self.branch:
+            x, mask = block(x, mask)
+            out_feats += (x,)
+            out_masks += (mask,)
+
+        return out_feats, out_masks
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SGP backbone (TriDet, CVPR 2023, arXiv:2303.07347)
+# ──────────────────────────────────────────────────────────────────────────────
+
+class SGPBackbone(nn.Module):
+    """
+    SGP-based backbone from TriDet (CVPR 2023, arXiv:2303.07347).
+
+    Uses Scalable-Granularity Perception (SGP) layers with dual-branch depthwise
+    convolutions for temporal context modeling. Addresses the rank-loss problem
+    of self-attention where features at different time steps become too similar.
+
+    Architecture:
+      embd[0..n_proj-1]     : n_proj MaskedConv1D projections  (n_in -> n_embd)
+      stem[0..n_stem-1]     : n_stem SGPBlocks (stride=1, no downsampling)
+      branch[0..n_branch-1] : n_branch SGPBlocks (stride=scale_factor)
+
+      -> Feature pyramid with (1 + n_branch) levels.
+
+    Args:
+        n_in            : Input feature dimension.
+        n_embd          : Internal / output feature dimension.
+        n_embd_ks       : Kernel size for projection conv layers.
+        max_len         : Maximum sequence length.
+        arch            : (n_proj_convs, n_stem_blocks, n_branch_blocks).
+        scale_factor    : Downsampling factor per branch block (default 2).
+        with_ln         : If True, LayerNorm after projection conv layers.
+        path_pdrop      : Drop-path rate for branch SGP blocks.
+        sgp_kernel_size : SGP instant-level conv kernel size (default 3).
+        sgp_mlp_dim     : Hidden dim for FFN MLP in SGP blocks (default 4*n_embd).
+        k               : Window-level kernel scale factor in SGP (default 1.5).
+        init_conv_vars  : Gaussian init std for SGP depthwise conv weights.
+        use_abs_pe      : If True, add sinusoidal absolute position embeddings.
+        downsample_type : Downsampling method in branch SGP blocks ('max'/'avg').
+    """
+
+    def __init__(
+        self,
+        n_in,
+        n_embd,
+        n_embd_ks=3,
+        max_len=2304,
+        arch=(1, 1, 2),
+        scale_factor=2,
+        with_ln=True,
+        path_pdrop=0.0,
+        sgp_kernel_size=3,
+        sgp_mlp_dim=None,
+        k=1.5,
+        init_conv_vars=1,
+        use_abs_pe=False,
+        downsample_type='max',
+        **kwargs,
+    ):
+        super().__init__()
+        assert len(arch) == 3
+        n_proj   = arch[0]
+        n_stem   = arch[1]
+        n_branch = arch[2]
+
+        self.arch         = arch
+        self.max_len      = max_len
+        self.scale_factor = scale_factor
+        self.use_abs_pe   = use_abs_pe
+        self.relu         = nn.ReLU(inplace=True)
+
+        if sgp_mlp_dim is None:
+            sgp_mlp_dim = 4 * n_embd
+
+        if use_abs_pe:
+            pos_embd = get_sinusoid_encoding(max_len, n_embd) / (n_embd ** 0.5)
+            self.register_buffer("pos_embd", pos_embd, persistent=False)
+
+        self.embd, self.embd_norm = _build_projection_layers(
+            n_proj, n_in, n_embd, n_embd_ks, with_ln
+        )
+
+        self.stem = nn.ModuleList()
+        for _ in range(n_stem):
+            self.stem.append(
+                SGPBlock(
+                    n_embd,
+                    kernel_size=sgp_kernel_size,
+                    n_ds_stride=1,
+                    n_hidden=sgp_mlp_dim,
+                    k=k,
+                    init_conv_vars=init_conv_vars,
+                )
+            )
+
+        self.branch = nn.ModuleList()
+        for _ in range(n_branch):
+            self.branch.append(
+                SGPBlock(
+                    n_embd,
+                    kernel_size=sgp_kernel_size,
+                    n_ds_stride=scale_factor,
+                    path_pdrop=path_pdrop,
+                    n_hidden=sgp_mlp_dim,
+                    downsample_type=downsample_type,
+                    k=k,
+                    init_conv_vars=init_conv_vars,
+                )
+            )
+
+        self.apply(_init_weights)
+
+    def forward(self, x, mask):
+        """
+        Args:
+            x   : (B, C, T)
+            mask: (B, 1, T) bool
+
+        Returns:
+            out_feats: tuple of (1 + n_branch) feature maps (B, n_embd, T_i)
+            out_masks: tuple of (1 + n_branch) masks (B, 1, T_i)
+        """
+        B, C, T = x.size()
+
+        for idx in range(len(self.embd)):
+            x, mask = self.embd[idx](x, mask)
+            x = self.relu(self.embd_norm[idx](x))
+
+        if self.use_abs_pe and self.training:
+            assert T <= self.max_len, "Sequence exceeds max_len"
+            x = x + self.pos_embd[:, :, :T] * mask.to(x.dtype)
+
+        if self.use_abs_pe and (not self.training):
+            pe = (F.interpolate(self.pos_embd, T, mode='linear', align_corners=False)
+                  if T > self.max_len else self.pos_embd)
+            x = x + pe[:, :, :T] * mask.to(x.dtype)
+
+        for block in self.stem:
+            x, mask = block(x, mask)
+
+        out_feats = (x,)
+        out_masks = (mask,)
+
+        for block in self.branch:
+            x, mask = block(x, mask)
+            out_feats += (x,)
+            out_masks += (mask,)
+
+        return out_feats, out_masks
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Backbone factory
+# ──────────────────────────────────────────────────────────────────────────────
+
+def build_backbone(backbone_type, **kwargs):
+    """
+    Instantiate a backbone by name.
+
+    Args:
+        backbone_type: One of "transformer", "temporalmaxer", "sgp".
+        **kwargs     : Passed directly to the backbone constructor.
+
+    Returns:
+        nn.Module backbone instance.
+    """
+    _registry = {
+        'transformer'  : ConvTransformerBackbone,
+        'temporalmaxer': MaxPoolBackbone,
+        'sgp'          : SGPBackbone,
+    }
+    if backbone_type not in _registry:
+        raise ValueError(
+            f"Unknown backbone type '{backbone_type}'. "
+            f"Choose from: {list(_registry.keys())}"
+        )
+    return _registry[backbone_type](**kwargs)

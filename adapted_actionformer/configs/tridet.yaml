@@ -1,0 +1,113 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# TriDet configuration for HateMM Temporal Hateful Content Localization
+#
+# Backbone: SGP (Scalable-Granularity Perception, TriDet CVPR 2023, arXiv:2303.07347)
+#   Dual-branch depthwise conv replacing self-attention. Resolves the rank-loss
+#   problem where attention makes features at different timesteps too similar.
+# Neck   : FPNIdentity (layer norm only)
+# Head   : Trident-head — predicts relative boundary probability distributions
+#          instead of direct offset regression, improving localization of
+#          ambiguous action boundaries.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dataset (unchanged from default)
+dataset:
+  name: "hatemm"
+  video_feat_dir: "../../data/hatemm/video_features"
+  audio_feat_dir: "../../data/hatemm/audio_features"
+  text_feat_dir:  "../../data/hatemm/text_features"
+  annotation_file: "../../data/hatemm/dataset/annotations.json"
+  num_classes: 1
+  feature_fps: 1.0
+  max_seq_len: 512
+  input_dims:
+    text: 768
+    audio: 1024
+    video: 768
+
+# Cross-modal fusion (unchanged)
+fusion:
+  d_cma: 128
+  num_heads: 2
+  dropout: 0.1
+  query_modality: "text"
+  key_modalities: ["audio", "video"]
+  zero_out_missing_query: true
+
+# SGP backbone (TriDet)
+backbone:
+  type: "sgp"                  # <-- Scalable-Granularity Perception backbone
+  d_model: 128
+  n_proj_layers: 1
+  n_layers: 3                  # stem=1, branch=2 → 3 pyramid levels
+  n_heads: 2                   # unused by SGP (kept for API compat)
+  window_size: 17              # unused by SGP
+  downsample_start: 1          # n_stem = 1, n_branch = 2
+  downsample_ratio: 2
+  # SGP-specific parameters
+  sgp_kernel_size: 3           # instant-level depthwise conv kernel
+  sgp_mlp_dim: 512             # FFN hidden dim (4x d_model by default)
+  sgp_k: 1.5                   # window-level kernel scale factor
+  sgp_init_conv_vars: 1        # Gaussian init std for SGP depthwise weights
+  sgp_downsample_type: "max"   # 'max' or 'avg' pooling for branch downsampling
+
+# Neck: identity (layer norm only)
+neck:
+  type: "identity"
+
+# Trident-head
+heads:
+  type: "trident"              # <-- Trident boundary distribution head
+  n_layers: 3
+  kernel_size: 3
+  use_layer_norm: true         # TriDet uses layer norm in heads
+  boundary_kernel_size: 3      # kernel for start/end boundary heads
+  num_bins: 16                 # number of distribution bins (excluding 0-offset bin)
+  iou_weight_power: 2          # power for IoU-weighted classification loss
+
+# Regression ranges (unchanged)
+regression_ranges:
+  - [0,   16]
+  - [16,  64]
+  - [64,  100000]
+
+# Loss (unchanged)
+loss:
+  focal_alpha: 0.40
+  focal_gamma: 3.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0
+
+# Training (unchanged)
+training:
+  batch_size: 8
+  epochs: 50
+  learning_rate: 1.0e-4
+  weight_decay: 5.0e-4
+  warmup_epochs: 5
+  lr_scheduler: "cosine"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  cls_prior_prob: 0.01
+  dropout: 0.5
+  droppath: 0.3
+  label_smoothing: 0.1
+
+# Augmentation (unchanged)
+augmentation:
+  enabled: true
+  feature_noise_std: 0.01
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 2
+  temporal_mask_max_len: 3
+  segment_jitter_sec: 0.5
+
+# Inference (unchanged)
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.4
+  nms_threshold: 0.1
+  max_detections: 200

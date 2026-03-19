@@ -30,6 +30,7 @@ fusion:
 
 # ActionFormer backbone
 backbone:
+  type: "transformer"                    # "transformer" | "temporalmaxer" | "sgp"
   d_model: 128                           # internal feature dimension after projection
   n_proj_layers: 1                       # Conv1D projection layers (fused_dim → d_model)
   n_layers: 3                            # total transformer blocks (stem + branch)
@@ -41,6 +42,7 @@ backbone:
 
 # Decoder heads
 heads:
+  type: "standard"                       # "standard" | "trident"
   n_layers: 1                            # total conv layers per head (incl. output)
   kernel_size: 3
   use_layer_norm: false                  # no intermediate norm when n_layers=1

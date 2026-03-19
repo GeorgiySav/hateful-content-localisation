@@ -557,3 +557,185 @@ class AffineDropPath(nn.Module):
 
     def forward(self, x):
         return drop_path(self.scale * x, self.drop_prob, self.training)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# TemporalMaxer block (from arXiv:2303.09055, https://github.com/TuanTNG/TemporalMaxer)
+# ──────────────────────────────────────────────────────────────────────────────
+
+class TemporalMaxerBlock(nn.Module):
+    """
+    Parameter-free temporal context block from TemporalMaxer (arXiv:2303.09055).
+
+    Replaces self-attention with a local MaxPool1D operation. No learnable
+    parameters in the pooling itself — only the downstream layers matter.
+    Results in 2.8× fewer GMACs and 3× faster inference vs ActionFormer.
+
+    Args:
+        kernel_size: MaxPool kernel size (default 3).
+        stride     : Downsampling stride (default 2 for pyramid downsampling).
+        padding    : Padding to keep temporal length consistent (default 1).
+        n_embd     : Feature channel dimension (unused by pooling itself).
+    """
+
+    def __init__(self, kernel_size, stride, padding, n_embd):
+        super().__init__()
+        self.ds_pooling = nn.MaxPool1d(kernel_size, stride=stride, padding=padding)
+        self.stride = stride
+
+    def forward(self, x, mask, **kwargs):
+        # x:    (B, C, T)
+        # mask: (B, 1, T) bool
+        if self.stride > 1:
+            out_mask = F.interpolate(
+                mask.to(x.dtype),
+                size=x.size(-1) // self.stride,
+                mode='nearest',
+            )
+        else:
+            out_mask = mask
+
+        out = self.ds_pooling(x) * out_mask.to(x.dtype)
+        return out, out_mask.bool()
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SGP block (from TriDet, CVPR 2023, arXiv:2303.07347, https://github.com/dingfengshi/TriDet)
+# ──────────────────────────────────────────────────────────────────────────────
+
+class SGPBlock(nn.Module):
+    """
+    Scalable-Granularity Perception (SGP) layer from TriDet (CVPR 2023, arXiv:2303.07347).
+
+    Replaces self-attention with a dual-branch depthwise convolutional structure:
+      - Instant-level branch : depthwise conv at kernel_size (captures fine-grained features)
+      - Window-level branch  : depthwise conv at a larger kernel (up_size ≈ k * kernel_size)
+      - Global branch        : channel-wise global average pooling
+    All three are combined multiplicatively/additively without cross-channel mixing,
+    resolving the "rank loss problem" where attention collapses feature diversity.
+
+    Args:
+        n_embd          : Feature channel dimension.
+        kernel_size     : Instant-level depthwise conv kernel size (must be odd).
+        n_ds_stride     : Downsampling stride (1 = no downsampling).
+        k               : Scale factor for window-level kernel size (default 1.5).
+        group           : Groups for the FFN MLP conv (default 1 = standard conv).
+        n_out           : Output dimension (default = n_embd).
+        n_hidden        : Hidden dimension in the FFN MLP (default = 4 * n_embd).
+        path_pdrop      : Drop-path rate.
+        act_layer       : Activation function class.
+        downsample_type : How to downsample when n_ds_stride > 1: 'max' or 'avg'.
+        init_conv_vars  : Std of Gaussian init for depthwise conv weights.
+    """
+
+    def __init__(
+        self,
+        n_embd,
+        kernel_size=3,
+        n_ds_stride=1,
+        k=1.5,
+        group=1,
+        n_out=None,
+        n_hidden=None,
+        path_pdrop=0.0,
+        act_layer=nn.GELU,
+        downsample_type='max',
+        init_conv_vars=1,
+    ):
+        super().__init__()
+        assert kernel_size % 2 == 1
+
+        self.kernel_size = kernel_size
+        self.stride = n_ds_stride
+
+        if n_out is None:
+            n_out = n_embd
+
+        self.ln = LayerNorm(n_embd)
+        self.gn = nn.GroupNorm(16, n_embd)
+
+        # Window-level kernel size (larger, odd)
+        up_size = round((kernel_size + 1) * k)
+        up_size = up_size + 1 if up_size % 2 == 0 else up_size
+
+        # Depthwise convs for the two branches
+        self.psi      = nn.Conv1d(n_embd, n_embd, kernel_size, stride=1,
+                                  padding=kernel_size // 2, groups=n_embd)
+        self.fc       = nn.Conv1d(n_embd, n_embd, 1, stride=1,
+                                  padding=0, groups=n_embd)
+        self.convw    = nn.Conv1d(n_embd, n_embd, kernel_size, stride=1,
+                                  padding=kernel_size // 2, groups=n_embd)
+        self.convkw   = nn.Conv1d(n_embd, n_embd, up_size, stride=1,
+                                  padding=up_size // 2, groups=n_embd)
+        self.global_fc = nn.Conv1d(n_embd, n_embd, 1, stride=1,
+                                   padding=0, groups=n_embd)
+
+        # Downsampling
+        if n_ds_stride > 1:
+            if downsample_type == 'max':
+                ds_kernel = n_ds_stride + 1
+                ds_padding = (n_ds_stride + 1) // 2
+                self.downsample = nn.MaxPool1d(ds_kernel, stride=n_ds_stride,
+                                               padding=ds_padding)
+                self.stride = n_ds_stride
+            elif downsample_type == 'avg':
+                self.downsample = nn.Sequential(
+                    nn.AvgPool1d(n_ds_stride, stride=n_ds_stride, padding=0),
+                    nn.Conv1d(n_embd, n_embd, 1, 1, 0),
+                )
+                self.stride = n_ds_stride
+            else:
+                raise NotImplementedError(f"downsample_type '{downsample_type}' not supported")
+        else:
+            self.downsample = nn.Identity()
+            self.stride = 1
+
+        # FFN MLP
+        if n_hidden is None:
+            n_hidden = 4 * n_embd
+
+        self.mlp = nn.Sequential(
+            nn.Conv1d(n_embd, n_hidden, 1, groups=group),
+            act_layer(),
+            nn.Conv1d(n_hidden, n_out, 1, groups=group),
+        )
+
+        # Drop-path regularisation
+        if path_pdrop > 0.0:
+            self.drop_path_out = AffineDropPath(n_embd, drop_prob=path_pdrop)
+            self.drop_path_mlp = AffineDropPath(n_out,  drop_prob=path_pdrop)
+        else:
+            self.drop_path_out = nn.Identity()
+            self.drop_path_mlp = nn.Identity()
+
+        self.act = act_layer()
+        self._reset_params(init_conv_vars)
+
+    def _reset_params(self, init_conv_vars):
+        for m in [self.psi, self.fc, self.convw, self.convkw, self.global_fc]:
+            nn.init.normal_(m.weight, 0, init_conv_vars)
+            nn.init.constant_(m.bias, 0)
+
+    def forward(self, x, mask):
+        # x:    (B, C, T)
+        # mask: (B, 1, T) bool
+        B, C, T = x.shape
+        x = self.downsample(x)
+        out_mask = F.interpolate(
+            mask.to(x.dtype),
+            size=torch.div(T, self.stride, rounding_mode='trunc'),
+            mode='nearest',
+        ).detach()
+
+        out = self.ln(x)
+        psi     = self.psi(out)
+        fc      = self.fc(out)
+        convw   = self.convw(out)
+        convkw  = self.convkw(out)
+        phi     = torch.relu(self.global_fc(out.mean(dim=-1, keepdim=True)))
+        out     = fc * phi + (convw + convkw) * psi + out
+
+        out = x * out_mask + self.drop_path_out(out)
+        out = out + self.drop_path_mlp(self.mlp(self.gn(out)))
+
+        return out, out_mask.bool()

@@ -1,0 +1,103 @@
+# -----------------------------------------------------------------------------
+# Experiment: Stronger data augmentation
+#
+# Changes vs exp_long_baseline.yaml:
+#   augmentation.feature_noise_std:   0.01 -> 0.05  (5x more feature jitter)
+#   augmentation.temporal_mask_num:      2 -> 4     (more masked spans)
+#   augmentation.temporal_mask_max_len:  3 -> 6     (longer masked spans)
+#   augmentation.segment_jitter_sec:   0.5 -> 1.0  (wider boundary jitter)
+#
+# Rationale: augmentation is the cleanest regularizer because it increases
+# effective training diversity without changing the optimization target.
+# Current augmentation is mild (noise_std=0.01 is tiny relative to feature
+# norms). Strengthening it should narrow the train/val mAP gap while keeping
+# the same model capacity.
+#
+# Architecture/training: identical to exp_long_baseline.yaml.
+# Params: ~207K (unchanged).
+# -----------------------------------------------------------------------------
+
+dataset:
+  name: "hatemm"
+  video_feat_dir: "../../data/hatemm/video_features"
+  audio_feat_dir: "../../data/hatemm/audio_features"
+  text_feat_dir:  "../../data/hatemm/text_features"
+  annotation_file: "../../data/hatemm/dataset/annotations.json"
+  num_classes: 1
+  feature_fps: 1.0
+  max_seq_len: 512
+  input_dims:
+    text: 768
+    audio: 1024
+    video: 768
+
+fusion:
+  d_cma: 64
+  num_heads: 4
+  dropout: 0.3
+  query_modality: "text"
+  key_modalities: ["audio", "video"]
+  zero_out_missing_query: true
+
+backbone:
+  type: "temporalmaxer"
+  d_model: 128
+  n_proj_layers: 1
+  n_layers: 3
+  n_heads: 2
+  window_size: 17
+  downsample_start: 1
+  downsample_ratio: 2
+  pool_kernel_size: 3
+
+neck:
+  type: "identity"
+
+heads:
+  type: "standard"
+  n_layers: 1
+  kernel_size: 3
+  use_layer_norm: false
+
+regression_ranges:
+  - [0,   16]
+  - [16,  64]
+  - [64,  100000]
+
+loss:
+  focal_alpha: 0.40
+  focal_gamma: 3.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0
+
+training:
+  batch_size: 8
+  epochs: 50
+  learning_rate: 1.0e-4
+  weight_decay: 5.0e-4
+  warmup_epochs: 10
+  lr_scheduler: "cosine"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  patience: 15
+  cls_prior_prob: 0.01
+  dropout: 0.5
+  droppath: 0.3
+  label_smoothing: 0.1
+
+augmentation:
+  enabled: true
+  feature_noise_std: 0.05       # <- 5x more noise (was 0.01)
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 4          # <- double the masked spans (was 2)
+  temporal_mask_max_len: 6      # <- longer masked spans (was 3)
+  segment_jitter_sec: 1.0       # <- wider boundary noise (was 0.5)
+
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.4
+  nms_threshold: 0.1
+  max_detections: 200

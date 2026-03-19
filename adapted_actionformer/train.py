@@ -52,7 +52,7 @@ def parse_args():
 def load_config(path):
     # Resolve paths relative to the config file location
     config_dir = os.path.dirname(os.path.abspath(path))
-    with open(path, 'r') as f:
+    with open(path, 'r', encoding='utf-8') as f:
         cfg = yaml.safe_load(f)
     # Resolve relative paths in dataset config
     ds = cfg['dataset']
@@ -121,66 +121,85 @@ def main():
         print(f"[train] Resumed from epoch {start_epoch}, best mAP={best_mAP:.4f}")
 
     # ── Training loop ─────────────────────────────────────────────────────────
-    clip_grad = train_cfg.get('clip_grad_norm', 1.0)
-    epochs    = train_cfg.get('epochs', 50)
+    clip_grad     = train_cfg.get('clip_grad_norm', 1.0)
+    epochs        = train_cfg.get('epochs', 50)
+    patience      = train_cfg.get('patience', 15)   # epochs with no improvement before stopping
+    no_improve    = 0
+    epoch         = start_epoch - 1  # safe default if loop never executes
 
-    for epoch in range(start_epoch, epochs):
-        train_one_epoch(
-            train_loader, model, optimizer, scheduler,
-            curr_epoch=epoch,
-            model_ema=model_ema,
-            clip_grad_norm=clip_grad,
-            tb_writer=tb_writer,
-        )
-
-        eval_model = model_ema.module if model_ema is not None else model
- 
-        if epoch % 5 == 0:
-            # Train-set mAP (no grad, deterministic cropping)
-            train_mAP = valid_one_epoch(
-                train_eval_loader, eval_model,
+    try:
+        for epoch in range(start_epoch, epochs):
+            train_one_epoch(
+                train_loader, model, optimizer, scheduler,
                 curr_epoch=epoch,
-                evaluator=train_evaluator,
-                tb_writer=None,         # log separately below
+                model_ema=model_ema,
+                clip_grad_norm=clip_grad,
+                tb_writer=tb_writer,
             )
-        else:
-            train_mAP = 0.0  # skip expensive train mAP every epoch, log 0.0 as placeholder
 
-        # Validation mAP
-        mAP = valid_one_epoch(
-            val_loader, eval_model,
-            curr_epoch=epoch,
-            evaluator=evaluator,
-            tb_writer=tb_writer,
-        )
+            eval_model = model_ema.module if model_ema is not None else model
 
+            if epoch % 5 == 0:
+                # Train-set mAP (no grad, deterministic cropping)
+                train_mAP = valid_one_epoch(
+                    train_eval_loader, eval_model,
+                    curr_epoch=epoch,
+                    evaluator=train_evaluator,
+                    tb_writer=None,         # log separately below
+                )
+            else:
+                train_mAP = 0.0  # skip expensive train mAP every epoch, log 0.0 as placeholder
+
+            # Validation mAP
+            mAP = valid_one_epoch(
+                val_loader, eval_model,
+                curr_epoch=epoch,
+                evaluator=evaluator,
+                tb_writer=tb_writer,
+            )
+
+            if tb_writer is not None:
+                tb_writer.add_scalar('train/mAP', train_mAP, epoch)
+
+            if train_mAP > 0.0:
+                print(f"[epoch {epoch}]  train mAP={train_mAP:.4f}  "
+                  f"val mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
+            else:
+                print(f"[epoch {epoch}]  val mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
+
+            is_best = mAP > best_mAP
+            if is_best:
+                no_improve = 0
+            else:
+                no_improve += 1
+
+            best_mAP = max(mAP, best_mAP)
+
+            save_checkpoint(
+                {
+                    'epoch'      : epoch,
+                    'state_dict' : model.state_dict(),
+                    'optimizer'  : optimizer.state_dict(),
+                    'scheduler'  : scheduler.state_dict(),
+                    'best_mAP'   : best_mAP,
+                    'mAP'        : mAP,
+                },
+                is_best=is_best,
+                file_folder=args.output_dir,
+            )
+
+            if no_improve >= patience:
+                print(f"\n[train] Early stopping at epoch {epoch}: "
+                      f"no improvement for {patience} epochs. "
+                      f"Best val mAP = {best_mAP:.4f}")
+                break
+
+    except KeyboardInterrupt:
+        print(f"\n[train] Interrupted at epoch {epoch}. Best val mAP = {best_mAP:.4f}")
+    finally:
         if tb_writer is not None:
-            tb_writer.add_scalar('train/mAP', train_mAP, epoch)
+            tb_writer.close()
 
-        if train_mAP > 0.0:
-            print(f"[epoch {epoch}]  train mAP={train_mAP:.4f}  "
-              f"val mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
-        else:
-            print(f"[epoch {epoch}]  val mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
-
-        is_best = mAP > best_mAP
-        best_mAP = max(mAP, best_mAP)
-
-        save_checkpoint(
-            {
-                'epoch'      : epoch,
-                'state_dict' : model.state_dict(),
-                'optimizer'  : optimizer.state_dict(),
-                'scheduler'  : scheduler.state_dict(),
-                'best_mAP'   : best_mAP,
-                'mAP'        : mAP,
-            },
-            is_best=is_best,
-            file_folder=args.output_dir,
-        )
-
-    if tb_writer is not None:
-        tb_writer.close()
     print(f"\n[train] Done. Best val mAP = {best_mAP:.4f}")
 
 
