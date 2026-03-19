@@ -31,12 +31,22 @@ if _script_dir not in sys.path:
     sys.path.insert(0, _script_dir)
 
 from libs.modeling.meta_arch  import HatefulContentLocalizer
-from libs.datasets.hatemm      import build_dataloader
 from libs.utils.train_utils    import (
     fix_random_seed, make_optimizer, make_scheduler,
     ModelEma, save_checkpoint, train_one_epoch, valid_one_epoch
 )
 from libs.utils.eval_utils     import ANETdetection
+
+
+def _get_build_dataloader(cfg):
+    name = cfg.get('dataset', {}).get('name', 'hatemm')
+    if name == 'hateclipseg':
+        from libs.datasets.hateclipseg import build_dataloader
+    elif name == 'multihateclip':
+        from libs.datasets.multihateclip import build_dataloader
+    else:
+        from libs.datasets.hatemm import build_dataloader
+    return build_dataloader
 
 
 def parse_args():
@@ -75,6 +85,7 @@ def main():
         tb_writer = SummaryWriter(log_dir=os.path.join(args.output_dir, 'tb'))
 
     # ── Data loaders ──────────────────────────────────────────────────────────
+    build_dataloader  = _get_build_dataloader(cfg)
     train_loader      = build_dataloader(cfg, subset='train', is_training=True)
     train_eval_loader = build_dataloader(cfg, subset='train', is_training=False)
     val_loader        = build_dataloader(cfg, subset='val',   is_training=False)

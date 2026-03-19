@@ -323,6 +323,10 @@ def valid_one_epoch(
 
     start = time.time()
     for iter_idx, batch in enumerate(val_loader, 0):
+        # Only evaluate on hateful videos (those with ground truth segments)
+        if not any(s.shape[0] > 0 for s in batch['segments']):
+            continue
+
         with torch.no_grad():
             output = model(batch)
 

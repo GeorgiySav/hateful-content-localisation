@@ -36,7 +36,7 @@
     },
     "hate_video_3": {
       "duration": 231.36,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -63,7 +63,7 @@
     },
     "hate_video_4": {
       "duration": 13.833,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -137,7 +137,7 @@
     },
     "non_hate_video_6": {
       "duration": 83.127,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -183,13 +183,13 @@
     },
     "non_hate_video_9": {
       "duration": 51.583,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_10": {
       "duration": 38.44,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -223,7 +223,7 @@
     },
     "hate_video_12": {
       "duration": 188.778,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -237,7 +237,7 @@
     },
     "non_hate_video_11": {
       "duration": 118.101,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -249,7 +249,7 @@
     },
     "non_hate_video_13": {
       "duration": 157.68,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -267,7 +267,7 @@
     },
     "hate_video_13": {
       "duration": 185.834,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -287,7 +287,7 @@
     },
     "non_hate_video_17": {
       "duration": 105.604,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -333,7 +333,7 @@
     },
     "non_hate_video_20": {
       "duration": 191.899,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -403,7 +403,7 @@
     },
     "non_hate_video_27": {
       "duration": 27.399,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -423,13 +423,13 @@
     },
     "non_hate_video_28": {
       "duration": 6.826,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_19": {
       "duration": 42.237,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -443,7 +443,7 @@
     },
     "hate_video_20": {
       "duration": 132.735,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -463,13 +463,13 @@
     },
     "non_hate_video_30": {
       "duration": 45.045,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_21": {
       "duration": 190.848,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -503,7 +503,7 @@
     },
     "non_hate_video_32": {
       "duration": 210.303,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -515,7 +515,7 @@
     },
     "non_hate_video_34": {
       "duration": 32.667,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -567,7 +567,7 @@
     },
     "non_hate_video_38": {
       "duration": 27.074,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -579,7 +579,7 @@
     },
     "non_hate_video_40": {
       "duration": 53.546,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -677,7 +677,7 @@
     },
     "non_hate_video_47": {
       "duration": 79.185,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -739,7 +739,7 @@
     },
     "hate_video_30": {
       "duration": 230.065,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -773,7 +773,7 @@
     },
     "hate_video_32": {
       "duration": 186.645,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -815,7 +815,7 @@
     },
     "non_hate_video_49": {
       "duration": 53.986,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -865,7 +865,7 @@
     },
     "hate_video_36": {
       "duration": 24.381,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -885,7 +885,7 @@
     },
     "hate_video_37": {
       "duration": 276.821,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -899,7 +899,7 @@
     },
     "hate_video_38": {
       "duration": 61.028,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -961,7 +961,7 @@
     },
     "hate_video_42": {
       "duration": 90.302,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -975,7 +975,7 @@
     },
     "non_hate_video_57": {
       "duration": 71.808,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1001,7 +1001,7 @@
     },
     "hate_video_44": {
       "duration": 296.313,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -1061,7 +1061,7 @@
     },
     "hate_video_47": {
       "duration": 79.342,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -1150,7 +1150,7 @@
     },
     "non_hate_video_64": {
       "duration": 5.3,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1170,13 +1170,13 @@
     },
     "non_hate_video_65": {
       "duration": 47.902,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_66": {
       "duration": 34.389,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1194,7 +1194,7 @@
     },
     "hate_video_52": {
       "duration": 103.103,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -1381,7 +1381,7 @@
     },
     "hate_video_56": {
       "duration": 35.201,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -1503,7 +1503,7 @@
     },
     "hate_video_60": {
       "duration": 120.952,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -1550,7 +1550,7 @@
     },
     "non_hate_video_77": {
       "duration": 288.833,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1628,19 +1628,19 @@
     },
     "non_hate_video_83": {
       "duration": 98.847,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_84": {
       "duration": 103.723,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_85": {
       "duration": 834.7,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1681,7 +1681,7 @@
     },
     "hate_video_63": {
       "duration": 103.103,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -1702,13 +1702,13 @@
     },
     "non_hate_video_86": {
       "duration": 69.937,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_87": {
       "duration": 12.992,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1754,7 +1754,7 @@
     },
     "non_hate_video_90": {
       "duration": 146.496,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1766,7 +1766,7 @@
     },
     "non_hate_video_92": {
       "duration": 45.0,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -1863,7 +1863,7 @@
     },
     "hate_video_66": {
       "duration": 106.231,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -1932,7 +1932,7 @@
     },
     "hate_video_68": {
       "duration": 245.12,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -1986,7 +1986,7 @@
     },
     "hate_video_70": {
       "duration": 216.853,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -2034,7 +2034,7 @@
     },
     "non_hate_video_97": {
       "duration": 24.985,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2046,13 +2046,13 @@
     },
     "non_hate_video_99": {
       "duration": 78.46,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_100": {
       "duration": 27.494,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2072,7 +2072,7 @@
     },
     "non_hate_video_101": {
       "duration": 225.003,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2205,7 +2205,7 @@
     },
     "non_hate_video_108": {
       "duration": 223.329,
-      "subset": "test",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2237,7 +2237,7 @@
     },
     "non_hate_video_111": {
       "duration": 128.127,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2291,7 +2291,7 @@
     },
     "hate_video_77": {
       "duration": 7.143,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -2337,7 +2337,7 @@
     },
     "non_hate_video_123": {
       "duration": 138.832,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2457,7 +2457,7 @@
     },
     "hate_video_83": {
       "duration": 219.52,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -2520,7 +2520,7 @@
     },
     "hate_video_84": {
       "duration": 91.392,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -2561,7 +2561,7 @@
     },
     "non_hate_video_130": {
       "duration": 88.045,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2600,7 +2600,7 @@
     },
     "hate_video_86": {
       "duration": 145.067,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -2718,7 +2718,7 @@
     },
     "hate_video_88": {
       "duration": 126.247,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -2924,7 +2924,7 @@
     },
     "non_hate_video_138": {
       "duration": 29.733,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -2976,7 +2976,7 @@
     },
     "hate_video_94": {
       "duration": 37.905,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -3040,7 +3040,7 @@
     },
     "non_hate_video_148": {
       "duration": 137.005,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3279,7 +3279,7 @@
     },
     "hate_video_99": {
       "duration": 144.128,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -3388,13 +3388,13 @@
     },
     "non_hate_video_157": {
       "duration": 62.226,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_158": {
       "duration": 654.269,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3432,7 +3432,7 @@
     },
     "hate_video_102": {
       "duration": 121.024,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -3509,7 +3509,7 @@
     },
     "hate_video_104": {
       "duration": 414.824,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -3660,7 +3660,7 @@
     },
     "non_hate_video_165": {
       "duration": 398.013,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3763,7 +3763,7 @@
     },
     "hate_video_109": {
       "duration": 225.664,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -3777,7 +3777,7 @@
     },
     "non_hate_video_174": {
       "duration": 6.478,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3823,7 +3823,7 @@
     },
     "non_hate_video_177": {
       "duration": 82.933,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3887,7 +3887,7 @@
     },
     "non_hate_video_183": {
       "duration": 40.867,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3899,7 +3899,7 @@
     },
     "hate_video_114": {
       "duration": 628.778,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -3920,7 +3920,7 @@
     },
     "hate_video_115": {
       "duration": 110.41,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -3954,7 +3954,7 @@
     },
     "non_hate_video_186": {
       "duration": 17.552,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -3966,7 +3966,7 @@
     },
     "non_hate_video_188": {
       "duration": 23.731,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4100,7 +4100,7 @@
     },
     "non_hate_video_194": {
       "duration": 127.402,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4178,7 +4178,7 @@
     },
     "non_hate_video_200": {
       "duration": 149.815,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4198,7 +4198,7 @@
     },
     "non_hate_video_201": {
       "duration": 38.382,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4309,7 +4309,7 @@
     },
     "non_hate_video_209": {
       "duration": 12.121,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4370,7 +4370,7 @@
     },
     "non_hate_video_211": {
       "duration": 104.563,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4388,7 +4388,7 @@
     },
     "non_hate_video_214": {
       "duration": 208.98,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4441,7 +4441,7 @@
     },
     "hate_video_135": {
       "duration": 197.764,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -4489,7 +4489,7 @@
     },
     "non_hate_video_218": {
       "duration": 57.633,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4573,7 +4573,7 @@
     },
     "non_hate_video_225": {
       "duration": 17.77,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4679,7 +4679,7 @@
     },
     "hate_video_146": {
       "duration": 58.63,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -4738,7 +4738,7 @@
     },
     "non_hate_video_235": {
       "duration": 87.733,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4866,7 +4866,7 @@
     },
     "hate_video_155": {
       "duration": 121.649,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -4908,7 +4908,7 @@
     },
     "hate_video_157": {
       "duration": 131.434,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -4936,7 +4936,7 @@
     },
     "non_hate_video_240": {
       "duration": 81.081,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -4954,7 +4954,7 @@
     },
     "hate_video_159": {
       "duration": 40.931,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -4996,7 +4996,7 @@
     },
     "hate_video_162": {
       "duration": 256.557,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -5010,7 +5010,7 @@
     },
     "non_hate_video_243": {
       "duration": 212.48,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5022,7 +5022,7 @@
     },
     "hate_video_163": {
       "duration": 120.906,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -5062,7 +5062,7 @@
     },
     "non_hate_video_247": {
       "duration": 189.939,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5146,7 +5146,7 @@
     },
     "non_hate_video_261": {
       "duration": 26.602,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5164,7 +5164,7 @@
     },
     "non_hate_video_264": {
       "duration": 145.728,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5234,7 +5234,7 @@
     },
     "non_hate_video_271": {
       "duration": 18.385,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5276,7 +5276,7 @@
     },
     "hate_video_167": {
       "duration": 174.614,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -5357,13 +5357,13 @@
     },
     "non_hate_video_281": {
       "duration": 53.767,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_282": {
       "duration": 633.022,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5389,7 +5389,7 @@
     },
     "hate_video_171": {
       "duration": 172.988,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -5409,7 +5409,7 @@
     },
     "hate_video_172": {
       "duration": 114.848,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -5442,7 +5442,7 @@
     },
     "non_hate_video_287": {
       "duration": 33.767,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5454,13 +5454,13 @@
     },
     "non_hate_video_289": {
       "duration": 61.376,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_290": {
       "duration": 56.471,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5520,7 +5520,7 @@
     },
     "hate_video_176": {
       "duration": 5.376,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -5546,13 +5546,13 @@
     },
     "non_hate_video_295": {
       "duration": 71.773,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_296": {
       "duration": 67.988,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5570,7 +5570,7 @@
     },
     "hate_video_177": {
       "duration": 144.59,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -5651,13 +5651,13 @@
     },
     "non_hate_video_302": {
       "duration": 47.189,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_303": {
       "duration": 31.115,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5715,7 +5715,7 @@
     },
     "hate_video_183": {
       "duration": 9.868,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -5919,7 +5919,7 @@
     },
     "non_hate_video_314": {
       "duration": 81.415,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -5939,7 +5939,7 @@
     },
     "hate_video_195": {
       "duration": 243.05,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -6023,13 +6023,13 @@
     },
     "non_hate_video_315": {
       "duration": 167.061,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_199": {
       "duration": 198.058,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -6085,7 +6085,7 @@
     },
     "hate_video_202": {
       "duration": 160.064,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -6204,7 +6204,7 @@
     },
     "hate_video_210": {
       "duration": 72.106,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -6286,7 +6286,7 @@
     },
     "hate_video_214": {
       "duration": 37.5,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -6307,7 +6307,7 @@
     },
     "hate_video_215": {
       "duration": 114.52,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -6342,7 +6342,7 @@
     },
     "hate_video_217": {
       "duration": 126.2,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -6376,7 +6376,7 @@
     },
     "non_hate_video_319": {
       "duration": 204.027,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -6394,7 +6394,7 @@
     },
     "non_hate_video_322": {
       "duration": 229.535,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -6406,7 +6406,7 @@
     },
     "non_hate_video_324": {
       "duration": 77.09,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -6577,7 +6577,7 @@
     },
     "hate_video_228": {
       "duration": 235.802,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -6618,7 +6618,7 @@
     },
     "hate_video_230": {
       "duration": 260.629,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -6646,7 +6646,7 @@
     },
     "hate_video_232": {
       "duration": 199.232,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -6779,7 +6779,7 @@
     },
     "hate_video_241": {
       "duration": 136.789,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -6933,7 +6933,7 @@
     },
     "hate_video_250": {
       "duration": 118.7,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -6968,7 +6968,7 @@
     },
     "non_hate_video_329": {
       "duration": 58.069,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7043,7 +7043,7 @@
     },
     "hate_video_256": {
       "duration": 226.666,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -7057,7 +7057,7 @@
     },
     "hate_video_257": {
       "duration": 180.053,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -7119,7 +7119,7 @@
     },
     "hate_video_261": {
       "duration": 100.333,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -7185,7 +7185,7 @@
     },
     "non_hate_video_336": {
       "duration": 10.0,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7203,7 +7203,7 @@
     },
     "non_hate_video_339": {
       "duration": 180.047,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7215,19 +7215,19 @@
     },
     "non_hate_video_341": {
       "duration": 236.797,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_342": {
       "duration": 286.998,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_343": {
       "duration": 121.719,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7278,7 +7278,7 @@
     },
     "hate_video_265": {
       "duration": 194.792,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -7292,7 +7292,7 @@
     },
     "non_hate_video_348": {
       "duration": 138.948,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7304,13 +7304,13 @@
     },
     "non_hate_video_350": {
       "duration": 12.117,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_266": {
       "duration": 212.068,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -7338,7 +7338,7 @@
     },
     "non_hate_video_351": {
       "duration": 23.733,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7400,7 +7400,7 @@
     },
     "non_hate_video_352": {
       "duration": 424.112,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7418,7 +7418,7 @@
     },
     "hate_video_268": {
       "duration": 7.616,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -7432,7 +7432,7 @@
     },
     "non_hate_video_355": {
       "duration": 371.371,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7561,7 +7561,7 @@
     },
     "non_hate_video_359": {
       "duration": 70.208,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7665,7 +7665,7 @@
     },
     "non_hate_video_360": {
       "duration": 445.375,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7695,7 +7695,7 @@
     },
     "hate_video_275": {
       "duration": 44.977,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -7755,7 +7755,7 @@
     },
     "hate_video_277": {
       "duration": 283.183,
-      "subset": "test",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -7790,19 +7790,19 @@
     },
     "non_hate_video_368": {
       "duration": 11.349,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_369": {
       "duration": 15.209,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_278": {
       "duration": 241.08,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -7953,7 +7953,7 @@
     },
     "non_hate_video_373": {
       "duration": 41.467,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -7965,13 +7965,13 @@
     },
     "non_hate_video_375": {
       "duration": 60.01,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_376": {
       "duration": 829.301,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8039,7 +8039,7 @@
     },
     "non_hate_video_378": {
       "duration": 21.312,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8114,7 +8114,7 @@
     },
     "non_hate_video_380": {
       "duration": 251.8,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8323,7 +8323,7 @@
     },
     "non_hate_video_381": {
       "duration": 117.0,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8490,7 +8490,7 @@
     },
     "hate_video_288": {
       "duration": 167.957,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -8546,7 +8546,7 @@
     },
     "non_hate_video_382": {
       "duration": 22.3,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8558,7 +8558,7 @@
     },
     "non_hate_video_384": {
       "duration": 42.233,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8636,13 +8636,13 @@
     },
     "non_hate_video_390": {
       "duration": 26.159,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_391": {
       "duration": 15.046,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8852,7 +8852,7 @@
     },
     "non_hate_video_398": {
       "duration": 38.963,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8898,7 +8898,7 @@
     },
     "non_hate_video_401": {
       "duration": 48.762,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8965,7 +8965,7 @@
     },
     "non_hate_video_404": {
       "duration": 759.362,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -8997,7 +8997,7 @@
     },
     "hate_video_302": {
       "duration": 187.339,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9011,7 +9011,7 @@
     },
     "hate_video_303": {
       "duration": 215.179,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9025,7 +9025,7 @@
     },
     "hate_video_304": {
       "duration": 238.887,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9046,7 +9046,7 @@
     },
     "non_hate_video_407": {
       "duration": 56.447,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9066,7 +9066,7 @@
     },
     "hate_video_306": {
       "duration": 173.731,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9106,13 +9106,13 @@
     },
     "non_hate_video_410": {
       "duration": 41.792,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_308": {
       "duration": 201.494,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -9126,7 +9126,7 @@
     },
     "non_hate_video_411": {
       "duration": 325.567,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9152,7 +9152,7 @@
     },
     "hate_video_310": {
       "duration": 200.512,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9184,13 +9184,13 @@
     },
     "non_hate_video_416": {
       "duration": 11.233,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_417": {
       "duration": 220.891,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9220,7 +9220,7 @@
     },
     "hate_video_311": {
       "duration": 236.33,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -9254,7 +9254,7 @@
     },
     "non_hate_video_423": {
       "duration": 196.046,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9304,13 +9304,13 @@
     },
     "non_hate_video_429": {
       "duration": 34.457,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_430": {
       "duration": 41.167,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9400,13 +9400,13 @@
     },
     "non_hate_video_438": {
       "duration": 36.313,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_439": {
       "duration": 44.7,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9446,7 +9446,7 @@
     },
     "hate_video_318": {
       "duration": 17.554,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -9481,7 +9481,7 @@
     },
     "hate_video_320": {
       "duration": 7.808,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9521,7 +9521,7 @@
     },
     "hate_video_322": {
       "duration": 203.306,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9549,7 +9549,7 @@
     },
     "non_hate_video_443": {
       "duration": 22.105,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9587,7 +9587,7 @@
     },
     "non_hate_video_447": {
       "duration": 641.962,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9599,7 +9599,7 @@
     },
     "non_hate_video_449": {
       "duration": 15.1,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9680,7 +9680,7 @@
     },
     "hate_video_329": {
       "duration": 7.105,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -9694,13 +9694,13 @@
     },
     "non_hate_video_452": {
       "duration": 70.541,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_453": {
       "duration": 8.298,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9855,7 +9855,7 @@
     },
     "hate_video_338": {
       "duration": 135.189,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -9881,7 +9881,7 @@
     },
     "non_hate_video_461": {
       "duration": 1022.073,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9925,7 +9925,7 @@
     },
     "hate_video_340": {
       "duration": 287.061,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -9939,7 +9939,7 @@
     },
     "non_hate_video_466": {
       "duration": 90.883,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -9971,7 +9971,7 @@
     },
     "non_hate_video_469": {
       "duration": 8.896,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10017,7 +10017,7 @@
     },
     "non_hate_video_472": {
       "duration": 12.288,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10088,7 +10088,7 @@
     },
     "hate_video_346": {
       "duration": 177.985,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10102,7 +10102,7 @@
     },
     "hate_video_347": {
       "duration": 13.723,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10122,7 +10122,7 @@
     },
     "non_hate_video_479": {
       "duration": 30.58,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10134,7 +10134,7 @@
     },
     "non_hate_video_481": {
       "duration": 62.415,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10164,7 +10164,7 @@
     },
     "non_hate_video_486": {
       "duration": 45.02,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10176,7 +10176,7 @@
     },
     "non_hate_video_488": {
       "duration": 428.928,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10214,7 +10214,7 @@
     },
     "non_hate_video_492": {
       "duration": 27.444,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10232,13 +10232,13 @@
     },
     "non_hate_video_495": {
       "duration": 10.681,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_496": {
       "duration": 33.88,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10256,7 +10256,7 @@
     },
     "non_hate_video_499": {
       "duration": 26.285,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10268,7 +10268,7 @@
     },
     "hate_video_349": {
       "duration": 112.554,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10282,7 +10282,7 @@
     },
     "non_hate_video_501": {
       "duration": 205.682,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10294,7 +10294,7 @@
     },
     "non_hate_video_503": {
       "duration": 188.569,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10306,7 +10306,7 @@
     },
     "hate_video_350": {
       "duration": 102.6,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10320,7 +10320,7 @@
     },
     "non_hate_video_505": {
       "duration": 126.698,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10354,19 +10354,19 @@
     },
     "non_hate_video_506": {
       "duration": 63.158,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_507": {
       "duration": 16.508,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_508": {
       "duration": 16.045,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10439,7 +10439,7 @@
     },
     "hate_video_356": {
       "duration": 120.976,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10467,7 +10467,7 @@
     },
     "non_hate_video_512": {
       "duration": 386.171,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10479,7 +10479,7 @@
     },
     "non_hate_video_514": {
       "duration": 128.981,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10511,7 +10511,7 @@
     },
     "hate_video_359": {
       "duration": 139.477,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -10539,13 +10539,13 @@
     },
     "non_hate_video_517": {
       "duration": 177.284,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_518": {
       "duration": 130.101,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10557,7 +10557,7 @@
     },
     "hate_video_361": {
       "duration": 240.326,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10613,7 +10613,7 @@
     },
     "non_hate_video_520": {
       "duration": 48.789,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10633,7 +10633,7 @@
     },
     "non_hate_video_521": {
       "duration": 52.458,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10651,7 +10651,7 @@
     },
     "hate_video_365": {
       "duration": 94.412,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10671,7 +10671,7 @@
     },
     "non_hate_video_525": {
       "duration": 32.276,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10757,7 +10757,7 @@
     },
     "non_hate_video_530": {
       "duration": 1013.504,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10784,7 +10784,7 @@
     },
     "non_hate_video_531": {
       "duration": 205.952,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -10802,7 +10802,7 @@
     },
     "hate_video_371": {
       "duration": 105.0,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10816,7 +10816,7 @@
     },
     "hate_video_372": {
       "duration": 209.52,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10882,7 +10882,7 @@
     },
     "hate_video_375": {
       "duration": 202.631,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -10929,7 +10929,7 @@
     },
     "hate_video_377": {
       "duration": 27.966,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -11015,7 +11015,7 @@
     },
     "non_hate_video_545": {
       "duration": 131.193,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11047,7 +11047,7 @@
     },
     "non_hate_video_548": {
       "duration": 76.509,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11059,7 +11059,7 @@
     },
     "hate_video_382": {
       "duration": 245.853,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -11073,19 +11073,19 @@
     },
     "non_hate_video_550": {
       "duration": 90.14,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_551": {
       "duration": 225.814,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_383": {
       "duration": 140.341,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -11111,7 +11111,7 @@
     },
     "non_hate_video_554": {
       "duration": 93.391,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11123,13 +11123,13 @@
     },
     "non_hate_video_556": {
       "duration": 125.922,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_557": {
       "duration": 229.436,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11149,7 +11149,7 @@
     },
     "hate_video_385": {
       "duration": 13.0,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -11181,7 +11181,7 @@
     },
     "hate_video_386": {
       "duration": 230.75,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -11281,7 +11281,7 @@
     },
     "non_hate_video_566": {
       "duration": 139.087,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11299,7 +11299,7 @@
     },
     "non_hate_video_569": {
       "duration": 67.617,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11465,7 +11465,7 @@
     },
     "non_hate_video_578": {
       "duration": 25.17,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11489,7 +11489,7 @@
     },
     "non_hate_video_582": {
       "duration": 68.15,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11515,7 +11515,7 @@
     },
     "non_hate_video_584": {
       "duration": 21.8,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11563,7 +11563,7 @@
     },
     "hate_video_398": {
       "duration": 264.893,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -11577,13 +11577,13 @@
     },
     "non_hate_video_592": {
       "duration": 49.333,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_593": {
       "duration": 139.7,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11649,7 +11649,7 @@
     },
     "hate_video_402": {
       "duration": 136.64,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -11683,7 +11683,7 @@
     },
     "hate_video_404": {
       "duration": 112.045,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -11759,7 +11759,7 @@
     },
     "hate_video_409": {
       "duration": 190.659,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -11869,7 +11869,7 @@
     },
     "hate_video_416": {
       "duration": 166.767,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -11925,7 +11925,7 @@
     },
     "non_hate_video_608": {
       "duration": 211.371,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11937,13 +11937,13 @@
     },
     "non_hate_video_610": {
       "duration": 134.49,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "non_hate_video_611": {
       "duration": 49.049,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -11989,13 +11989,13 @@
     },
     "non_hate_video_614": {
       "duration": 163.9,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_419": {
       "duration": 175.633,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -12009,7 +12009,7 @@
     },
     "non_hate_video_615": {
       "duration": 206.982,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12027,7 +12027,7 @@
     },
     "non_hate_video_618": {
       "duration": 108.672,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12085,7 +12085,7 @@
     },
     "hate_video_421": {
       "duration": 46.3,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -12111,13 +12111,13 @@
     },
     "non_hate_video_625": {
       "duration": 100.937,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_422": {
       "duration": 178.6,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -12131,7 +12131,7 @@
     },
     "hate_video_423": {
       "duration": 248.085,
-      "subset": "val",
+      "subset": "train",
       "annotations": [
         {
           "segment": [
@@ -12145,7 +12145,7 @@
     },
     "non_hate_video_626": {
       "duration": 187.473,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12157,7 +12157,7 @@
     },
     "non_hate_video_628": {
       "duration": 30.093,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12218,7 +12218,7 @@
     },
     "non_hate_video_630": {
       "duration": 6.64,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12230,7 +12230,7 @@
     },
     "non_hate_video_632": {
       "duration": 267.772,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12242,7 +12242,7 @@
     },
     "non_hate_video_634": {
       "duration": 207.981,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12272,7 +12272,7 @@
     },
     "non_hate_video_638": {
       "duration": 116.053,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
@@ -12316,13 +12316,13 @@
     },
     "non_hate_video_643": {
       "duration": 88.938,
-      "subset": "train",
+      "subset": "val",
       "annotations": [],
       "video_label": "non_hate"
     },
     "hate_video_429": {
       "duration": 59.9,
-      "subset": "train",
+      "subset": "val",
       "annotations": [
         {
           "segment": [
@@ -12366,7 +12366,7 @@
     },
     "non_hate_video_649": {
       "duration": 80.666,
-      "subset": "val",
+      "subset": "train",
       "annotations": [],
       "video_label": "non_hate"
     },

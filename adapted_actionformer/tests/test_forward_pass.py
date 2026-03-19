@@ -37,6 +37,9 @@ if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
 from libs.modeling.cross_modal_fusion import CrossModalFusion
+from libs.modeling.feature_preprocessors import (
+    GuidedCMAPreprocessor, UnimodalPreprocessor, ConcatPreprocessor,
+)
 from libs.modeling.backbone import ConvTransformerBackbone
 from libs.modeling.meta_arch import HatefulContentLocalizer
 from libs.datasets.hatemm import HateMMDataset
@@ -183,29 +186,28 @@ def test_shape():
 
 def test_zero_out():
     """
-    When text_feat is all-zero, the CMA output must be exactly zero.
-    The model should still run and produce valid output (from audio+video path).
+    When text_feat is all-zero, the GuidedCMAPreprocessor output must be exactly
+    zero (the text-presence mask zeros out the CMA output for silent frames).
+    The model should still run and produce valid output.
     """
     d_cma = TEST_CFG['fusion']['d_cma']
-    fusion = CrossModalFusion(
+    preprocessor = GuidedCMAPreprocessor(
         text_dim=768, audio_dim=1024, video_dim=768,
-        d_cma=d_cma, num_heads=4, dropout=0.0,
+        d_out=d_cma, num_heads=4, dropout=0.0,
     )
-    fusion.eval()
+    preprocessor.eval()
 
     text  = torch.zeros(B, T_PAD, 768)    # all-zero text
     audio = torch.randn(B, T_PAD, 1024)
     video = torch.randn(B, T_PAD, 768)
 
     with torch.no_grad():
-        fused = fusion(text, audio, video)  # (B, T, fused_dim)
+        out = preprocessor(text, audio, video)  # (B, T, d_cma)
 
-    # The CMA contribution occupies the last d_cma dims of the fused vector
-    cma_out = fused[:, :, 768 + 1024 + 768:]  # (B, T, d_cma)
-    assert cma_out.shape == (B, T_PAD, d_cma), \
-        f"CMA output shape mismatch: {cma_out.shape}"
-    assert torch.all(cma_out == 0.0), \
-        "CMA output must be exactly zero when text is all-zero"
+    assert out.shape == (B, T_PAD, d_cma), \
+        f"Preprocessor output shape mismatch: {out.shape}"
+    assert torch.all(out == 0.0), \
+        "GuidedCMAPreprocessor output must be exactly zero when text is all-zero"
 
     # Verify model still runs with all-zero text
     model = HatefulContentLocalizer(TEST_CFG)
@@ -224,12 +226,130 @@ def test_zero_out():
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Test 3a: Unimodal preprocessor test
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_unimodal_preprocessor():
+    """UnimodalPreprocessor should pass each modality through unchanged or projected."""
+    text  = torch.randn(B, T_PAD, 768)
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    # Video — no projection needed (d_out == native dim)
+    prep = UnimodalPreprocessor('video', 768, 1024, 768, d_out=768)
+    prep.eval()
+    with torch.no_grad():
+        out = prep(text, audio, video)
+    assert out.shape == (B, T_PAD, 768), f"video unimodal shape: {out.shape}"
+    assert torch.allclose(out, video), "video unimodal should be identity (no projection)"
+
+    # Audio — projection required (1024 -> 256)
+    prep = UnimodalPreprocessor('audio', 768, 1024, 768, d_out=256)
+    prep.eval()
+    with torch.no_grad():
+        out = prep(text, audio, video)
+    assert out.shape == (B, T_PAD, 256), f"audio unimodal shape: {out.shape}"
+
+    # Text — projection required (768 -> 256)
+    prep = UnimodalPreprocessor('text', 768, 1024, 768, d_out=256)
+    prep.eval()
+    with torch.no_grad():
+        out = prep(text, audio, video)
+    assert out.shape == (B, T_PAD, 256), f"text unimodal shape: {out.shape}"
+
+    print("✓ unimodal_preprocessor_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3b: Concat preprocessor test
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_concat_preprocessor():
+    """ConcatPreprocessor should concatenate modalities and project to d_out."""
+    text  = torch.randn(B, T_PAD, 768)
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    d_out = 256
+
+    # Audio + Video (1024+768=1792 -> 256)
+    prep = ConcatPreprocessor(['audio', 'video'], 768, 1024, 768, d_out=d_out)
+    prep.eval()
+    with torch.no_grad():
+        out = prep(text, audio, video)
+    assert out.shape == (B, T_PAD, d_out), f"av concat shape: {out.shape}"
+
+    # All three (768+1024+768=2560 -> 256)
+    prep = ConcatPreprocessor(['text', 'audio', 'video'], 768, 1024, 768, d_out=d_out)
+    prep.eval()
+    with torch.no_grad():
+        out = prep(text, audio, video)
+    assert out.shape == (B, T_PAD, d_out), f"tav concat shape: {out.shape}"
+
+    print("✓ concat_preprocessor_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3c: Full model with unimodal preprocessor config
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_model_unimodal_preprocessor():
+    """HatefulContentLocalizer should work end-to-end with a unimodal preprocessor."""
+    import copy
+    cfg = copy.deepcopy(TEST_CFG)
+    # Replace the legacy fusion block with a new-style preprocessor block
+    cfg.pop('fusion', None)
+    cfg['preprocessor'] = {
+        'type': 'unimodal',
+        'modality': 'video',
+        'd_out': 256,
+    }
+    cfg['backbone']['d_model'] = 128
+
+    model = HatefulContentLocalizer(cfg)
+    model.eval()
+    batch = make_batch()
+    with torch.no_grad():
+        output = model(batch)
+    assert isinstance(output, list) and len(output) == B
+
+    print("✓ model_unimodal_preprocessor_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3d: Full model with concat preprocessor config
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_model_concat_preprocessor():
+    """HatefulContentLocalizer should work end-to-end with a concat preprocessor."""
+    import copy
+    cfg = copy.deepcopy(TEST_CFG)
+    cfg.pop('fusion', None)
+    cfg['preprocessor'] = {
+        'type': 'concat',
+        'modalities': ['audio', 'video'],
+        'd_out': 256,
+    }
+    cfg['backbone']['d_model'] = 128
+
+    model = HatefulContentLocalizer(cfg)
+    model.eval()
+    batch = make_batch()
+    with torch.no_grad():
+        output = model(batch)
+    assert isinstance(output, list) and len(output) == B
+
+    print("✓ model_concat_preprocessor_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Test 3: Pyramid test
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_pyramid():
     """Verify feature pyramid has the expected number of levels and resolutions."""
-    fused_dim = 768 + 1024 + 768 + TEST_CFG['fusion']['d_cma']   # 2816
+    # The backbone receives d_cma-dimensional features from the preprocessor.
+    fused_dim = TEST_CFG['fusion']['d_cma']
     d_model   = TEST_CFG['backbone']['d_model']
 
     # n_stem = downsample_start = 1, n_branch = n_layers - 1 - 1 = N_LEVELS - 1 - 1
@@ -439,6 +559,10 @@ if __name__ == '__main__':
     print("Running forward-pass tests...\n")
     test_shape()
     test_zero_out()
+    test_unimodal_preprocessor()
+    test_concat_preprocessor()
+    test_model_unimodal_preprocessor()
+    test_model_concat_preprocessor()
     test_pyramid()
     test_mask()
     test_gradients()

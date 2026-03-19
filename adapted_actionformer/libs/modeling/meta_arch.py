@@ -16,7 +16,7 @@ Architecture differences from vanilla MM-HSD:
   4. Output: temporal segments with confidence, not a binary label.
 
 Forward pass (training):
-  (text, audio, video) → CrossModalFusion → (B, T, fused_dim)
+  (text, audio, video) → FeaturePreprocessor → (B, T, fused_dim)
   → permute to (B, fused_dim, T)
   → ConvTransformerBackbone (projection + transformer pyramid)
   → Identity FPN (layer norm per level)
@@ -32,7 +32,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from .cross_modal_fusion import CrossModalFusion
+from .feature_preprocessors import build_preprocessor
 from .backbone import build_backbone
 from .heads import ClsHead, RegHead, TridentRegHead
 from .blocks import MaskedConv1D, LayerNorm
@@ -266,11 +266,10 @@ class HatefulContentLocalizer(nn.Module):
     def __init__(self, cfg):
         super().__init__()
         # ── Config shortcuts ─────────────────────────────────────────────────
-        ds_cfg  = cfg['dataset']
-        fus_cfg = cfg['fusion']
-        bb_cfg  = cfg['backbone']
-        hd_cfg  = cfg['heads']
-        loss_cfg = cfg['loss']
+        ds_cfg    = cfg['dataset']
+        bb_cfg    = cfg['backbone']
+        hd_cfg    = cfg['heads']
+        loss_cfg  = cfg['loss']
         infer_cfg = cfg['inference']
         train_cfg = cfg.get('training', {})
 
@@ -278,9 +277,6 @@ class HatefulContentLocalizer(nn.Module):
         audio_dim = ds_cfg['input_dims']['audio']  # 1024
         video_dim = ds_cfg['input_dims']['video']  # 768
         num_classes = ds_cfg.get('num_classes', 1)
-
-        d_cma     = fus_cfg['d_cma']       # 128
-        fused_dim = d_cma                  # CMA output only (not re-concatenated)
 
         d_model    = bb_cfg['d_model']       # 128
         n_layers   = bb_cfg['n_layers']      # 3
@@ -307,14 +303,14 @@ class HatefulContentLocalizer(nn.Module):
             self.reg_range = reg_ranges_cfg
         assert len(self.reg_range) == self.n_levels
 
-        # ── Stage 1: Cross-modal fusion ──────────────────────────────────────
-        self.fusion = CrossModalFusion(
-            text_dim=text_dim,
-            audio_dim=audio_dim,
-            video_dim=video_dim,
-            d_cma=d_cma,
-            num_heads=fus_cfg['num_heads'],
-            dropout=fus_cfg['dropout'],
+        # ── Stage 1: Feature preprocessor ───────────────────────────────────
+        # Supports "cma" (guided cross-modal attention), "unimodal" (single
+        # modality), or "concat" (concatenation + projection).  See
+        # libs/modeling/feature_preprocessors.py for details.
+        # Backward-compatible: configs with a ``fusion`` key (no ``preprocessor``
+        # key) are treated as CMA preprocessor configs automatically.
+        self.preprocessor, fused_dim = build_preprocessor(
+            cfg, text_dim, audio_dim, video_dim
         )
 
         # ── Stage 2: Backbone (type-dispatched) ──────────────────────────────
@@ -588,8 +584,8 @@ class HatefulContentLocalizer(nn.Module):
 
         B, T, _ = text.shape
 
-        # ── Stage 1: Cross-modal fusion ──────────────────────────────────────
-        fused = self.fusion(text, audio, video)  # (B, T, fused_dim)
+        # ── Stage 1: Feature preprocessor ────────────────────────────────────
+        fused = self.preprocessor(text, audio, video)  # (B, T, fused_dim)
 
         # Convert to (B, fused_dim, T) for Conv1D backbone
         x = fused.permute(0, 2, 1)

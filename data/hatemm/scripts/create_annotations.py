@@ -6,14 +6,14 @@ Usage:
         --csv  data/hatemm/dataset/HateMM_annotation.csv \
         --videos data/hatemm/dataset/videos \
         --output data/hatemm/dataset/annotations.json \
-        [--val_frac 0.15] [--test_frac 0.15] [--seed 42]
+        [--val_frac 0.15] [--seed 42]
 
 Output format (ActivityNet-style, as expected by libs/datasets/hatemm.py):
 {
   "database": {
     "<video_stem>": {
       "duration":     <float seconds>,
-      "subset":       "train" | "val" | "test",
+      "subset":       "train" | "val",
       "annotations":  [{"segment": [start, end], "label": "hate"}, ...],
       "video_label":  "hate" | "non_hate"   (kept for weak-supervision fallback)
     },
@@ -113,25 +113,21 @@ def parse_args():
     p.add_argument("--videos", default="data/hatemm/dataset/videos")
     p.add_argument("--output", default="data/hatemm/dataset/annotations.json")
     p.add_argument("--val_frac",  type=float, default=0.15)
-    p.add_argument("--test_frac", type=float, default=0.15)
     p.add_argument("--seed",      type=int,   default=42)
     return p.parse_args()
 
 
-def build_split(indices: list[int], val_frac: float, test_frac: float,
+def build_split(indices: list[int], val_frac: float,
                 rng: random.Random) -> dict[int, str]:
-    """Stratified-by-order random split → {idx: 'train'|'val'|'test'}."""
+    """Stratified-by-order random split → {idx: 'train'|'val'}."""
     shuffled = indices[:]
     rng.shuffle(shuffled)
     n = len(shuffled)
-    n_val  = max(1, round(n * val_frac))
-    n_test = max(1, round(n * test_frac))
+    n_val = max(1, round(n * val_frac))
     split = {}
     for i, idx in enumerate(shuffled):
         if i < n_val:
             split[idx] = "val"
-        elif i < n_val + n_test:
-            split[idx] = "test"
         else:
             split[idx] = "train"
     return split
@@ -158,19 +154,19 @@ def main():
     print(f"Read {len(rows)} rows from {csv_path}")
 
     # ---- Parse each row ----
-    hate_indices    = []
-    non_hate_indices = []
+    all_indices = []
     parsed = []  # list of dicts
 
     for i, row in enumerate(rows):
         filename   = row["video_file_name"].strip()
         label      = row["label"].strip()       # "Hate" / "Non Hate"
+
         snippet_raw = row.get("hate_snippet", "").strip()
 
         stem = Path(filename).stem              # drop .mp4
         video_path = str(videos_dir / filename)
 
-        # Parse temporal segments
+        # Parse temporal segments (only present for hate videos)
         segments = []
         if snippet_raw:
             try:
@@ -189,16 +185,10 @@ def main():
             "is_hate":    label.lower() == "hate",
             "segments":   segments,
         })
+        all_indices.append(len(parsed) - 1)
 
-        if label.lower() == "hate":
-            hate_indices.append(i)
-        else:
-            non_hate_indices.append(i)
-
-    # ---- Stratified split (hate and non-hate independently) ----
-    split_map = {}
-    split_map.update(build_split(hate_indices,     args.val_frac, args.test_frac, rng))
-    split_map.update(build_split(non_hate_indices, args.val_frac, args.test_frac, rng))
+    # ---- Split ----
+    split_map = build_split(all_indices, args.val_frac, rng)
 
     # ---- Build database ----
     database = {}
@@ -215,14 +205,15 @@ def main():
             fallback_dur = max(seg[1] for seg in p["segments"]) + 1.0
 
         if not Path(vpath).exists():
-            # Try to still include if we have a fallback duration
+            # Try to still include if we have a fallback duration (hate videos only)
             if fallback_dur is not None:
                 dur = fallback_dur
                 missing_video += 1
                 print(f"  WARNING: video not found, using fallback duration: {vpath}")
             else:
                 skipped += 1
-                print(f"  WARNING: video not found, skipping: {vpath}")
+                label_str = "hate" if p["is_hate"] else "non-hate"
+                print(f"  WARNING: video not found, skipping ({label_str}): {vpath}")
                 continue
         else:
             dur = get_duration(vpath, fallback=fallback_dur)
@@ -250,8 +241,8 @@ def main():
         json.dump({"database": database}, f, indent=2)
 
     # ---- Summary ----
-    subsets = {"train": 0, "val": 0, "test": 0}
-    hate_cnt = {"train": 0, "val": 0, "test": 0}
+    subsets = {"train": 0, "val": 0}
+    hate_cnt = {"train": 0, "val": 0}
     for entry in database.values():
         subsets[entry["subset"]] += 1
         if entry["video_label"] == "hate":
@@ -263,7 +254,7 @@ def main():
         print(f"  Missing video (fallback duration used): {missing_video}")
     print(f"\n  {'subset':<8} {'total':>6} {'hate':>6} {'non-hate':>9}")
     print(f"  {'-'*35}")
-    for s in ("train", "val", "test"):
+    for s in ("train", "val"):
         nh = subsets[s] - hate_cnt[s]
         print(f"  {s:<8} {subsets[s]:>6} {hate_cnt[s]:>6} {nh:>9}")
 

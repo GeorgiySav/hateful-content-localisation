@@ -118,11 +118,7 @@ class HateMMDataset(Dataset):
                 is_hate = (video_label is not None and
                            video_label.lower() in ('hate', 'hateful'))
                 if is_hate:
-                    self.annotations[vid_id] = {
-                        'duration': duration,
-                        'segments': [[0.0, duration]],
-                        'labels'  : [0],
-                    }
+                    pass 
                 else:
                     self.annotations[vid_id] = {
                         'duration': duration,
@@ -344,28 +340,34 @@ def _build_dataloader(dataset_cls, cfg, subset, is_training=False):
     train_cfg  = cfg.get('training', {})
     batch_size = train_cfg.get('batch_size', 2) if is_training else 1
 
-    sampler = None
+    sampler  = None
+    shuffle  = False
     if is_training:
         labels     = dataset.video_labels
         n_hate     = sum(labels)
         n_non_hate = len(labels) - n_hate
-        weight_per_class = [
-            1.0 / max(n_non_hate, 1),
-            1.0 / max(n_hate,     1),
-        ]
-        weights = [weight_per_class[lbl] for lbl in labels]
-        sampler = WeightedRandomSampler(
-            weights     =weights,
-            num_samples =len(weights),
-            replacement =True,
-        )
-        print(f"[{dataset._name}] Stratified sampler: {n_hate} hate / {n_non_hate} non-hate")
+        use_weighted = train_cfg.get('weighted_sampling', True)
+        if use_weighted:
+            weight_per_class = [
+                1.0 / max(n_non_hate, 1),
+                1.0 / max(n_hate,     1),
+            ]
+            weights = [weight_per_class[lbl] for lbl in labels]
+            sampler = WeightedRandomSampler(
+                weights     =weights,
+                num_samples =len(weights),
+                replacement =True,
+            )
+            print(f"[{dataset._name}] Stratified sampler: {n_hate} hate / {n_non_hate} non-hate")
+        else:
+            shuffle = True
+            print(f"[{dataset._name}] Uniform shuffle: {n_hate} hate / {n_non_hate} non-hate (weighted_sampling=false)")
 
     return DataLoader(
         dataset,
         batch_size =batch_size,
         sampler    =sampler,
-        shuffle    =False,
+        shuffle    =shuffle,
         num_workers=4,
         pin_memory =True,
         drop_last  =is_training,

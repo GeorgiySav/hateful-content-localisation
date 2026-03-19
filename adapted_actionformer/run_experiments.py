@@ -227,6 +227,31 @@ EXPERIMENTS = [
         "runs/exp_tridet_5level",
         "TriDet 5-level pyramid (n_layers 4->5), patience=10",
     ),
+    # ── Round 8: paper-faithful settings from original repos ──────────────────
+    (
+        "paper_actionformer",
+        "configs/exp_paper_actionformer.yaml",
+        "runs/exp_paper_actionformer",
+        "ActionFormer THUMOS-optimal: transformer, 6 levels, wd=0.05, radius=1.5, head 3-layer+LN",
+    ),
+    (
+        "paper_temporalmaxer",
+        "configs/exp_paper_temporalmaxer.yaml",
+        "runs/exp_paper_temporalmaxer",
+        "TemporalMaxer THUMOS-optimal: maxpool, 6 levels, no center_sampling, wd=0.05, 60 epochs",
+    ),
+    (
+        "paper_tridet",
+        "configs/exp_paper_tridet.yaml",
+        "runs/exp_paper_tridet",
+        "TriDet THUMOS-optimal: SGP k=5, iou_power=0.2, 6 levels, mlp=768, wd=0.025, 40 epochs",
+    ),
+    (
+        "paper_tridet_full",
+        "configs/exp_paper_tridet_full.yaml",
+        "runs/exp_paper_tridet_full",
+        "TriDet fully faithful: adds focal_alpha=0.25, gamma=2.0, nms_sigma=0.5, max_det=2000",
+    ),
 ]
 
 
