@@ -72,7 +72,7 @@ def make_optimizer(model, cfg):
     decay   = set()
     no_decay = set()
     whitelist = (torch.nn.Linear, torch.nn.Conv1d, MaskedConv1D, torch.nn.MultiheadAttention)
-    blacklist = (LayerNorm, torch.nn.GroupNorm)
+    blacklist = (LayerNorm, torch.nn.LayerNorm, torch.nn.GroupNorm)
 
     for mn, m in model.named_modules():
         for pn, p in m.named_parameters():
@@ -86,6 +86,8 @@ def make_optimizer(model, cfg):
             elif pn.endswith('scale') and isinstance(m, (Scale, AffineDropPath)):
                 no_decay.add(fpn)
             elif pn.endswith('rel_pe'):
+                no_decay.add(fpn)
+            elif pn in ('mod_emb_v', 'mod_emb_a', 'mod_emb_x', 'bottleneck'):
                 no_decay.add(fpn)
 
     param_dict   = {pn: p for pn, p in model.named_parameters()}

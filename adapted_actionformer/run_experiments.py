@@ -1,5 +1,5 @@
 """
-Sequential experiment runner for TemporalMaxer ablations on HateMM.
+Sequential experiment runner for architecture experiments on HateClipSeg (concat preprocessor).
 
 Usage:
     # Run all experiments (skip any already done):
@@ -42,215 +42,65 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # (name, config_path_relative_to_script_dir, output_dir, description)
 EXPERIMENTS = [
     (
-        "baseline",
-        "configs/temporalmaxer.yaml",
-        "runs/temporalmaxer",
-        "Baseline: MaxPool + identity neck + shallow heads",
+        "concat_actionformer",
+        "configs/experiments/concat_actionformer.yaml",
+        "runs/concat_actionformer",
+        "concat → transformer → identity → standard  [baseline]",
     ),
     (
-        "low_dropout",
-        "configs/exp_low_dropout.yaml",
-        "runs/exp_low_dropout",
-        "Reduced regularization (dropout 0.5->0.3, droppath 0.3->0.1)",
+        "concat_actionformer_fpn",
+        "configs/experiments/concat_actionformer_fpn.yaml",
+        "runs/concat_actionformer_fpn",
+        "concat → transformer → FPN → standard",
     ),
     (
-        "fpn_neck",
-        "configs/exp_fpn_neck.yaml",
-        "runs/exp_fpn_neck",
-        "FPN neck: lateral convs + top-down feature fusion",
+        "concat_actionformer_trident",
+        "configs/experiments/concat_actionformer_trident.yaml",
+        "runs/concat_actionformer_trident",
+        "concat → transformer → identity → trident",
     ),
     (
-        "rich_proj",
-        "configs/exp_rich_proj.yaml",
-        "runs/exp_rich_proj",
-        "Rich projection: d_cma 64->128, n_proj 1->2, head layers 1->2",
+        "concat_temporalmaxer",
+        "configs/experiments/concat_temporalmaxer.yaml",
+        "runs/concat_temporalmaxer",
+        "concat → temporalmaxer → identity → standard",
     ),
     (
-        "4level",
-        "configs/exp_4level.yaml",
-        "runs/exp_4level",
-        "4-level pyramid: n_layers 3->4, extended regression ranges",
+        "concat_sgp",
+        "configs/experiments/concat_sgp.yaml",
+        "runs/concat_sgp",
+        "concat → sgp → identity → standard",
     ),
     (
-        "combined",
-        "configs/exp_combined.yaml",
-        "runs/exp_combined",
-        "Combined: rich proj + FPN neck + lower dropout",
+        "concat_tridet",
+        "configs/experiments/concat_tridet.yaml",
+        "runs/concat_tridet",
+        "concat → sgp → identity → trident  [canonical TriDet]",
     ),
-    # ── Round 2: informed by round-1 results ──────────────────────────────────
-    # Finding: FPN hurts; low_dropout==baseline; rich_proj slightly below baseline
+    # ── TriDet anti-overfitting ablations ─────────────────────────────────────
     (
-        "lr_high",
-        "configs/exp_lr_high.yaml",
-        "runs/exp_lr_high",
-        "Higher LR (1e-4->3e-4): test if optimizer is the bottleneck",
-    ),
-    (
-        "d_cma_only",
-        "configs/exp_d_cma_only.yaml",
-        "runs/exp_d_cma_only",
-        "Wider CMA only (d_cma 64->128): isolate fusion capacity",
+        "concat_tridet_strong_reg",
+        "configs/experiments/concat_tridet_strong_reg.yaml",
+        "runs/concat_tridet_strong_reg",
+        "TriDet + dropout↑ droppath↑ wd↑ label_smooth↑",
     ),
     (
-        "long_baseline",
-        "configs/exp_long_baseline.yaml",
-        "runs/exp_long_baseline",
-        "Long training (10->50 epochs): baseline arch with more training time",
-    ),
-    # ── Round 3: combine training-duration insight with architecture wins ──────
-    # Finding: 50 epochs >> 10 epochs; LR 3e-4 and d_cma=128 also help
-    (
-        "long_lr_high",
-        "configs/exp_long_lr_high.yaml",
-        "runs/exp_long_lr_high",
-        "Long + high LR: 50 ep, LR 3e-4",
+        "concat_tridet_small_model",
+        "configs/experiments/concat_tridet_small_model.yaml",
+        "runs/concat_tridet_small_model",
+        "TriDet + d_model 256→128, mlp_dim 1024→512",
     ),
     (
-        "long_d_cma",
-        "configs/exp_long_d_cma.yaml",
-        "runs/exp_long_d_cma",
-        "Long + wide CMA: 50 ep, d_cma=128",
+        "concat_tridet_strong_aug",
+        "configs/experiments/concat_tridet_strong_aug.yaml",
+        "runs/concat_tridet_strong_aug",
+        "TriDet + noise↑ mask_prob↑ mask_num↑ jitter↑",
     ),
     (
-        "long_best",
-        "configs/exp_long_best.yaml",
-        "runs/exp_long_best",
-        "Long + high LR + wide CMA: best combination from rounds 1-2",
-    ),
-    # ── Round 4: attack overfitting (train/val gap ~10x at epoch 35) ──────────
-    # Finding: long_baseline (207K, LR 1e-4, 50ep) is best at 0.0874
-    # All capacity increases hurt. Overfitting is the primary bottleneck.
-    (
-        "anti_overfit",
-        "configs/exp_anti_overfit.yaml",
-        "runs/exp_anti_overfit",
-        "Stronger regularization: dropout 0.7, droppath 0.5, wd 2e-3, smooth 0.2",
-    ),
-    (
-        "strong_aug",
-        "configs/exp_strong_aug.yaml",
-        "runs/exp_strong_aug",
-        "Stronger augmentation: 5x noise, 2x mask spans + length, 2x jitter",
-    ),
-    # -- Round 5: backbone/neck cross-combination (all on strong_aug training) --
-    # Baseline for this round: strong_aug (MaxPool + identity + strong_aug) = 0.1143
-    (
-        "transformer_strong",
-        "configs/exp_transformer_strong.yaml",
-        "runs/exp_transformer_strong",
-        "Transformer backbone + identity neck + strong_aug training",
-    ),
-    (
-        "transformer_fpn_strong",
-        "configs/exp_transformer_fpn_strong.yaml",
-        "runs/exp_transformer_fpn_strong",
-        "Transformer backbone + FPN neck + strong_aug training",
-    ),
-    (
-        "sgp_strong",
-        "configs/exp_sgp_strong.yaml",
-        "runs/exp_sgp_strong",
-        "SGP backbone + identity neck + strong_aug training",
-    ),
-    (
-        "sgp_fpn_strong",
-        "configs/exp_sgp_fpn_strong.yaml",
-        "runs/exp_sgp_fpn_strong",
-        "SGP backbone + FPN neck + strong_aug training",
-    ),
-    (
-        "tridet_strong",
-        "configs/exp_tridet_strong.yaml",
-        "runs/exp_tridet_strong",
-        "Full TriDet (SGP + trident head) + strong_aug training",
-    ),
-    (
-        "maxpool_combined",
-        "configs/exp_maxpool_combined.yaml",
-        "runs/exp_maxpool_combined",
-        "MaxPool + strong_aug + heavier regularization (dropout 0.6, wd 1e-3)",
-    ),
-    # -- Round 6: scale up winning TriDet architecture -------------------------
-    # Baseline: tridet_strong = 0.1402
-    (
-        "tridet_fpn",
-        "configs/exp_tridet_fpn.yaml",
-        "runs/exp_tridet_fpn",
-        "TriDet + FPN neck (FPN helped SGP standard head +0.01)",
-    ),
-    (
-        "tridet_deep",
-        "configs/exp_tridet_deep.yaml",
-        "runs/exp_tridet_deep",
-        "TriDet 4-level pyramid (n_layers 3->4)",
-    ),
-    (
-        "tridet_bins32",
-        "configs/exp_tridet_bins32.yaml",
-        "runs/exp_tridet_bins32",
-        "TriDet finer boundary distribution (num_bins 16->32)",
-    ),
-    (
-        "tridet_wide",
-        "configs/exp_tridet_wide.yaml",
-        "runs/exp_tridet_wide",
-        "TriDet wider (d_model 192, d_cma 128, sgp_mlp 768) ~2.1M params",
-    ),
-    (
-        "tridet_wide_aug",
-        "configs/exp_tridet_wide_aug.yaml",
-        "runs/exp_tridet_wide_aug",
-        "TriDet wider + heavier regularization (dropout 0.6, wd 1e-3)",
-    ),
-    # ── Round 7: structural refinements of the 4-level TriDet winner ──────────
-    (
-        "tridet_combined",
-        "configs/exp_tridet_combined.yaml",
-        "runs/exp_tridet_combined",
-        "TriDet 4-level + num_bins=32 (combine both round-6 winners), patience=10",
-    ),
-    (
-        "tridet_deep_k2",
-        "configs/exp_tridet_deep_k2.yaml",
-        "runs/exp_tridet_deep_k2",
-        "TriDet 4-level + sgp_k=2.0 (wider per-level receptive field), patience=10",
-    ),
-    (
-        "tridet_stem2",
-        "configs/exp_tridet_stem2.yaml",
-        "runs/exp_tridet_stem2",
-        "TriDet 4-level with deeper stem (downsample_start=2, n_layers=5), patience=10",
-    ),
-    (
-        "tridet_5level",
-        "configs/exp_tridet_5level.yaml",
-        "runs/exp_tridet_5level",
-        "TriDet 5-level pyramid (n_layers 4->5), patience=10",
-    ),
-    # ── Round 8: paper-faithful settings from original repos ──────────────────
-    (
-        "paper_actionformer",
-        "configs/exp_paper_actionformer.yaml",
-        "runs/exp_paper_actionformer",
-        "ActionFormer THUMOS-optimal: transformer, 6 levels, wd=0.05, radius=1.5, head 3-layer+LN",
-    ),
-    (
-        "paper_temporalmaxer",
-        "configs/exp_paper_temporalmaxer.yaml",
-        "runs/exp_paper_temporalmaxer",
-        "TemporalMaxer THUMOS-optimal: maxpool, 6 levels, no center_sampling, wd=0.05, 60 epochs",
-    ),
-    (
-        "paper_tridet",
-        "configs/exp_paper_tridet.yaml",
-        "runs/exp_paper_tridet",
-        "TriDet THUMOS-optimal: SGP k=5, iou_power=0.2, 6 levels, mlp=768, wd=0.025, 40 epochs",
-    ),
-    (
-        "paper_tridet_full",
-        "configs/exp_paper_tridet_full.yaml",
-        "runs/exp_paper_tridet_full",
-        "TriDet fully faithful: adds focal_alpha=0.25, gamma=2.0, nms_sigma=0.5, max_det=2000",
+        "concat_tridet_combined",
+        "configs/experiments/concat_tridet_combined.yaml",
+        "runs/concat_tridet_combined",
+        "TriDet + small model + strong reg + strong aug",
     ),
 ]
 
@@ -315,7 +165,7 @@ def run_training(name, config_path, output_dir, python_exe, seed=42):
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run TemporalMaxer ablation experiments")
+    parser = argparse.ArgumentParser(description="Run architecture experiments on HateClipSeg (concat preprocessor)")
     parser.add_argument(
         "--force", default=None, metavar="NAME",
         help="Force re-run a specific experiment by name (deletes its model_best.pth.tar)",
@@ -342,7 +192,7 @@ def parse_args():
 def print_table(results):
     """Print a comparison table sorted by best_mAP descending."""
     baseline_map = next(
-        (r["best_mAP"] for r in results if r["name"] == "baseline" and r["best_mAP"] is not None),
+        (r["best_mAP"] for r in results if r["name"] == "concat_actionformer" and r["best_mAP"] is not None),
         None,
     )
 

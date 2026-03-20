@@ -1,0 +1,112 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# MultiHateLoc preprocessor (MA-TE + DCM-Fusion) on HateClipSeg
+#
+# Changes from initial run (v1: 86M params, epochs=30):
+#   - d_out/d_model: 1024 → 256  (86M → ~6M params; 0.73/0.30 train/val gap
+#                                  shows 1024-dim is massive overkill for 321
+#                                  training videos; d_inner=256 already rich)
+#   - dropout: 0.3 → 0.5         (small dataset, train mAP far above val)
+#   - droppath: 0.1 → 0.2        (more stochastic depth)
+#   - weight_decay: 5e-4 → 1e-3  (stronger L2)
+#   - epochs: 30 → 50            (val mAP still rising at epoch 29)
+#   - patience: 10               (early stopping if val plateaus)
+#   - weighted_sampling: true    (281 hate / 40 non-hate = 7:1 imbalance)
+#   - focal_alpha: 0.25 → 0.40   (upweight foreground segments; standard for
+#                                  this dataset scale)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dataset
+dataset:
+  name: "hateclipseg"
+  video_feat_dir: "../../data/hateclipseg/video_features"
+  audio_feat_dir: "../../data/hateclipseg/audio_features"
+  text_feat_dir:  "../../data/hateclipseg/text_features"
+  annotation_file: "../../data/hateclipseg/dataset/hateclipseg_merged.json"
+  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  val_ratio: 0.2
+  split_seed: 42
+  num_classes: 1
+  feature_fps: 1.0
+  max_seq_len: 512
+  input_dims:
+    text: 768                           # HateBERT CLS
+    audio: 1024                         # Wav2Vec2 Large
+    video: 768                          # CLIP ViT-L/14
+
+# MA-TE + DCM-Fusion preprocessor (MultiHateLoc paper)
+preprocessor:
+  type: "multihateloc"
+  d_out: 512         # output dim fed to backbone projection convs
+  d_inner: 128      # internal common dim D; must be divisible by n_heads
+  n_heads: 4        # heads for MA-TE self-attention and CMA
+  dropout: 0.3
+  modality_dropout: 0.1  # prob of zeroing an entire modality per sample during training
+
+# ActionFormer backbone
+backbone:
+  type: "transformer"
+  d_model: 512
+  n_proj_layers: 2
+  n_layers: 5                           # strides: [1, 2, 4, 8, 16]
+  n_heads: 4
+  window_size: 17
+  downsample_start: 1
+  downsample_ratio: 2
+
+# Decoder heads
+heads:
+  type: "standard"
+  n_layers: 3
+  kernel_size: 3
+  use_layer_norm: true
+
+# Regression ranges per pyramid level (HateClipSeg: D/2 p50=4.3s)
+regression_ranges:
+  - [0,    4]
+  - [4,    8]
+  - [8,   16]
+  - [16,  32]
+  - [32,  100000]
+
+# Loss
+loss:
+  focal_alpha: 0.40
+  focal_gamma: 2.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0
+
+# Training
+training:
+  batch_size: 8
+  epochs: 30
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-3
+  warmup_epochs: 5
+  lr_scheduler: "cosine"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  cls_prior_prob: 0.01
+  dropout: 0.3
+  droppath: 0.2
+  label_smoothing: 0.10
+  weighted_sampling: false
+  patience: 10
+
+# Temporal augmentation (training only)
+augmentation:
+  enabled: true
+  feature_noise_std: 0.02
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 2
+  temporal_mask_max_len: 2
+  segment_jitter_sec: 0.5
+
+# Inference
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.4
+  nms_threshold: 0.1
+  max_detections: 200

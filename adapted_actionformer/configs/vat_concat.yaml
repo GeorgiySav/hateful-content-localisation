@@ -20,6 +20,9 @@ dataset:
   audio_feat_dir: "../../data/hateclipseg/audio_features"
   text_feat_dir:  "../../data/hateclipseg/text_features"
   annotation_file: "../../data/hateclipseg/dataset/hateclipseg.json"
+  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  val_ratio: 0.2
+  split_seed: 42
   num_classes: 1
   feature_fps: 1.0
   max_seq_len: 512                      # 256×2; covers all 431 videos (max feat len=350); must be multiple of 256 (=16×max_stride_at_5_levels) for sliding-window attention
@@ -27,16 +30,6 @@ dataset:
     text: 768                           # HateBERT CLS
     audio: 1024                         # Wav2Vec2 Large
     video: 768                          # CLIP ViT-L/14
-
-# Cross-modal fusion
-#preprocessor:
-#  type: "cma"
-#  d_out: 128
-#  num_heads: 2
-#  dropout: 0.1
-#  query_modality: "text"
-#  kv_modalities: ["audio", "video"]
-#  zero_out_missing_query: true
 
 preprocessor:
   type: "concat"
@@ -47,7 +40,7 @@ preprocessor:
 backbone:
   type: "transformer"
   d_model: 512
-  n_proj_layers: 2
+  n_proj_layers: 4
   n_layers: 5                           # strides: [1, 2, 4, 8, 16]
   n_heads: 4
   window_size: 17                       # window_size-1=16 divides 512, 256, 128, 64, 32 cleanly
@@ -81,8 +74,8 @@ regression_ranges:
 
 # Loss
 loss:
-  focal_alpha: 0.25
-  focal_gamma: 2.0
+  focal_alpha: 0.4
+  focal_gamma: 2.5
   lambda_reg: 1.0
   center_sampling: true
   center_sampling_radius: 2.0
@@ -92,7 +85,7 @@ training:
   batch_size: 8
   epochs: 30
   learning_rate: 1.0e-4
-  weight_decay: 5.0e-4       # stronger than HateMM (5e-4) — small dataset
+  weight_decay: 5.0e-3       # stronger than HateMM (5e-4) — small dataset
   warmup_epochs: 5
   lr_scheduler: "cosine"
   use_ema: true
@@ -101,7 +94,7 @@ training:
   cls_prior_prob: 0.01
   dropout: 0.3
   droppath: 0.1              # slightly higher than HateMM (0.3) — small dataset
-  label_smoothing: 0.10
+  label_smoothing: 0.05
   weighted_sampling: false 
 
 # Temporal augmentation (training only)
@@ -109,7 +102,7 @@ augmentation:
   enabled: true
   feature_noise_std: 0.02
   temporal_mask_prob: 0.5
-  temporal_mask_num: 2
+  temporal_mask_num: 3
   temporal_mask_max_len: 2   # p10 segment ~5s; keep masks small
   segment_jitter_sec: 0.5    # ±0.5s — ~6% of median segment (8.6s)
 

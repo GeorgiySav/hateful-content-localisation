@@ -1,0 +1,102 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Experiment: ActionFormer backbone + concat preprocessor
+#
+# Architecture:   concat → transformer → identity → standard
+# Purpose:        Main ActionFormer baseline with trimodal concat fusion.
+#                 Establishes the transformer backbone reference point.
+#
+# Preprocessor:   concat (video+audio+text, d_out=2560)
+# Backbone:       transformer (local self-attention pyramid, 5 levels)
+# Neck:           identity
+# Heads:          standard (direct offset regression)
+# ─────────────────────────────────────────────────────────────────────────────
+
+dataset:
+  name: "hateclipseg"
+  video_feat_dir: "../../../data/hateclipseg/video_features"
+  audio_feat_dir: "../../../data/hateclipseg/audio_features"
+  text_feat_dir:  "../../../data/hateclipseg/text_features"
+  annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
+  num_classes: 1
+  feature_fps: 1.0
+  max_seq_len: 512          # covers all videos (max feat len=350); multiple of 256 for sliding-window
+  input_dims:
+    text: 768               # HateBERT CLS
+    audio: 1024             # Wav2Vec2 Large
+    video: 768              # CLIP ViT-L/14
+
+preprocessor:
+  type: "concat"
+  modalities: ["video", "audio", "text"]
+  d_out: 2560               # 768+1024+768; projected to d_model by backbone proj convs
+
+backbone:
+  type: "transformer"
+  d_model: 256
+  n_proj_layers: 4          # gradually compress 2560 → 256 through 4 Conv1Ds
+  n_layers: 5               # strides: [1, 2, 4, 8, 16]
+  n_heads: 4                # 256 / 4 = 64 per head
+  window_size: 17           # 16 divides 512/256/128/64/32 cleanly
+  downsample_start: 1
+  downsample_ratio: 2
+
+neck:
+  type: "identity"
+
+heads:
+  type: "standard"
+  n_layers: 3
+  kernel_size: 3
+  use_layer_norm: true
+
+# HateClipSeg D/2 distribution: p25=3.4, p50=4.3, p75=5.0, p90=6.0
+# Level 0 (stride  1): D/2 in [0,  4]   ~45% of segments
+# Level 1 (stride  2): D/2 in [4,  8]   ~45% of segments
+# Level 2 (stride  4): D/2 in [8, 16]   ~ 4%
+# Level 3 (stride  8): D/2 in [16, 32]  ~ 1%
+# Level 4 (stride 16): D/2 in [32, inf]   long tail
+regression_ranges:
+  - [0,    4]
+  - [4,    8]
+  - [8,   16]
+  - [16,  32]
+  - [32,  100000]
+
+loss:
+  focal_alpha: 0.40
+  focal_gamma: 2.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0
+
+training:
+  batch_size: 8
+  epochs: 30
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-3      # strong L2: small dataset (344 training videos)
+  warmup_epochs: 5
+  lr_scheduler: "cosine"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  cls_prior_prob: 0.01
+  dropout: 0.3
+  droppath: 0.2
+  label_smoothing: 0.10
+  weighted_sampling: false
+  patience: 10
+
+augmentation:
+  enabled: true
+  feature_noise_std: 0.02
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 2
+  temporal_mask_max_len: 2  # p10 segment ~5s; keep masks small
+  segment_jitter_sec: 0.5
+
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.2
+  nms_threshold: 0.1
+  max_detections: 200

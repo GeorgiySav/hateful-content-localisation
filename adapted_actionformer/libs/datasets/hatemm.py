@@ -64,6 +64,9 @@ class HateMMDataset(Dataset):
         feature_fps=1.0,
         is_training=True,
         aug_cfg=None,
+        use_json_split=True,
+        val_ratio=0.2,
+        split_seed=42,
     ):
         super().__init__()
         self.video_feat_dir = video_feat_dir
@@ -79,13 +82,34 @@ class HateMMDataset(Dataset):
         with open(annotation_file, 'r') as f:
             db = json.load(f)['database']
 
+        # ── Build split assignment ────────────────────────────────────────────
+        if not use_json_split:
+            split_map = self._make_stratified_split(db, val_ratio, split_seed)
+            n_train = sum(1 for v in split_map.values() if v == 'train')
+            n_val   = sum(1 for v in split_map.values() if v == 'val')
+            print(f"[{self._name}] Stratified internal split: "
+                  f"{n_train} train / {n_val} val "
+                  f"(val_ratio={val_ratio}, seed={split_seed})")
+        else:
+            split_map = None
+
+        # All video IDs assigned to this subset (before feature-file check).
+        # Used by the evaluator to build the correct GT set.
+        if split_map is not None:
+            self.split_video_ids = {vid for vid, s in split_map.items() if s == subset}
+        else:
+            self.split_video_ids = {vid for vid, meta in db.items()
+                                    if meta.get('subset', 'train') == subset}
+
         self.video_ids    = []
         self.annotations  = {}  # video_id → dict with duration, segments, labels
         self.video_labels = []  # parallel list: 1 = hate, 0 = non-hate (for sampler)
 
         skipped = 0
         for vid_id, meta in db.items():
-            if meta.get('subset', 'train') != subset:
+            vid_subset = (split_map[vid_id] if split_map is not None
+                          else meta.get('subset', 'train'))
+            if vid_subset != subset:
                 continue
 
             # Skip if any feature file is missing (extraction may be in progress)
@@ -275,6 +299,44 @@ class HateMMDataset(Dataset):
         mask = torch.cat([torch.ones(T), torch.zeros(pad_len)], dim=0)
         return video_feat, audio_feat, text_feat, mask
 
+    @staticmethod
+    def _make_stratified_split(db, val_ratio=0.2, seed=42):
+        """
+        Stratified train/val split on the full database.
+
+        Videos are partitioned into hate (≥1 hateful segment) and non-hate,
+        then each group is independently shuffled and split at val_ratio,
+        preserving class balance across both splits.
+
+        Returns:
+            dict mapping video_id → "train" | "val"
+        """
+        import random
+        hate_ids, non_hate_ids = [], []
+        for vid_id, meta in db.items():
+            has_hate = any(
+                a.get('label', '').lower() in ('hate', 'hateful')
+                for a in meta.get('annotations', [])
+            )
+            (hate_ids if has_hate else non_hate_ids).append(vid_id)
+
+        hate_ids.sort()
+        non_hate_ids.sort()
+
+        rng = random.Random(seed)
+        rng.shuffle(hate_ids)
+        rng.shuffle(non_hate_ids)
+
+        n_hate_val     = max(1, round(len(hate_ids)     * val_ratio))
+        n_non_hate_val = max(1, round(len(non_hate_ids) * val_ratio))
+
+        mapping = {}
+        for i, vid in enumerate(hate_ids):
+            mapping[vid] = 'val' if i < n_hate_val else 'train'
+        for i, vid in enumerate(non_hate_ids):
+            mapping[vid] = 'val' if i < n_non_hate_val else 'train'
+        return mapping
+
     def _random_crop(self, video_feat, audio_feat, text_feat, segments, labels):
         """Randomly crop a max_seq_len window; remove out-of-window segments."""
         T     = video_feat.shape[0]
@@ -336,6 +398,9 @@ def _build_dataloader(dataset_cls, cfg, subset, is_training=False):
         feature_fps    =ds_cfg.get('feature_fps', 1.0),
         is_training    =is_training,
         aug_cfg        =cfg.get('augmentation', {}) if is_training else {},
+        use_json_split =ds_cfg.get('use_json_split', True),
+        val_ratio      =ds_cfg.get('val_ratio', 0.2),
+        split_seed     =ds_cfg.get('split_seed', 42),
     )
     train_cfg  = cfg.get('training', {})
     batch_size = train_cfg.get('batch_size', 2) if is_training else 1

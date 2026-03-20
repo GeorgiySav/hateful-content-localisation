@@ -27,7 +27,7 @@ Paths to features and dataset-level settings.
 
 ## 2. `preprocessor`
 
-Fuses multi-modal features before the backbone. Three types are available.
+Fuses multi-modal features before the backbone. Five types are available.
 
 ### `type: "cma"` — Guided Cross-Modal Attention (default)
 
@@ -66,6 +66,43 @@ preprocessor:
   type: "concat"
   modalities: ["audio", "video"]   # any non-empty subset of the three modalities
   d_out: 256                        # input dim = sum of chosen modalities' native dims
+```
+
+### `type: "multihateloc"` — MA-TE + DCM-Fusion (MultiHateLoc paper)
+
+Full tri-modal pipeline from Sun et al., WWW 2026.  Three stages:
+
+1. **MA-TE** — per-modality pre-norm Transformer block (self-attention + FFN) in a shared internal dimension `d_inner`.
+2. **DCM-Fusion** — Dynamic Modality Selection (sigmoid scalar gate per timestep) followed by Cross-Modal Attention over the concatenated weighted features.
+3. **Output** — linear projection from the four branches (F'_v, F'_a, F'_l, F_fused) to `d_out`.
+
+```yaml
+preprocessor:
+  type: "multihateloc"
+  d_out: 256        # output dim fed to the backbone
+  d_inner: 256      # internal common modality dim D; must be divisible by n_heads
+  n_heads: 4        # attention heads for both MA-TE and CMA
+  dropout: 0.1
+```
+
+### `type: "trifuse"` — TriFuse Trimodal Bottleneck Fusion
+
+Four-stage architecture with learnable bottleneck tokens and mask-aware sparse transcript handling.
+
+1. **Stage 1** — per-modality linear projection to `d_out` + learnable modality embeddings + sinusoidal positional encoding. A presence mask `mask_x = (‖text‖₂ > 1e-6)` is derived from the raw text input and applied to zero-out absent text timesteps after projection.
+2. **Stage 2** — separate `nn.TransformerEncoder` per modality (`n_unimodal_layers` layers). Text uses a key-padding mask so absent timesteps neither attend to others nor are attended to.
+3. **Stage 3** — `n_fusion_layers` bottleneck fusion layers. Each layer: (a) bottleneck tokens cross-attend to all modalities (text cross-attention is mask-aware), (b) bottleneck self-attention + FFN, (c) each modality cross-attends back to the bottleneck through a learned sigmoid gate; text is re-zeroed for absent positions.
+4. **Stage 4** — a 2-layer MLP produces per-timestep weights for the three enriched streams; the text weight is forced to 0 where text is absent, so the fusion degrades gracefully to bimodal video+audio.
+
+```yaml
+preprocessor:
+  type: "trifuse"
+  d_out: 256            # d_model inside TriFuse and n_in to the backbone
+  n_heads: 4            # attention heads; d_out must be divisible by n_heads
+  n_bottleneck: 4       # number of learnable bottleneck tokens
+  n_unimodal_layers: 2  # per-modality self-attention layers (Stage 2)
+  n_fusion_layers: 4    # bottleneck cross-modal fusion layers (Stage 3)
+  dropout: 0.1
 ```
 
 > **Note:** `preprocessor.d_out` is `n_in` to the backbone. The backbone's projection convs (`n_proj_layers` Conv1Ds) project from `n_in` → `d_model`, so the two values can differ freely. The only exception is `n_proj_layers: 0` — with no projection layers, features flow directly into the stem blocks expecting `d_model`, so `d_out` must equal `d_model` in that case.
@@ -288,7 +325,7 @@ Applied during training only.
 | Preprocessor → backbone dimension | Can differ; projection convs handle the mapping. Exception: if `n_proj_layers: 0` then `preprocessor.d_out` must equal `backbone.d_model`. |
 | Regression ranges | Number of entries == `backbone.n_layers` |
 | Attention heads | `backbone.d_model` divisible by `backbone.n_heads` (transformer only) |
-| CMA heads | `preprocessor.d_out` divisible by `preprocessor.num_heads` |
+| CMA/TriFuse heads | `preprocessor.d_out` divisible by `preprocessor.num_heads` (or `n_heads` for trifuse) |
 | Window size | Must be an odd integer (transformer backbone) |
 
 ---

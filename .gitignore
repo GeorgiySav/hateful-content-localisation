@@ -4,6 +4,8 @@ __pycache__/
 .pytest_cache/
 
 actionformer
+./TriDet
+./TemporalMaxer
 mm-hsd
 runs
 videos

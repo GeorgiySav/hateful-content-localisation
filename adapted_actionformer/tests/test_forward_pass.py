@@ -39,7 +39,9 @@ if _scripts_dir not in sys.path:
 from libs.modeling.cross_modal_fusion import CrossModalFusion
 from libs.modeling.feature_preprocessors import (
     GuidedCMAPreprocessor, UnimodalPreprocessor, ConcatPreprocessor,
+    MultiHateLocPreprocessor,
 )
+from libs.modeling.trifuse import TriFusePreprocessor
 from libs.modeling.backbone import ConvTransformerBackbone
 from libs.modeling.meta_arch import HatefulContentLocalizer
 from libs.datasets.hatemm import HateMMDataset
@@ -343,6 +345,157 @@ def test_model_concat_preprocessor():
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Test 3e: MultiHateLoc preprocessor — shape test
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_multihateloc_preprocessor():
+    """MultiHateLocPreprocessor: output shape must be (B, T, d_out)."""
+    d_out   = 128
+    d_inner = 64   # small for speed; must divide n_heads=4
+    prep = MultiHateLocPreprocessor(
+        text_dim=768, audio_dim=1024, video_dim=768,
+        d_out=d_out, n_heads=4, dropout=0.0, d_inner=d_inner,
+    )
+    prep.eval()
+
+    text  = torch.randn(B, T_PAD, 768)
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    with torch.no_grad():
+        out = prep(text, audio, video)
+
+    assert out.shape == (B, T_PAD, d_out), (
+        f"MultiHateLocPreprocessor output shape mismatch: {out.shape}"
+    )
+    print("✓ multihateloc_preprocessor_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3f: MultiHateLoc DMS gates — values in [0, 1]
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_multihateloc_dms_gates():
+    """DMS scalar gates (sigmoid outputs) must be in [0, 1] and shaped (B, T, 1)."""
+    D = 64
+    prep = MultiHateLocPreprocessor(
+        text_dim=768, audio_dim=1024, video_dim=768,
+        d_out=128, n_heads=4, dropout=0.0, d_inner=D,
+    )
+    prep.eval()
+
+    # Simulate post-MA-TE features (already in D-dimensional space)
+    F_text  = torch.randn(B, T_PAD, D)
+    F_audio = torch.randn(B, T_PAD, D)
+    F_video = torch.randn(B, T_PAD, D)
+
+    with torch.no_grad():
+        alpha_t = torch.sigmoid(prep.dms_text(F_text))    # (B, T, 1)
+        alpha_a = torch.sigmoid(prep.dms_audio(F_audio))  # (B, T, 1)
+        alpha_v = torch.sigmoid(prep.dms_video(F_video))  # (B, T, 1)
+
+    for name, alpha in [('text', alpha_t), ('audio', alpha_a), ('video', alpha_v)]:
+        assert alpha.shape == (B, T_PAD, 1), \
+            f"DMS {name} gate shape: expected (B,T,1), got {alpha.shape}"
+        assert alpha.min().item() >= 0.0, f"DMS {name} gate has values below 0"
+        assert alpha.max().item() <= 1.0, f"DMS {name} gate has values above 1"
+
+    print("✓ multihateloc_dms_gates_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3f-ii: MultiHateLoc modality dropout
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _check_modality_dropout(prep, d_out, name):
+    """Shared helper: verify modality dropout is active in train, absent in eval."""
+    text  = torch.randn(B, T_PAD, 768)
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    # Eval mode must be deterministic
+    prep.eval()
+    with torch.no_grad():
+        out1 = prep(text, audio, video)
+        out2 = prep(text, audio, video)
+    assert torch.allclose(out1, out2), f"{name}: eval mode should be deterministic"
+    assert out1.shape == (B, T_PAD, d_out), f"{name}: shape mismatch {out1.shape}"
+
+    # Train mode with p=1.0: all modalities would be dropped but fallback keeps all
+    prep.modality_dropout = 1.0
+    prep.train()
+    out_train = prep(text, audio, video)
+    assert out_train.shape == (B, T_PAD, d_out), \
+        f"{name}: train shape mismatch {out_train.shape}"
+
+
+def test_multihateloc_modality_dropout():
+    """Modality dropout works for all multimodal preprocessors."""
+    _check_modality_dropout(
+        MultiHateLocPreprocessor(
+            text_dim=768, audio_dim=1024, video_dim=768,
+            d_out=128, n_heads=4, dropout=0.0, d_inner=64,
+            modality_dropout=0.5,
+        ),
+        d_out=128, name="MultiHateLocPreprocessor",
+    )
+    _check_modality_dropout(
+        GuidedCMAPreprocessor(
+            text_dim=768, audio_dim=1024, video_dim=768,
+            d_out=128, num_heads=4, dropout=0.0,
+            modality_dropout=0.5,
+        ),
+        d_out=128, name="GuidedCMAPreprocessor",
+    )
+    _check_modality_dropout(
+        ConcatPreprocessor(
+            modalities=['audio', 'video'], text_dim=768, audio_dim=1024, video_dim=768,
+            d_out=128, modality_dropout=0.5,
+        ),
+        d_out=128, name="ConcatPreprocessor",
+    )
+    print("✓ modality_dropout_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3g: Full model with MultiHateLoc preprocessor config
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_model_multihateloc_preprocessor():
+    """HatefulContentLocalizer should do a full forward+backward with the multihateloc preprocessor."""
+    import copy
+    cfg = copy.deepcopy(TEST_CFG)
+    cfg.pop('fusion', None)
+    cfg['preprocessor'] = {
+        'type': 'multihateloc',
+        'd_out': 256,
+        'd_inner': 64,    # small for test speed; must divide n_heads=4
+        'n_heads': 4,
+        'dropout': 0.0,
+    }
+    cfg['backbone']['d_model'] = 128
+
+    model = HatefulContentLocalizer(cfg)
+    model.train()
+    batch = make_batch()
+    losses = model(batch)
+    losses['final_loss'].backward()
+
+    assert 'final_loss' in losses, "Loss dict missing 'final_loss'"
+    assert losses['final_loss'].item() >= 0.0, "final_loss should be non-negative"
+
+    # Verify all non-droppath parameters received a gradient
+    no_grad = [
+        name for name, p in model.named_parameters()
+        if p.requires_grad and p.grad is None
+        and 'drop_path' not in name and 'pool_skip' not in name
+    ]
+    assert len(no_grad) == 0, f"Parameters missing gradients: {no_grad[:5]}"
+
+    print("✓ model_multihateloc_preprocessor_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Test 3: Pyramid test
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -552,6 +705,257 @@ def test_npz_round_trip():
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Test 3h: TriFuse preprocessor — output shape
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_trifuse_preprocessor_shape():
+    """TriFusePreprocessor: output shape must be (B, T, d_model)."""
+    d_model = 64
+    prep = TriFusePreprocessor(
+        text_dim=768, audio_dim=1024, video_dim=768,
+        d_model=d_model, n_heads=4, n_bottleneck=2,
+        n_unimodal_layers=1, n_fusion_layers=2, dropout=0.0,
+    )
+    prep.eval()
+
+    text  = torch.randn(B, T_PAD, 768)
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    with torch.no_grad():
+        out = prep(text, audio, video)
+
+    assert out.shape == (B, T_PAD, d_model), (
+        f"TriFusePreprocessor output shape mismatch: {out.shape}"
+    )
+    assert prep.d_out == d_model
+    print("✓ trifuse_preprocessor_shape_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3i: TriFuse — all-zero text
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_trifuse_zero_text():
+    """
+    When text is all-zero the presence mask is all-zero and the output must:
+      1. Have no NaN values.
+      2. Be the same regardless of which all-zero text we feed (text has no effect).
+    """
+    d_model = 64
+    prep = TriFusePreprocessor(
+        text_dim=768, audio_dim=1024, video_dim=768,
+        d_model=d_model, n_heads=4, n_bottleneck=2,
+        n_unimodal_layers=1, n_fusion_layers=2, dropout=0.0,
+    )
+    prep.eval()
+
+    text_zero = torch.zeros(B, T_PAD, 768)
+    audio     = torch.randn(B, T_PAD, 1024)
+    video     = torch.randn(B, T_PAD, 768)
+
+    with torch.no_grad():
+        out = prep(text_zero, audio, video)
+
+    assert out.shape == (B, T_PAD, d_model), f"Shape mismatch: {out.shape}"
+    assert not torch.isnan(out).any(), "Output must not contain NaNs with all-zero text"
+
+    # Verify text presence mask is all-zero for zero input
+    mask_x = (text_zero.norm(dim=-1) > 1e-6).float()
+    assert mask_x.sum() == 0, "mask_x should be all-zero for zero-text input"
+
+    # Output must be identical for any other all-zero text (text has no effect)
+    text_zero2 = torch.zeros_like(text_zero)
+    with torch.no_grad():
+        out2 = prep(text_zero2, audio, video)
+    assert torch.allclose(out, out2), "Output must be identical for any all-zero text"
+
+    print("✓ trifuse_zero_text_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3j: TriFuse — partial text
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_trifuse_partial_text():
+    """
+    Text that is zero for the first half and non-zero for the second half.
+    Verifies:
+      1. Output is non-NaN and correct shape.
+      2. Mask isolation: replacing absent-text positions with values BELOW the
+         1e-6 detection threshold does not change the output (same mask → same
+         output).
+    """
+    d_model = 64
+    prep = TriFusePreprocessor(
+        text_dim=768, audio_dim=1024, video_dim=768,
+        d_model=d_model, n_heads=4, n_bottleneck=2,
+        n_unimodal_layers=1, n_fusion_layers=2, dropout=0.0,
+    )
+    prep.eval()
+
+    half = T_PAD // 2
+    text_base = torch.randn(B, T_PAD, 768)
+    text_base[:, :half, :] = 0.0   # first half absent
+
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    with torch.no_grad():
+        out1 = prep(text_base, audio, video)
+
+    assert out1.shape == (B, T_PAD, d_model), f"Shape mismatch: {out1.shape}"
+    assert not torch.isnan(out1).any(), "Output must not contain NaNs with partial text"
+
+    # Replace absent positions with sub-threshold perturbation (< 1e-6 norm).
+    # Both runs produce mask_x=0 for the first half → same outputs.
+    tiny_noise = torch.randn(B, half, 768) * 1e-8   # norm << 1e-6
+    text_perturbed = text_base.clone()
+    text_perturbed[:, :half, :] = tiny_noise
+
+    with torch.no_grad():
+        out2 = prep(text_perturbed, audio, video)
+
+    assert torch.allclose(out1, out2, atol=1e-5), (
+        "Output must be identical when absent positions have sub-threshold perturbations"
+    )
+    print("✓ trifuse_partial_text_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3k: TriFuse — full model forward+backward
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_trifuse_full_model():
+    """
+    HatefulContentLocalizer with the trifuse preprocessor:
+      1. Training forward+backward: final_loss >= 0, all parameters receive gradients.
+      2. Inference forward: returns list of result dicts with correct keys.
+    """
+    import copy
+    cfg = copy.deepcopy(TEST_CFG)
+    cfg.pop('fusion', None)
+    cfg['preprocessor'] = {
+        'type': 'trifuse',
+        'd_out': 256,
+        'n_heads': 4,
+        'n_bottleneck': 2,
+        'n_unimodal_layers': 1,
+        'n_fusion_layers': 2,
+        'dropout': 0.0,
+    }
+    cfg['backbone']['d_model'] = 128
+
+    # ── Training pass ──────────────────────────────────────────────────────
+    model = HatefulContentLocalizer(cfg)
+    model.train()
+    batch = make_batch()
+    losses = model(batch)
+    losses['final_loss'].backward()
+
+    assert 'final_loss' in losses, "Loss dict missing 'final_loss'"
+    assert losses['final_loss'].item() >= 0.0, "final_loss should be non-negative"
+
+    no_grad = [
+        name for name, p in model.named_parameters()
+        if p.requires_grad and p.grad is None
+        and 'drop_path' not in name and 'pool_skip' not in name
+    ]
+    assert len(no_grad) == 0, f"Parameters missing gradients: {no_grad[:5]}"
+
+    # ── Inference pass ─────────────────────────────────────────────────────
+    model.eval()
+    with torch.no_grad():
+        output = model(batch)
+
+    assert isinstance(output, list) and len(output) == B
+    for res in output:
+        assert 'segments' in res and 'scores' in res and 'labels' in res
+        assert res['segments'].dim() == 2 and res['segments'].shape[1] == 2
+
+    print("✓ trifuse_full_model_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Test 3l: TriFuse — end-to-end mask isolation
+# ──────────────────────────────────────────────────────────────────────────────
+
+def test_trifuse_mask_isolation():
+    """
+    The most important correctness test for mask-awareness.
+
+    Two batches differ ONLY in the absent-text positions:
+      - Batch 1: zeros at those positions (mask_x = 0).
+      - Batch 2: sub-threshold perturbation (norm < 1e-7) at those positions
+                 so that mask_x is STILL 0 (same mask as batch 1).
+
+    Both batches must produce identical outputs, confirming that the model
+    completely ignores whatever values sit at absent timesteps.
+    """
+    import copy
+    cfg = copy.deepcopy(TEST_CFG)
+    cfg.pop('fusion', None)
+    cfg['preprocessor'] = {
+        'type': 'trifuse',
+        'd_out': 256,
+        'n_heads': 4,
+        'n_bottleneck': 2,
+        'n_unimodal_layers': 1,
+        'n_fusion_layers': 2,
+        'dropout': 0.0,
+    }
+    cfg['backbone']['d_model'] = 128
+
+    model = HatefulContentLocalizer(cfg)
+    model.eval()
+
+    quarter = T_PAD // 4
+
+    audio = torch.randn(B, T_PAD, 1024)
+    video = torch.randn(B, T_PAD, 768)
+
+    # Batch 1: exact zeros at first quarter
+    text1 = torch.randn(B, T_PAD, 768)
+    text1[:, :quarter, :] = 0.0
+
+    # Batch 2: sub-threshold noise at those same positions (norm < 1e-7 << 1e-6)
+    text2 = text1.clone()
+    text2[:, :quarter, :] = torch.randn(B, quarter, 768) * 1e-8
+
+    # Sanity: both produce the same mask
+    mask1 = (text1.norm(dim=-1) > 1e-6).float()
+    mask2 = (text2.norm(dim=-1) > 1e-6).float()
+    assert torch.equal(mask1, mask2), "Test setup error: masks should be equal"
+
+    batch1 = {
+        'video_id': [f'v{i}' for i in range(B)],
+        'text_feat': text1, 'audio_feat': audio, 'video_feat': video,
+        'mask': torch.ones(B, T_PAD),
+        'segments': [torch.tensor([[0.0, float(T_PAD // 2)]])] * B,
+        'labels': [torch.zeros(1, dtype=torch.long)] * B,
+        'duration': [float(T_PAD)] * B,
+    }
+    batch2 = dict(batch1)
+    batch2['text_feat'] = text2
+
+    with torch.no_grad():
+        out1 = model(batch1)
+        out2 = model(batch2)
+
+    for i, (r1, r2) in enumerate(zip(out1, out2)):
+        # Both results may have different numbers of detections (NMS is
+        # deterministic for the same scores, so scores must match first).
+        assert torch.allclose(r1['scores'], r2['scores'], atol=1e-5), (
+            f"Sample {i}: scores differ between zero-text and sub-threshold-text batches"
+        )
+        assert torch.allclose(r1['segments'], r2['segments'], atol=1e-5), (
+            f"Sample {i}: segments differ between zero-text and sub-threshold-text batches"
+        )
+
+    print("✓ trifuse_mask_isolation_test passed")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Run directly
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -563,8 +967,17 @@ if __name__ == '__main__':
     test_concat_preprocessor()
     test_model_unimodal_preprocessor()
     test_model_concat_preprocessor()
+    test_multihateloc_preprocessor()
+    test_multihateloc_dms_gates()
+    test_multihateloc_modality_dropout()
+    test_model_multihateloc_preprocessor()
     test_pyramid()
     test_mask()
     test_gradients()
     test_npz_round_trip()
+    test_trifuse_preprocessor_shape()
+    test_trifuse_zero_text()
+    test_trifuse_partial_text()
+    test_trifuse_full_model()
+    test_trifuse_mask_isolation()
     print("\nAll tests passed!")

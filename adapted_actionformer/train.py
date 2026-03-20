@@ -98,8 +98,10 @@ def main():
         num_classes=cfg['dataset'].get('num_classes', 1),
         label_map={0: 'hate'},
     )
-    train_evaluator = ANETdetection(**evaluator_kwargs, subset='train', verbose=False)
-    evaluator       = ANETdetection(**evaluator_kwargs, subset='val',   verbose=True)
+    train_evaluator = ANETdetection(**evaluator_kwargs, subset='train', verbose=False,
+                                    video_ids=train_eval_loader.dataset.split_video_ids)
+    evaluator       = ANETdetection(**evaluator_kwargs, subset='val',   verbose=True,
+                                    video_ids=val_loader.dataset.split_video_ids)
 
     # ── Model ─────────────────────────────────────────────────────────────────
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

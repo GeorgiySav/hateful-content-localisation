@@ -124,6 +124,7 @@ class ANETdetection:
         num_classes=1,
         label_map=None,
         verbose=False,
+        video_ids=None,
     ):
         import json
         if tiou_thresholds is None:
@@ -136,10 +137,17 @@ class ANETdetection:
         with open(ground_truth_file, 'r') as f:
             db = json.load(f)['database']
 
+        # video_ids: explicit set of IDs to evaluate on (e.g. from an internal
+        # stratified split). When provided, overrides the JSON "subset" field.
+        video_id_filter = set(video_ids) if video_ids is not None else None
+
         # Build ground truth dict: {video_id: [(start, end), ...]}
         self.ground_truth = {}
         for vid_id, meta in db.items():
-            if meta.get('subset', '') != subset:
+            if video_id_filter is not None:
+                if vid_id not in video_id_filter:
+                    continue
+            elif meta.get('subset', '') != subset:
                 continue
             segs = [(float(a['segment'][0]), float(a['segment'][1]))
                     for a in meta.get('annotations', [])
