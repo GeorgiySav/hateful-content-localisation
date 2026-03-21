@@ -1,11 +1,17 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Experiment: TriDet + reduced model capacity (ablation vs concat_tridet)
+# Experiment: TriFuse preprocessor + TemporalMaxer backbone + Trident head
 #
-# Architecture:   concat → sgp → identity → trident  [same structure]
-# Overfitting fix: capacity reduction only — regularization unchanged.
-#   d_model:      256 → 128   (~4× fewer backbone parameters)
-#   sgp_mlp_dim:  1024 → 512  (keeps 4× d_model ratio)
-#   n_proj_layers:  4 → 3     (fewer projection layers; still compresses 2560→128)
+# Architecture:   trifuse → temporalmaxer → identity → trident
+# Purpose:        Tests whether the trident boundary-distribution head can
+#                 compensate for TemporalMaxer's parameter-free backbone.
+#                 TemporalMaxer relies entirely on the fused representation;
+#                 the trident head's soft start/end distributions may handle
+#                 the resulting boundary ambiguity better than direct offsets.
+#
+# Preprocessor:   trifuse (d_out=512, 2 unimodal + 2 fusion layers)
+# Backbone:       temporalmaxer (MaxPool1D pyramid, 5 levels, 2x downsample)
+# Neck:           identity
+# Heads:          trident (boundary distribution, 16 bins)
 # ─────────────────────────────────────────────────────────────────────────────
 
 dataset:
@@ -14,40 +20,42 @@ dataset:
   audio_feat_dir: "../../../data/hateclipseg/audio_features"
   text_feat_dir:  "../../../data/hateclipseg/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
+  use_json_split: false
+  split_seed: 42
   num_classes: 1
   feature_fps: 1.0
   max_seq_len: 512
   input_dims:
-    text: 768
-    audio: 1024
-    video: 768
+    text: 768                           # HateBERT CLS
+    audio: 1024                         # Wav2Vec2 Large
+    video: 768                          # CLIP ViT-L/14
 
 preprocessor:
-  type: "concat"
-  modalities: ["video", "audio", "text"]
-  d_out: 2560
+  type: "trifuse"
+  d_out: 512              # = d_model inside TriFuse, and n_in to backbone
+  n_heads: 4
+  n_bottleneck: 4
+  n_unimodal_layers: 2
+  n_fusion_layers: 2
+  dropout: 0.3
 
 backbone:
-  type: "sgp"
-  d_model: 128              # ↓ from 256
-  n_proj_layers: 3          # ↓ from 4
-  n_layers: 5
-  n_heads: 2
-  window_size: 17
+  type: "temporalmaxer"
+  d_model: 512
+  n_proj_layers: 1        # single proj conv — preprocessor already projects to d_model
+  n_layers: 5             # 1 stem + 4 branch → 5 pyramid levels, strides [1,2,4,8,16]
+  n_heads: 4              # unused by temporalmaxer; kept for API compatibility
+  window_size: 17         # unused by temporalmaxer; kept for API compatibility
   downsample_start: 1
   downsample_ratio: 2
-  sgp_kernel_size: 3
-  sgp_mlp_dim: 512          # ↓ from 1024 (keeps 4× d_model)
-  sgp_k: 1.5
-  sgp_init_conv_vars: 1
-  sgp_downsample_type: "max"
+  pool_kernel_size: 3
 
 neck:
   type: "identity"
 
 heads:
   type: "trident"
-  n_layers: 3
+  n_layers: 2
   kernel_size: 3
   use_layer_norm: true
   boundary_kernel_size: 3
@@ -62,7 +70,7 @@ regression_ranges:
   - [32,  100000]
 
 loss:
-  focal_alpha: 0.40
+  focal_alpha: 0.45
   focal_gamma: 2.0
   lambda_reg: 1.0
   center_sampling: true
@@ -79,9 +87,9 @@ training:
   ema_decay: 0.999
   clip_grad_norm: 1.0
   cls_prior_prob: 0.01
-  dropout: 0.3
-  droppath: 0.2
-  label_smoothing: 0.10
+  dropout: 0.2
+  droppath: 0.0           # MaxPool backbone has no learnable blocks; droppath has no effect
+  label_smoothing: 0.00
   weighted_sampling: false
   patience: 10
 
@@ -96,6 +104,6 @@ augmentation:
 inference:
   score_threshold: 0.001
   nms_method: "soft_nms"
-  nms_sigma: 0.2
+  nms_sigma: 0.4
   nms_threshold: 0.1
   max_detections: 200

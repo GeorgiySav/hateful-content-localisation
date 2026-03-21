@@ -108,13 +108,22 @@ class BottleneckFusionLayer(nn.Module):
         """
         absent = ~mask_x.bool()   # True where text is absent — used as key_padding_mask
 
+        # Safety: for samples where ALL text positions are absent (fully silent
+        # videos), key_padding_mask=all_True causes softmax(−∞, …) = NaN.
+        # nan_to_num(0.0) fixes the forward value, but the NaN statistics stored
+        # inside LayerNorm produce NaN gradients for the LN gamma parameter,
+        # which progressively corrupts training.  Clearing the mask for those
+        # samples lets attention run on the (all-zero) features; the mandatory
+        # `x * mask_x` re-zero at the end of this layer ensures no leakage.
+        all_absent = absent.all(dim=1)   # (B,)
+        if all_absent.any():
+            absent = absent.clone()
+            absent[all_absent] = False   # drop mask for fully-silent samples
+
         # ── 3a Gather ─────────────────────────────────────────────────────────
         b = b + self.gather_v(b, v, v)[0]
         b = b + self.gather_a(b, a, a)[0]
 
-        # For text: absent positions are masked out in the key set.
-        # If ALL text is absent for a sample, every key is masked → softmax(−∞) = nan.
-        # nan_to_num(0.0) converts that to a zero update, which is correct.
         delta_x = self.gather_x(b, x, x, key_padding_mask=absent)[0]
         b = b + delta_x.nan_to_num(0.0)
 
@@ -275,11 +284,20 @@ class TriFusePreprocessor(nn.Module):
         # ── Stage 2 ───────────────────────────────────────────────────────────
         absent = ~mask_x.bool()   # True where text is absent
 
+        # Safety: fully-silent samples have absent=all_True → softmax(−∞) = NaN.
+        # NaN forward values are safe (nan_to_num + re-zero), but NaN is stored
+        # inside LayerNorm as statistics, making g_gamma = 0 * NaN = NaN during
+        # backward and corrupting LN weights.  For those samples, drop the mask;
+        # the re-zero below (`x * mask_x`) still produces zero output, so the
+        # model behaviour is identical for fully-silent videos.
+        all_absent = absent.all(dim=1)   # (B,)
+        absent_stage2 = absent.clone()
+        if all_absent.any():
+            absent_stage2[all_absent] = False
+
         v = self.self_attn_v(v)
         a = self.self_attn_a(a)
-        x = self.self_attn_x(x, src_key_padding_mask=absent)
-        # When ALL text positions are masked, MHA produces softmax(-inf,...) = nan.
-        # nan_to_num converts those to 0 before the mask-multiply (nan * 0 = nan).
+        x = self.self_attn_x(x, src_key_padding_mask=absent_stage2)
         x = x.nan_to_num(0.0)
         x = x * mask_x.unsqueeze(-1)   # re-zero after attention
 

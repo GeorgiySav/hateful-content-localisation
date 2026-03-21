@@ -1,18 +1,16 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Experiment: TriDet (SGP backbone + trident head) + concat preprocessor
+# Experiment: Concat preprocessor + SGP backbone + Trident head
 #
 # Architecture:   concat → sgp → identity → trident
-# Purpose:        Canonical TriDet configuration (Sun et al., CVPR 2023).
-#                 Combines SGP's efficient depthwise-conv backbone with the
-#                 trident boundary-distribution head. The distribution head
-#                 predicts soft start/end distributions over num_bins bins,
-#                 which handles ambiguous boundaries better than direct offsets.
-#                 This is the strongest single-model configuration in TriDet.
+# Purpose:        Baseline for trifuse_tridet.yaml — the canonical TriDet
+#                 configuration (Sun et al., CVPR 2023) with simple concatenation
+#                 in place of TriFuse.  Any gain from trifuse_tridet over this
+#                 config is attributable solely to TriFuse's cross-modal fusion.
 #
 # Preprocessor:   concat (video+audio+text, d_out=2560)
 # Backbone:       sgp (depthwise conv pyramid, 5 levels)
 # Neck:           identity
-# Heads:          trident (boundary distribution)
+# Heads:          trident (boundary distribution, 16 bins)
 # ─────────────────────────────────────────────────────────────────────────────
 
 dataset:
@@ -22,6 +20,7 @@ dataset:
   text_feat_dir:  "../../../data/hateclipseg/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
   use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  split_seed: 42
   num_classes: 1
   feature_fps: 1.0
   max_seq_len: 512
@@ -30,31 +29,22 @@ dataset:
     audio: 1024
     video: 768
 
-#preprocessor:
-#  type: "concat"
-#  modalities: ["video", "audio", "text"]
-#  d_out: 2560
-
 preprocessor:
-  type: "trifuse"
-  d_out: 512              # = d_model inside TriFuse, and n_in to backbone
-  n_heads: 4
-  n_bottleneck: 4
-  n_unimodal_layers: 4
-  n_fusion_layers: 4
-  dropout: 0.2
+  type: "concat"
+  modalities: ["video", "audio", "text"]
+  d_out: 2560                           # 768 + 1024 + 768
 
 backbone:
   type: "sgp"
-  d_model: 256
-  n_proj_layers: 1
+  d_model: 512
+  n_proj_layers: 2                      # two proj convs to reduce 2560 → 512
   n_layers: 5               # strides: [1, 2, 4, 8, 16]
   n_heads: 2                # ignored by sgp; kept for API compatibility
   window_size: 17           # ignored by sgp; kept for API compatibility
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 512         # 4× d_model
+  sgp_mlp_dim: 768         # matches trifuse_tridet (not 4× d_model — check if intentional)
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"
@@ -64,11 +54,11 @@ neck:
 
 heads:
   type: "trident"
-  n_layers: 3
+  n_layers: 2
   kernel_size: 3
   use_layer_norm: true
   boundary_kernel_size: 3
-  num_bins: 8
+  num_bins: 16
   iou_weight_power: 2
 
 regression_ranges:
@@ -79,7 +69,7 @@ regression_ranges:
   - [32,  100000]
 
 loss:
-  focal_alpha: 0.50
+  focal_alpha: 0.45
   focal_gamma: 2.0
   lambda_reg: 1.0
   center_sampling: true
@@ -98,7 +88,7 @@ training:
   cls_prior_prob: 0.01
   dropout: 0.2
   droppath: 0.1
-  label_smoothing: 0.05
+  label_smoothing: 0.00
   weighted_sampling: false
   patience: 10
 

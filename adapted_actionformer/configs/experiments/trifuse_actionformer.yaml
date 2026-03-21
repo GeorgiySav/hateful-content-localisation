@@ -1,13 +1,12 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Experiment: Concat preprocessor + ActionFormer backbone
+# Experiment: TriFuse preprocessor + ActionFormer backbone
 #
-# Architecture:   concat → transformer → standard head
-# Purpose:        Baseline for trifuse_actionformer.yaml — replaces TriFuse with
-#                 simple feature concatenation, keeping all other components
-#                 identical.  Any gain from trifuse_actionformer over this config
-#                 is attributable solely to TriFuse's cross-modal fusion.
+# Architecture:   trifuse → transformer → standard head
+# Purpose:        Tests whether TriFuse's trimodal bottleneck fusion improves
+#                 localisation quality when paired with ActionFormer's windowed
+#                 self-attention backbone.
 #
-# Preprocessor:   concat (video+audio+text, d_out=2560)
+# Preprocessor:   trifuse (d_out=256, 2 unimodal + 2 fusion layers)
 # Backbone:       transformer (ActionFormer, 5 levels, window=17)
 # Heads:          standard
 # ─────────────────────────────────────────────────────────────────────────────
@@ -29,17 +28,21 @@ dataset:
     audio: 1024                         # Wav2Vec2 Large
     video: 768                          # CLIP ViT-L/14
 
-# Concat preprocessor (no learnable parameters; raw feature concatenation)
+# TriFuse cross-modal fusion preprocessor
 preprocessor:
-  type: "concat"
-  modalities: ["video", "audio", "text"]
-  d_out: 2560                           # 768 + 1024 + 768
+  type: "trifuse"
+  d_out: 512              # = d_model inside TriFuse, and n_in to backbone
+  n_heads: 4
+  n_bottleneck: 4
+  n_unimodal_layers: 2
+  n_fusion_layers: 2
+  dropout: 0.3
 
 # ActionFormer backbone
 backbone:
   type: "transformer"
   d_model: 512
-  n_proj_layers: 2        # two proj convs to reduce 2560 → 512
+  n_proj_layers: 1        # single proj conv — preprocessor already projects to d_model
   n_layers: 5                           # strides: [1, 2, 4, 8, 16]
   n_heads: 4
   window_size: 17                       # window_size-1=16 divides 512, 256, 128, 64, 32 cleanly
@@ -54,6 +57,16 @@ heads:
   use_layer_norm: true
 
 # Regression ranges per pyramid level (seconds at 1 FPS)
+# Design principle (ActionFormer paper Table 3c): start at [0,4] and double each
+# level, matching the 2x stride. The initial range [0,4] is critical — ablation
+# shows [0,4] > [0,8] > [0,16] by a wide margin.
+#
+# HateClipSeg D/2 distribution: p25=3.4, p50=4.3, p75=5.0, p90=6.0
+#   Level 0 (stride  1): D/2 in [0,  4] -> D <= 8s   ~45% of segments
+#   Level 1 (stride  2): D/2 in [4,  8] -> D 8-16s   ~45% of segments
+#   Level 2 (stride  4): D/2 in [8, 16] -> D 16-32s  ~ 4%
+#   Level 3 (stride  8): D/2 in [16,32] -> D 32-64s  ~ 1%
+#   Level 4 (stride 16): D/2 in [32,inf]-> D > 64s   long tail (max ~211s)
 regression_ranges:
   - [0,    4]
   - [4,    8]
@@ -100,6 +113,6 @@ augmentation:
 inference:
   score_threshold: 0.001
   nms_method: "soft_nms"
-  nms_sigma: 0.4
+  nms_sigma: 0.4          # tuned on val: 0.2 > 0.3 > 0.4; short/dense segments benefit from tighter suppression
   nms_threshold: 0.1
   max_detections: 200

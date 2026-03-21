@@ -1,5 +1,5 @@
 """
-Sequential experiment runner for architecture experiments on HateClipSeg (concat preprocessor).
+Sequential experiment runner for architecture experiments on HateClipSeg.
 
 Usage:
     # Run all experiments (skip any already done):
@@ -41,66 +41,49 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # ── Experiment registry ────────────────────────────────────────────────────────
 # (name, config_path_relative_to_script_dir, output_dir, description)
 EXPERIMENTS = [
+    # ── TriFuse preprocessor experiments ──────────────────────────────────────
+    (
+        "trifuse_actionformer",
+        "configs/experiments/trifuse_actionformer.yaml",
+        "runs/exp/trifuse_actionformer",
+        "TriFuse + ActionFormer (windowed self-attention backbone)",
+    ),
+    (
+        "trifuse_temporalmaxer",
+        "configs/experiments/trifuse_temporalmaxer.yaml",
+        "runs/exp/trifuse_temporalmaxer",
+        "TriFuse + TemporalMaxer (parameter-free MaxPool backbone)",
+    ),
+    (
+        "trifuse_trident_temporalmaxer",
+        "configs/experiments/trifuse_trident_temporalmaxer.yaml",
+        "runs/exp/trifuse_trident_temporalmaxer",
+        "TriFuse + TemporalMaxer + trident head (boundary distribution)",
+    ),
+    (
+        "trifuse_tridet",
+        "configs/experiments/trifuse_tridet.yaml",
+        "runs/exp/trifuse_tridet",
+        "TriFuse + TriDet (SGP backbone + trident distribution head)",
+    ),
+    # ── Concat preprocessor baselines ─────────────────────────────────────────
     (
         "concat_actionformer",
         "configs/experiments/concat_actionformer.yaml",
-        "runs/concat_actionformer",
-        "concat → transformer → identity → standard  [baseline]",
-    ),
-    (
-        "concat_actionformer_fpn",
-        "configs/experiments/concat_actionformer_fpn.yaml",
-        "runs/concat_actionformer_fpn",
-        "concat → transformer → FPN → standard",
-    ),
-    (
-        "concat_actionformer_trident",
-        "configs/experiments/concat_actionformer_trident.yaml",
-        "runs/concat_actionformer_trident",
-        "concat → transformer → identity → trident",
+        "runs/exp/concat_actionformer",
+        "Concat + ActionFormer (baseline for trifuse_actionformer)",
     ),
     (
         "concat_temporalmaxer",
         "configs/experiments/concat_temporalmaxer.yaml",
-        "runs/concat_temporalmaxer",
-        "concat → temporalmaxer → identity → standard",
-    ),
-    (
-        "concat_sgp",
-        "configs/experiments/concat_sgp.yaml",
-        "runs/concat_sgp",
-        "concat → sgp → identity → standard",
+        "runs/exp/concat_temporalmaxer",
+        "Concat + TemporalMaxer (baseline for trifuse_temporalmaxer)",
     ),
     (
         "concat_tridet",
         "configs/experiments/concat_tridet.yaml",
-        "runs/concat_tridet",
-        "concat → sgp → identity → trident  [canonical TriDet]",
-    ),
-    # ── TriDet anti-overfitting ablations ─────────────────────────────────────
-    (
-        "concat_tridet_strong_reg",
-        "configs/experiments/concat_tridet_strong_reg.yaml",
-        "runs/concat_tridet_strong_reg",
-        "TriDet + dropout↑ droppath↑ wd↑ label_smooth↑",
-    ),
-    (
-        "concat_tridet_small_model",
-        "configs/experiments/concat_tridet_small_model.yaml",
-        "runs/concat_tridet_small_model",
-        "TriDet + d_model 256→128, mlp_dim 1024→512",
-    ),
-    (
-        "concat_tridet_strong_aug",
-        "configs/experiments/concat_tridet_strong_aug.yaml",
-        "runs/concat_tridet_strong_aug",
-        "TriDet + noise↑ mask_prob↑ mask_num↑ jitter↑",
-    ),
-    (
-        "concat_tridet_combined",
-        "configs/experiments/concat_tridet_combined.yaml",
-        "runs/concat_tridet_combined",
-        "TriDet + small model + strong reg + strong aug",
+        "runs/exp/concat_tridet",
+        "Concat + TriDet (baseline for trifuse_tridet)",
     ),
 ]
 
@@ -165,7 +148,7 @@ def run_training(name, config_path, output_dir, python_exe, seed=42):
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run architecture experiments on HateClipSeg (concat preprocessor)")
+    parser = argparse.ArgumentParser(description="Run TriFuse preprocessor experiments on HateClipSeg")
     parser.add_argument(
         "--force", default=None, metavar="NAME",
         help="Force re-run a specific experiment by name (deletes its model_best.pth.tar)",
@@ -192,7 +175,7 @@ def parse_args():
 def print_table(results):
     """Print a comparison table sorted by best_mAP descending."""
     baseline_map = next(
-        (r["best_mAP"] for r in results if r["name"] == "concat_actionformer" and r["best_mAP"] is not None),
+        (r["best_mAP"] for r in results if r["name"] == "trifuse_actionformer" and r["best_mAP"] is not None),
         None,
     )
 

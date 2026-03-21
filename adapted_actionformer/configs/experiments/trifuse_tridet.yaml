@@ -1,18 +1,18 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Experiment: TriDet + all anti-overfitting measures combined
+# Experiment: TriDet (SGP backbone + trident head) + concat preprocessor
 #
 # Architecture:   concat → sgp → identity → trident
-# Purpose:        Combines all three regularization axes from the ablation
-#                 experiments. If this matches or beats the individual fixes,
-#                 the axes are complementary; if not, one dominates.
+# Purpose:        Canonical TriDet configuration (Sun et al., CVPR 2023).
+#                 Combines SGP's efficient depthwise-conv backbone with the
+#                 trident boundary-distribution head. The distribution head
+#                 predicts soft start/end distributions over num_bins bins,
+#                 which handles ambiguous boundaries better than direct offsets.
+#                 This is the strongest single-model configuration in TriDet.
 #
-# Changes vs concat_tridet (base):
-#   Capacity:      d_model 256→128, sgp_mlp_dim 1024→512, n_proj_layers 4→3
-#   Regularization: dropout 0.3→0.5, droppath 0.2→0.35,
-#                   weight_decay 1e-3→5e-3, label_smoothing 0.10→0.20
-#   Augmentation:  feature_noise_std 0.02→0.05, temporal_mask_prob 0.5→0.7,
-#                  temporal_mask_num 2→3, temporal_mask_max_len 2→3,
-#                  segment_jitter_sec 0.5→1.0
+# Preprocessor:   concat (video+audio+text, d_out=2560)
+# Backbone:       sgp (depthwise conv pyramid, 5 levels)
+# Neck:           identity
+# Heads:          trident (boundary distribution)
 # ─────────────────────────────────────────────────────────────────────────────
 
 dataset:
@@ -21,6 +21,8 @@ dataset:
   audio_feat_dir: "../../../data/hateclipseg/audio_features"
   text_feat_dir:  "../../../data/hateclipseg/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
+  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  split_seed: 42
   num_classes: 1
   feature_fps: 1.0
   max_seq_len: 512
@@ -29,22 +31,31 @@ dataset:
     audio: 1024
     video: 768
 
+#preprocessor:
+#  type: "concat"
+#  modalities: ["video", "audio", "text"]
+#  d_out: 2560
+
 preprocessor:
-  type: "concat"
-  modalities: ["video", "audio", "text"]
-  d_out: 2560
+  type: "trifuse"
+  d_out: 512              # = d_model inside TriFuse, and n_in to backbone
+  n_heads: 4
+  n_bottleneck: 4
+  n_unimodal_layers: 2
+  n_fusion_layers: 2
+  dropout: 0.3
 
 backbone:
   type: "sgp"
-  d_model: 128              # ↓ from 256
-  n_proj_layers: 3          # ↓ from 4
-  n_layers: 5
-  n_heads: 2
-  window_size: 17
+  d_model: 512
+  n_proj_layers: 1
+  n_layers: 5               # strides: [1, 2, 4, 8, 16]
+  n_heads: 2                # ignored by sgp; kept for API compatibility
+  window_size: 17           # ignored by sgp; kept for API compatibility
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 512          # ↓ from 1024
+  sgp_mlp_dim: 768         # 4× d_model
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"
@@ -54,7 +65,7 @@ neck:
 
 heads:
   type: "trident"
-  n_layers: 3
+  n_layers: 2
   kernel_size: 3
   use_layer_norm: true
   boundary_kernel_size: 3
@@ -69,7 +80,7 @@ regression_ranges:
   - [32,  100000]
 
 loss:
-  focal_alpha: 0.40
+  focal_alpha: 0.45
   focal_gamma: 2.0
   lambda_reg: 1.0
   center_sampling: true
@@ -79,30 +90,30 @@ training:
   batch_size: 8
   epochs: 30
   learning_rate: 1.0e-4
-  weight_decay: 5.0e-3      # ↑ from 1e-3
+  weight_decay: 1.0e-3
   warmup_epochs: 5
   lr_scheduler: "cosine"
   use_ema: true
   ema_decay: 0.999
   clip_grad_norm: 1.0
   cls_prior_prob: 0.01
-  dropout: 0.5              # ↑ from 0.3
-  droppath: 0.35            # ↑ from 0.2
-  label_smoothing: 0.20     # ↑ from 0.10
+  dropout: 0.2
+  droppath: 0.1
+  label_smoothing: 0.00
   weighted_sampling: false
   patience: 10
 
 augmentation:
   enabled: true
-  feature_noise_std: 0.05      # ↑ from 0.02
-  temporal_mask_prob: 0.7      # ↑ from 0.5
-  temporal_mask_num: 3         # ↑ from 2
-  temporal_mask_max_len: 3     # ↑ from 2
-  segment_jitter_sec: 1.0      # ↑ from 0.5
+  feature_noise_std: 0.02
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 2
+  temporal_mask_max_len: 2
+  segment_jitter_sec: 0.5
 
 inference:
   score_threshold: 0.001
   nms_method: "soft_nms"
-  nms_sigma: 0.2
+  nms_sigma: 0.4
   nms_threshold: 0.1
   max_detections: 200
