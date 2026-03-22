@@ -31,17 +31,18 @@ dataset:
 
 preprocessor:
   type: "trifuse"
-  d_out: 512              # = d_model inside TriFuse, and n_in to backbone
+  d_out: 768
   n_heads: 4
-  n_bottleneck: 4
-  n_unimodal_layers: 2
-  n_fusion_layers: 2
-  dropout: 0.3
+  n_unimodal_layers: 0
+  n_fusion_layers: 1
+  dropout: 0.1
+  modality_dropout: 0.1
+  mask_absent_text: false 
 
 backbone:
   type: "temporalmaxer"
   d_model: 512
-  n_proj_layers: 1        # single proj conv — preprocessor already projects to d_model
+  n_proj_layers: 2        # single proj conv — preprocessor already projects to d_model
   n_layers: 5             # 1 stem + 4 branch → 5 pyramid levels, strides [1,2,4,8,16]
   n_heads: 4              # unused by temporalmaxer; kept for API compatibility
   window_size: 17         # unused by temporalmaxer; kept for API compatibility
