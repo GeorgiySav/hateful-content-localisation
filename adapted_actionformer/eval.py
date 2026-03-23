@@ -97,6 +97,8 @@ def main():
 
     print(f"[eval] Running inference on '{args.subset}' set ...")
     for batch_idx, batch in enumerate(val_loader):
+        if not any(s.shape[0] > 0 for s in batch['segments']):
+            continue
         with torch.no_grad():
             output = model(batch)
         for res in output:
@@ -135,6 +137,7 @@ def main():
         num_classes=cfg['dataset'].get('num_classes', 1),
         label_map={0: 'hate'},
         verbose=True,
+        video_ids=val_loader.dataset.split_video_ids,
     )
 
     ap_table, mAP, _ = evaluator.evaluate(results, verbose=True)

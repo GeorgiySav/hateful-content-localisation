@@ -85,6 +85,25 @@ EXPERIMENTS = [
         "runs/exp/concat_tridet",
         "Concat + TriDet (baseline for trifuse_tridet)",
     ),
+    # ── Unimodal experiments ─────────────────────────────────────────────────
+    (
+        "unimodal_video_actionformer",
+        "configs/experiments/unimodal_video_actionformer.yaml",
+        "runs/exp/unimodal_video_actionformer",
+        "Video-only + ActionFormer (CLIP ViT-L/14 unimodal ablation)",
+    ),
+    (
+        "unimodal_audio_actionformer",
+        "configs/experiments/unimodal_audio_actionformer.yaml",
+        "runs/exp/unimodal_audio_actionformer",
+        "Audio-only + ActionFormer (Wav2Vec2 Large unimodal ablation)",
+    ),
+    (
+        "unimodal_text_actionformer",
+        "configs/experiments/unimodal_text_actionformer.yaml",
+        "runs/exp/unimodal_text_actionformer",
+        "Text-only + ActionFormer (HateBERT CLS unimodal ablation)",
+    ),
 ]
 
 

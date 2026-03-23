@@ -188,10 +188,12 @@ def main():
 
             best_mAP = max(mAP, best_mAP)
 
+            saved_state = (model_ema.module.state_dict()
+                           if model_ema is not None else model.state_dict())
             save_checkpoint(
                 {
                     'epoch'      : epoch,
-                    'state_dict' : model.state_dict(),
+                    'state_dict' : saved_state,
                     'optimizer'  : optimizer.state_dict(),
                     'scheduler'  : scheduler.state_dict(),
                     'best_mAP'   : best_mAP,

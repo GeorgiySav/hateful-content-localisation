@@ -1,0 +1,103 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Experiment: Audio-only unimodal + ActionFormer backbone
+#
+# Architecture:   audio features only → transformer → standard head
+# Purpose:        Unimodal ablation — isolates the contribution of speech/audio
+#                 features (Wav2Vec2 Large) to temporal localisation.
+#
+# Preprocessor:   concat (audio only, d_out=1024)
+# Backbone:       transformer (ActionFormer, 5 levels, window=17)
+# Heads:          standard
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dataset
+dataset:
+  name: "hateclipseg"
+  video_feat_dir: "../../../data/hateclipseg/video_features"
+  audio_feat_dir: "../../../data/hateclipseg/audio_features"
+  text_feat_dir:  "../../../data/hateclipseg/text_features"
+  annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
+  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  split_seed: 42
+  num_classes: 1
+  feature_fps: 1.0
+  max_seq_len: 512                      # 256×2; covers all 431 videos (max feat len=350); must be multiple of 256 (=16×max_stride_at_5_levels) for sliding-window attention
+  input_dims:
+    text: 768                           # HateBERT CLS
+    audio: 1024                         # Wav2Vec2 Large
+    video: 768                          # CLIP ViT-L/14
+
+# Unimodal preprocessor — single modality passthrough (no learnable parameters)
+preprocessor:
+  type: "unimodal"
+  modality: "audio"
+  d_out: 1024                           # Wav2Vec2 Large dim
+
+# ActionFormer backbone
+backbone:
+  type: "transformer"
+  d_model: 512
+  n_proj_layers: 1        # one proj conv to reduce 1024 → 512
+  n_layers: 5                           # strides: [1, 2, 4, 8, 16]
+  n_heads: 4
+  window_size: 17                       # window_size-1=16 divides 512, 256, 128, 64, 32 cleanly
+  downsample_start: 1
+  downsample_ratio: 2
+
+# Decoder heads
+heads:
+  type: "standard"
+  n_layers: 2
+  kernel_size: 3
+  use_layer_norm: true
+
+# Regression ranges per pyramid level (seconds at 1 FPS)
+regression_ranges:
+  - [0,    4]
+  - [4,    8]
+  - [8,   16]
+  - [16,  32]
+  - [32,  100000]
+
+# Loss
+loss:
+  focal_alpha: 0.45
+  focal_gamma: 2.0
+  lambda_reg: 1.0
+  center_sampling: true
+  center_sampling_radius: 2.0
+
+# Training
+training:
+  batch_size: 8
+  epochs: 30
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-3
+  warmup_epochs: 5
+  lr_scheduler: "cosine"
+  use_ema: true
+  ema_decay: 0.999
+  clip_grad_norm: 1.0
+  cls_prior_prob: 0.01
+  dropout: 0.2
+  droppath: 0.1
+  label_smoothing: 0.00
+  weighted_sampling: false
+  patience: 10
+
+# Temporal augmentation (training only)
+augmentation:
+  enabled: true
+  feature_noise_std: 0.02
+  temporal_mask_prob: 0.5
+  temporal_mask_num: 2
+  temporal_mask_max_len: 2   # p10 segment ~5s; keep masks small
+  segment_jitter_sec: 0.5    # ±0.5s — ~6% of median segment (8.6s)
+
+# Inference
+inference:
+  score_threshold: 0.001
+  nms_method: "soft_nms"
+  nms_sigma: 0.4
+  nms_threshold: 0.1
+  max_detections: 200
