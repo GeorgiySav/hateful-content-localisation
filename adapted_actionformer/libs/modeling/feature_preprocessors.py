@@ -550,11 +550,9 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
             video_dim=video_dim,
             d_model=d_out,
             n_heads=prep_cfg.get('n_heads', 8),
-            n_unimodal_layers=prep_cfg.get('n_unimodal_layers', 2),
             n_fusion_layers=prep_cfg.get('n_fusion_layers', 4),
             dropout=prep_cfg.get('dropout', 0.1),
             modality_dropout=prep_cfg.get('modality_dropout', 0.0),
-            mask_absent_text=prep_cfg.get('mask_absent_text', True),
         )
 
     else:
