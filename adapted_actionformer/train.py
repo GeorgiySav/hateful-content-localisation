@@ -122,15 +122,17 @@ def main():
         model_ema = ModelEma(model, decay=train_cfg.get('ema_decay', 0.999))
 
     # ── Resume ────────────────────────────────────────────────────────────────
-    start_epoch = 0
-    best_mAP    = 0.0
+    start_epoch       = 0
+    best_mAP          = 0.0
+    best_mAP_per_tiou = []
     if args.resume is not None and os.path.isfile(args.resume):
         ckpt = torch.load(args.resume, map_location='cpu')
         model.load_state_dict(ckpt['state_dict'])
         optimizer.load_state_dict(ckpt['optimizer'])
         scheduler.load_state_dict(ckpt['scheduler'])
-        start_epoch = ckpt.get('epoch', 0) + 1
-        best_mAP    = ckpt.get('best_mAP', 0.0)
+        start_epoch       = ckpt.get('epoch', 0) + 1
+        best_mAP          = ckpt.get('best_mAP', 0.0)
+        best_mAP_per_tiou = ckpt.get('best_mAP_per_tiou', [])
         print(f"[train] Resumed from epoch {start_epoch}, best mAP={best_mAP:.4f}")
 
     # ── Training loop ─────────────────────────────────────────────────────────
@@ -154,7 +156,7 @@ def main():
 
             if epoch % 5 == 0:
                 # Train-set mAP (no grad, deterministic cropping)
-                train_mAP = valid_one_epoch(
+                train_mAP, _ = valid_one_epoch(
                     train_eval_loader, eval_model,
                     curr_epoch=epoch,
                     evaluator=train_evaluator,
@@ -164,7 +166,7 @@ def main():
                 train_mAP = 0.0  # skip expensive train mAP every epoch, log 0.0 as placeholder
 
             # Validation mAP
-            mAP = valid_one_epoch(
+            mAP, mAP_per_tiou = valid_one_epoch(
                 val_loader, eval_model,
                 curr_epoch=epoch,
                 evaluator=evaluator,
@@ -174,14 +176,18 @@ def main():
             if tb_writer is not None:
                 tb_writer.add_scalar('train/mAP', train_mAP, epoch)
 
+            per_str = '  '.join(
+                f'@{t:.1f}={ap:.4f}' for t, ap in zip(tiou_thresholds, mAP_per_tiou)
+            ) if mAP_per_tiou else ''
             if train_mAP > 0.0:
                 print(f"[epoch {epoch}]  train mAP={train_mAP:.4f}  "
-                  f"val mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
+                      f"val: {per_str}  mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
             else:
-                print(f"[epoch {epoch}]  val mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
+                print(f"[epoch {epoch}]  val: {per_str}  mAP={mAP:.4f}  best={max(mAP, best_mAP):.4f}")
 
             is_best = mAP > best_mAP
             if is_best:
+                best_mAP_per_tiou = mAP_per_tiou
                 no_improve = 0
             else:
                 no_improve += 1
@@ -192,12 +198,14 @@ def main():
                            if model_ema is not None else model.state_dict())
             save_checkpoint(
                 {
-                    'epoch'      : epoch,
-                    'state_dict' : saved_state,
-                    'optimizer'  : optimizer.state_dict(),
-                    'scheduler'  : scheduler.state_dict(),
-                    'best_mAP'   : best_mAP,
-                    'mAP'        : mAP,
+                    'epoch'             : epoch,
+                    'state_dict'        : saved_state,
+                    'optimizer'         : optimizer.state_dict(),
+                    'scheduler'         : scheduler.state_dict(),
+                    'best_mAP'          : best_mAP,
+                    'mAP'               : mAP,
+                    'best_mAP_per_tiou' : best_mAP_per_tiou,
+                    'tiou_thresholds'   : tiou_thresholds,
                 },
                 is_best=is_best,
                 file_folder=args.output_dir,

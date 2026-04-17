@@ -49,6 +49,8 @@ def parse_args():
     parser.add_argument('--tiou',        nargs='+',     type=float,
                         default=[0.3, 0.5, 0.7],
                         help="tIoU thresholds for mAP")
+    parser.add_argument('--patch_checkpoint', action='store_true',
+                        help="Write best_mAP_per_tiou and tiou_thresholds back into the checkpoint")
     return parser.parse_args()
 
 
@@ -141,11 +143,18 @@ def main():
     )
 
     ap_table, mAP, _ = evaluator.evaluate(results, verbose=True)
+    mAP_per_tiou = ap_table.mean(axis=0).tolist()
 
     print("\n[eval] Results:")
     for tiou_idx, tiou in enumerate(args.tiou):
         print(f"  AP@{tiou:.1f} = {ap_table[0, tiou_idx]:.4f}")
     print(f"  mAP = {mAP:.4f}")
+
+    if args.patch_checkpoint:
+        ckpt['best_mAP_per_tiou'] = mAP_per_tiou
+        ckpt['tiou_thresholds']   = args.tiou
+        torch.save(ckpt, args.checkpoint)
+        print(f"[eval] Patched {args.checkpoint}")
 
 
 if __name__ == '__main__':

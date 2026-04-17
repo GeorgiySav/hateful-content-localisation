@@ -37,7 +37,7 @@ preprocessor:
 backbone:
   type: "transformer"
   d_model: 512
-  n_proj_layers: 1        # one proj conv to reduce 1024 → 512
+  n_proj_layers: 2        # two proj convs to reduce 1024 → 512; matches bimodal/trimodal configs
   n_layers: 5                           # strides: [1, 2, 4, 8, 16]
   n_heads: 4
   window_size: 17                       # window_size-1=16 divides 512, 256, 128, 64, 32 cleanly

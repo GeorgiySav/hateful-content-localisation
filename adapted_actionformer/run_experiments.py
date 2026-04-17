@@ -85,6 +85,56 @@ EXPERIMENTS = [
         "runs/exp/concat_tridet",
         "Concat + TriDet (baseline for trifuse_tridet)",
     ),
+    # ── Trident head ablations ────────────────────────────────────────────────
+    (
+        "trifuse_trident_actionformer",
+        "configs/experiments/trifuse_trident_actionformer.yaml",
+        "runs/exp/trifuse_trident_actionformer",
+        "TriFuse + ActionFormer + trident head (vs standard in trifuse_actionformer)",
+    ),
+    (
+        "trifuse_sgp_standard",
+        "configs/experiments/trifuse_sgp_standard.yaml",
+        "runs/exp/trifuse_sgp_standard",
+        "TriFuse + SGP + standard head (vs trident in trifuse_tridet)",
+    ),
+    (
+        "concat_trident_actionformer",
+        "configs/experiments/concat_trident_actionformer.yaml",
+        "runs/exp/concat_trident_actionformer",
+        "Concat + ActionFormer + trident head (vs standard in concat_actionformer)",
+    ),
+    (
+        "concat_trident_temporalmaxer",
+        "configs/experiments/concat_trident_temporalmaxer.yaml",
+        "runs/exp/concat_trident_temporalmaxer",
+        "Concat + TemporalMaxer + trident head (vs standard in concat_temporalmaxer)",
+    ),
+    (
+        "concat_sgp_standard",
+        "configs/experiments/concat_sgp_standard.yaml",
+        "runs/exp/concat_sgp_standard",
+        "Concat + SGP + standard head (vs trident in concat_tridet)",
+    ),
+    # ── Bimodal ablations ────────────────────────────────────────────────────
+    (
+        "bimodal_va_actionformer",
+        "configs/experiments/bimodal_va_actionformer.yaml",
+        "runs/exp/bimodal_va_actionformer",
+        "Video+Audio + ActionFormer (bimodal ablation, no text)",
+    ),
+    (
+        "bimodal_at_actionformer",
+        "configs/experiments/bimodal_at_actionformer.yaml",
+        "runs/exp/bimodal_at_actionformer",
+        "Audio+Text + ActionFormer (bimodal ablation, no video)",
+    ),
+    (
+        "bimodal_vt_actionformer",
+        "configs/experiments/bimodal_vt_actionformer.yaml",
+        "runs/exp/bimodal_vt_actionformer",
+        "Video+Text + ActionFormer (bimodal ablation, no audio)",
+    ),
     # ── Unimodal experiments ─────────────────────────────────────────────────
     (
         "unimodal_video_actionformer",
@@ -118,15 +168,40 @@ def resume_ckpt_path(output_dir):
 
 
 def read_best_map(output_dir):
+    """Return (best_mAP, mAP_per_tiou, tiou_thresholds) from model_best.pth.tar.
+    Returns (None, [], []) if the checkpoint does not exist or cannot be read.
+    """
     path = best_ckpt_path(output_dir)
     try:
         ckpt = torch.load(path, map_location="cpu")
-        return float(ckpt.get("best_mAP", ckpt.get("mAP", 0.0)))
+        mAP = float(ckpt.get("best_mAP", ckpt.get("mAP", 0.0)))
+        per_tiou   = ckpt.get("best_mAP_per_tiou", [])
+        thresholds = ckpt.get("tiou_thresholds", [])
+        return mAP, per_tiou, thresholds
     except FileNotFoundError:
-        return None
+        return None, [], []
     except Exception as e:
         print(f"  [warn] Could not read checkpoint {path}: {e}")
-        return None
+        return None, [], []
+
+
+def run_evaluation(name, config_path, output_dir, python_exe):
+    """Call eval.py to compute per-threshold mAP and patch it into model_best.pth.tar."""
+    abs_config = os.path.join(_SCRIPT_DIR, config_path)
+    abs_ckpt   = best_ckpt_path(output_dir)
+    cmd = [
+        python_exe,
+        os.path.join(_SCRIPT_DIR, "eval.py"),
+        "--config",     abs_config,
+        "--checkpoint", abs_ckpt,
+        "--patch_checkpoint",
+    ]
+    print(f"\n[eval] '{name}' missing per-threshold data — re-evaluating checkpoint ...")
+    print(f"  Command: {' '.join(cmd)}")
+    try:
+        subprocess.run(cmd, check=True, cwd=_SCRIPT_DIR)
+    except subprocess.CalledProcessError as e:
+        print(f"  [warn] Evaluation failed for '{name}' (exit code {e.returncode})")
 
 
 def run_training(name, config_path, output_dir, python_exe, seed=42):
@@ -198,10 +273,26 @@ def print_table(results):
         None,
     )
 
-    header = f"{'Experiment':<18} {'Best mAP':>10}  {'vs baseline':>12}  Description"
-    print("\n" + "-" * 80)
+    # Collect the union of tIoU thresholds seen across all results
+    all_thresholds = []
+    for r in results:
+        for t in r.get("tiou_thresholds", []):
+            if t not in all_thresholds:
+                all_thresholds.append(t)
+    all_thresholds = sorted(all_thresholds)
+
+    # Build header
+    tiou_header = "  ".join(f"@{t:.1f}" for t in all_thresholds)
+    tiou_width  = max(len(tiou_header), 1)
+    sep_width   = 28 + tiou_width + 26 + 40
+    header = (
+        f"  {'Experiment':<20}"
+        + (f"  {tiou_header}" if all_thresholds else "")
+        + f"  {'mAP':>6}  {'vs base':>8}  Description"
+    )
+    print("\n" + "-" * sep_width)
     print(header)
-    print("-" * 80)
+    print("-" * sep_width)
 
     sorted_results = sorted(
         results,
@@ -209,10 +300,9 @@ def print_table(results):
         reverse=True,
     )
     for r in sorted_results:
-        mAP_str = f"{r['best_mAP']:.4f}" if r["best_mAP"] is not None else "  N/A  "
+        mAP_str = f"{r['best_mAP']:.4f}" if r["best_mAP"] is not None else "  N/A"
         if baseline_map is not None and r["best_mAP"] is not None:
-            delta = r["best_mAP"] - baseline_map
-            delta_str = f"{delta:+.4f}"
+            delta_str = f"{r['best_mAP'] - baseline_map:+.4f}"
         else:
             delta_str = "      ?"
         status = ""
@@ -220,8 +310,18 @@ def print_table(results):
             status = " [skipped]"
         elif r["failed"]:
             status = " [FAILED]"
-        print(f"  {r['name']:<16} {mAP_str:>10}  {delta_str:>12}  {r['description']}{status}")
-    print("-" * 80 + "\n")
+
+        if all_thresholds:
+            per_tiou_map = dict(zip(r.get("tiou_thresholds", []), r.get("best_mAP_per_tiou", [])))
+            tiou_str = "  ".join(
+                f"{per_tiou_map[t]:.4f}" if t in per_tiou_map else "  N/A"
+                for t in all_thresholds
+            )
+            row = f"  {r['name']:<20}  {tiou_str}  {mAP_str:>6}  {delta_str:>8}  {r['description']}{status}"
+        else:
+            row = f"  {r['name']:<20}  {mAP_str:>6}  {delta_str:>8}  {r['description']}{status}"
+        print(row)
+    print("-" * sep_width + "\n")
 
 
 def main():
@@ -236,18 +336,19 @@ def main():
                   + ", ".join(e[0] for e in EXPERIMENTS))
             sys.exit(1)
 
-    # Force re-run: delete the best checkpoint for that experiment
+    # Force re-run: delete both checkpoints for that experiment so no stale
+    # weights are resumed (important when the architecture changes between runs)
     if args.force is not None:
         forced = [e for e in experiments if e[0] == args.force]
         if not forced:
             print(f"[error] No experiment named '{args.force}'.")
             sys.exit(1)
-        path = best_ckpt_path(forced[0][2])
-        if os.path.isfile(path):
-            os.remove(path)
-            print(f"[force] Deleted {path}")
-        else:
-            print(f"[force] Nothing to delete at {path}")
+        for ckpt_path in (best_ckpt_path(forced[0][2]), resume_ckpt_path(forced[0][2])):
+            if os.path.isfile(ckpt_path):
+                os.remove(ckpt_path)
+                print(f"[force] Deleted {ckpt_path}")
+            else:
+                print(f"[force] Nothing to delete at {ckpt_path}")
 
     results = []
     interrupted = False
@@ -259,15 +360,22 @@ def main():
             output_dir=output_dir,
             description=description,
             best_mAP=None,
+            best_mAP_per_tiou=[],
+            tiou_thresholds=[],
             skipped=False,
             failed=False,
         )
 
         # Check if already done
-        existing_mAP = read_best_map(output_dir)
+        existing_mAP, existing_per_tiou, existing_thresholds = read_best_map(output_dir)
         if existing_mAP is not None and args.force != name:
+            if not existing_per_tiou and not args.dry_run:
+                run_evaluation(name, config_path, output_dir, args.python)
+                existing_mAP, existing_per_tiou, existing_thresholds = read_best_map(output_dir)
             print(f"\n[skip] '{name}' already has model_best.pth.tar  (best_mAP={existing_mAP:.4f})")
-            result["best_mAP"] = existing_mAP
+            result["best_mAP"]          = existing_mAP
+            result["best_mAP_per_tiou"] = existing_per_tiou
+            result["tiou_thresholds"]   = existing_thresholds
             result["skipped"] = True
             results.append(result)
             continue
@@ -282,19 +390,24 @@ def main():
         except KeyboardInterrupt:
             interrupted = True
             # Read whatever was saved so far
-            result["best_mAP"] = read_best_map(output_dir)
+            mAP, per_tiou, thresholds = read_best_map(output_dir)
+            result["best_mAP"]          = mAP
+            result["best_mAP_per_tiou"] = per_tiou
+            result["tiou_thresholds"]   = thresholds
             result["failed"] = True
             results.append(result)
             break
 
+        mAP, per_tiou, thresholds = read_best_map(output_dir)
+        result["best_mAP"]          = mAP
+        result["best_mAP_per_tiou"] = per_tiou
+        result["tiou_thresholds"]   = thresholds
         if success:
-            result["best_mAP"] = read_best_map(output_dir)
             if result["best_mAP"] is None:
                 print(f"  [warn] Training succeeded but no model_best.pth.tar found for '{name}'")
                 result["failed"] = True
         else:
             result["failed"] = True
-            result["best_mAP"] = read_best_map(output_dir)  # partial best, if any
 
         results.append(result)
 

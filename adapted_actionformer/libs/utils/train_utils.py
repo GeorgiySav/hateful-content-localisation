@@ -365,8 +365,10 @@ def valid_one_epoch(
         results['score']   = np.array([])
 
     mAP = 0.0
+    mAP_per_tiou = []
     if evaluator is not None:
-        _, mAP, _ = evaluator.evaluate(results, verbose=True)
+        ap_table, mAP, tiou_thresholds = evaluator.evaluate(results, verbose=True)
+        mAP_per_tiou = ap_table.mean(axis=0).tolist()
     elif output_file is not None:
         import pickle
         with open(output_file, 'wb') as f:
@@ -374,5 +376,7 @@ def valid_one_epoch(
 
     if tb_writer is not None:
         tb_writer.add_scalar('val/mAP', mAP, curr_epoch)
+        for t, ap in zip(evaluator.tiou_thresholds if evaluator else [], mAP_per_tiou):
+            tb_writer.add_scalar(f'val/mAP@{t:.1f}', ap, curr_epoch)
 
-    return mAP
+    return mAP, mAP_per_tiou
