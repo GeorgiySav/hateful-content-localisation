@@ -1,13 +1,12 @@
 """
 extract_features.py — Offline feature extraction pipeline (Section 3.1).
 
-Reproduces exactly the four-modality feature extraction described in
+Reproduces exactly the three-modality feature extraction described in
 the paper before training begins:
 
   Video : CLIP ViT-L/14 frame-level features   (768-dim per frame)
   Audio : wav2vec 2.0 Large features            (1024-dim per step, resampled to T)
   Text  : Sentence-wise HateBERT embeddings     (768-dim per sentence, padded to T)
-  OCR   : HateBERT embeddings of per-frame on-screen text → (T, 768)
 
 The text pipeline follows the four steps in Section 3.1 / Fig. 3:
   1. Whisper ASR → raw transcript with word timestamps
@@ -19,10 +18,9 @@ All outputs are saved as .pt tensors to:
     data/HateMM/video_features/<video_id>.pt   — (T, 768)
     data/HateMM/audio_features/<video_id>.pt   — (T, 1024)
     data/HateMM/text_features/<video_id>.pt    — (T, 768)
-    data/HateMM/ocr_features/<video_id>.pt     — (T, 768)
 
 Requirements (installed separately, not needed for training itself):
-    pip install torch torchaudio transformers openai-whisper nltk easyocr
+    pip install torch torchaudio transformers openai-whisper nltk
     pip install git+https://github.com/openai/CLIP.git
 
 Usage:
@@ -54,8 +52,6 @@ try:
     import nltk
     nltk.download("punkt", quiet=True)
     from nltk.tokenize import sent_tokenize
-    import easyocr
-    import re
     HAS_EXTRACTION_DEPS = True
 except ImportError:
     HAS_EXTRACTION_DEPS = False
@@ -293,138 +289,12 @@ class TextFeatureExtractor:
 
 
 # ════════════════════════════════════════════════════════════════════════════════
-# OCR features  —  per-frame EasyOCR + HateBERT  (Section 3.1, MM-HSD)
-# ════════════════════════════════════════════════════════════════════════════════
-
-# Regex to keep only alphanumeric, spaces, common punctuation, and apostrophes.
-# Strips emoji, symbols, and control characters (MM-HSD Section 3.1 cleaning).
-_OCR_KEEP = re.compile(r"[^a-zA-Z0-9 .,!?:;'\-]") if HAS_EXTRACTION_DEPS else None
-
-
-class OCRFeatureExtractor:
-    """
-    Implements per-frame on-screen text embedding (Section 3.1, MM-HSD):
-      1. Sample frames at target fps using OpenCV (aligned with VideoFeatureExtractor)
-      2. Run EasyOCR on each frame; concatenate detected text regions per frame
-      3. Clean each per-frame string: retain alphanumeric + .,!?:;-' (MM-HSD §3.1)
-      4. HateBERT CLS encoding per frame (or zeros if no text detected)
-      → frame-aligned output (T, 768), same convention as the transcript pipeline
-
-    Each frame is independent — no cross-frame de-duplication or merging.
-    """
-
-    def __init__(self, device="cpu"):
-        assert HAS_EXTRACTION_DEPS, "Install easyocr, transformers first."
-        self.device = device
-
-        # EasyOCR reader — loaded once, reused across all calls
-        self.reader = easyocr.Reader(["en"], gpu=(device != "cpu"))
-
-        # HateBERT for frame-level OCR text encoding (step 4)
-        self.tokenizer = BertTokenizer.from_pretrained("GroNLP/hateBERT")
-        self.bert = BertModel.from_pretrained("GroNLP/hateBERT").to(device).eval()
-
-    @staticmethod
-    def _clean(text: str) -> str:
-        """
-        Clean raw OCR text per MM-HSD Section 3.1:
-        retain only alphanumeric characters, common punctuation (.,!?:;-),
-        and apostrophes (for contractions).  Strip emoji, symbols, and
-        control characters.  Collapse whitespace and strip.
-        """
-        cleaned = _OCR_KEEP.sub("", text)
-        cleaned = re.sub(r"\s+", " ", cleaned).strip()
-        return cleaned
-
-    @torch.no_grad()
-    def extract(self, video_path: str, target_len: int,
-                fps: float = 1.0) -> torch.Tensor:
-        """
-        Returns (target_len, 768).
-
-        Frames with detected on-screen text (non-empty after cleaning) are
-        embedded via HateBERT CLS token.  Frames with no detected text yield
-        a zero vector.  If every frame has no text, returns
-        torch.zeros(target_len, 768).
-        """
-        # ── Step 1: sample frames at target fps (mirrors VideoFeatureExtractor) ──
-        cap = cv2.VideoCapture(video_path)
-        native_fps = cap.get(cv2.CAP_PROP_FPS)
-        frame_interval = max(1, int(round(native_fps / fps)))
-
-        sampled_frames = []   # list of (frame_index_in_output, BGR ndarray)
-        frame_idx = 0
-        sample_idx = 0
-
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            if frame_idx % frame_interval == 0:
-                if sample_idx < target_len:
-                    sampled_frames.append((sample_idx, frame))
-                sample_idx += 1
-            frame_idx += 1
-
-        cap.release()
-
-        # ── Steps 2–4: OCR → clean → embed per frame ──────────────────────
-        feats = torch.zeros(target_len, 768)
-
-        for out_idx, bgr_frame in sampled_frames:
-            # Step 2: EasyOCR — returns list of (bbox, text, confidence)
-            ocr_results = self.reader.readtext(bgr_frame, detail=1)
-            raw_text = " ".join(det[1] for det in ocr_results)
-
-            # Step 3: clean
-            cleaned = self._clean(raw_text)
-            if not cleaned:
-                continue   # leave feats[out_idx] as zeros
-
-            # Step 4: HateBERT CLS embedding
-            tokens = self.tokenizer(
-                cleaned, return_tensors="pt",
-                truncation=True, max_length=512,
-                padding=True,
-            ).to(self.device)
-            out = self.bert(**tokens)
-            feat = out.last_hidden_state[:, 0, :].squeeze(0).cpu()  # CLS (768,)
-            feats[out_idx] = feat
-
-        return feats   # (target_len, 768)
-
-
-# ════════════════════════════════════════════════════════════════════════════════
 # Main extraction entry point
 # ════════════════════════════════════════════════════════════════════════════════
 
-_ALL_MODALITIES = ("video", "audio", "text", "ocr")
-_OUT_DIRS = {
-    "video": "video_features",
-    "audio": "audio_features",
-    "text":  "text_features",
-    "ocr":   "ocr_features",
-}
-
-
-def _compute_target_len(video_path: str, fps: float) -> int:
-    """
-    Return the number of frames that VideoFeatureExtractor would sample,
-    using only OpenCV metadata (no model inference).  Used when the video
-    modality is skipped but T is still needed by other extractors.
-    """
-    cap = cv2.VideoCapture(video_path)
-    native_fps   = cap.get(cv2.CAP_PROP_FPS)
-    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    cap.release()
-    frame_interval = max(1, int(round(native_fps / fps)))
-    return max(1, math.ceil(total_frames / frame_interval))
-
-
 def extract_all(video_dir: str, out_dir: str, fps: float = 1.0,
                 device: str = "cpu", overwrite: bool = False,
-                video_batch_size: int = 16,
-                modalities: tuple = _ALL_MODALITIES):
+                video_batch_size: int = 16):
     """
     Extract features for all .mp4/.avi videos in video_dir and save to out_dir.
 
@@ -433,31 +303,21 @@ def extract_all(video_dir: str, out_dir: str, fps: float = 1.0,
                            already exist.  Pass --overwrite to re-extract.
         video_batch_size:  Frames per CLIP ViT-L/14 forward pass.  Reduce if
                            you OOM on GPU during video extraction (default: 16).
-        modalities:        Subset of ('video', 'audio', 'text', 'ocr') to run.
-                           Defaults to all four.  Only the selected extractors
-                           are loaded into memory.
     """
     if not HAS_EXTRACTION_DEPS:
         raise RuntimeError(
             "Missing extraction dependencies.  "
-            "Install: transformers openai-whisper torchaudio nltk easyocr "
+            "Install: transformers openai-whisper torchaudio nltk "
             "git+https://github.com/openai/CLIP.git"
         )
 
-    mods = set(modalities)
+    vid_out   = os.path.join(out_dir, "video_features");  os.makedirs(vid_out, exist_ok=True)
+    aud_out   = os.path.join(out_dir, "audio_features");  os.makedirs(aud_out, exist_ok=True)
+    text_out  = os.path.join(out_dir, "text_features");   os.makedirs(text_out, exist_ok=True)
 
-    # ── create output dirs only for selected modalities ───────────────────
-    out_dirs = {}
-    for m in mods:
-        p = os.path.join(out_dir, _OUT_DIRS[m])
-        os.makedirs(p, exist_ok=True)
-        out_dirs[m] = p
-
-    # ── instantiate only the extractors that are needed ───────────────────
-    vfe = VideoFeatureExtractor(device) if "video" in mods else None
-    afe = AudioFeatureExtractor(device) if "audio" in mods else None
-    tfe = TextFeatureExtractor(device)  if "text"  in mods else None
-    ofe = OCRFeatureExtractor(device)   if "ocr"   in mods else None
+    vfe = VideoFeatureExtractor(device)
+    afe = AudioFeatureExtractor(device)
+    tfe = TextFeatureExtractor(device)
 
     video_files = sorted(Path(video_dir).glob("**/*.mp4")) + \
                   sorted(Path(video_dir).glob("**/*.avi"))
@@ -467,49 +327,36 @@ def extract_all(video_dir: str, out_dir: str, fps: float = 1.0,
     for idx, vp in enumerate(video_files):
         vid_id = vp.stem
 
-        out_paths = {m: os.path.join(out_dirs[m], f"{vid_id}.pt") for m in mods}
-        all_exist = all(os.path.isfile(p) for p in out_paths.values())
+        v_path = os.path.join(vid_out,  f"{vid_id}.pt")
+        a_path = os.path.join(aud_out,  f"{vid_id}.pt")
+        t_path = os.path.join(text_out, f"{vid_id}.pt")
+        all_exist = all(os.path.isfile(p) for p in (v_path, a_path, t_path))
 
         if all_exist and not overwrite:
             print(f"[{idx+1}/{len(video_files)}] Skipping (already exists): {vid_id}")
             skipped.append(vid_id)
             continue
 
-        print(f"[{idx+1}/{len(video_files)}] Extracting ({', '.join(sorted(mods))}): {vid_id}")
+        print(f"[{idx+1}/{len(video_files)}] Extracting: {vid_id}")
 
         try:
-            shape_parts = []
-
             # ── video ─────────────────────────────────────────────────────
-            if "video" in mods:
-                v_feat = vfe.extract(str(vp), fps=fps,
-                                     batch_size=video_batch_size)   # (T, 768)
-                T = v_feat.shape[0]
-                torch.save(v_feat, out_paths["video"])
-                shape_parts.append(f"video: {tuple(v_feat.shape)}")
-            else:
-                # T is needed by audio / text / ocr even when video is skipped
-                T = _compute_target_len(str(vp), fps)
+            v_feat = vfe.extract(str(vp), fps=fps,
+                                   batch_size=video_batch_size)   # (T, 768)
+            T = v_feat.shape[0]
+            torch.save(v_feat, v_path)
 
             # ── audio (zeros for silent videos) ───────────────────────────
-            if "audio" in mods:
-                a_feat = afe.extract(str(vp), target_len=T)       # (T, 1024)
-                torch.save(a_feat, out_paths["audio"])
-                shape_parts.append(f"audio: {tuple(a_feat.shape)}")
+            a_feat = afe.extract(str(vp), target_len=T)       # (T, 1024)
+            torch.save(a_feat, a_path)
 
             # ── text ──────────────────────────────────────────────────────
-            if "text" in mods:
-                t_feat = tfe.extract(str(vp), target_len=T, fps=fps)  # (T, 768)
-                torch.save(t_feat, out_paths["text"])
-                shape_parts.append(f"text: {tuple(t_feat.shape)}")
+            t_feat = tfe.extract(str(vp), target_len=T, fps=fps)  # (T, 768)
+            torch.save(t_feat, t_path)
 
-            # ── OCR ───────────────────────────────────────────────────────
-            if "ocr" in mods:
-                o_feat = ofe.extract(str(vp), target_len=T, fps=fps)  # (T, 768)
-                torch.save(o_feat, out_paths["ocr"])
-                shape_parts.append(f"ocr: {tuple(o_feat.shape)}")
-
-            print(f"  shapes — {'  '.join(shape_parts)}")
+            print(f"  shapes — video: {tuple(v_feat.shape)}  "
+                  f"audio: {tuple(a_feat.shape)}  "
+                  f"text: {tuple(t_feat.shape)}")
 
         except Exception as e:
             print(f"  [SKIP] {vid_id} failed: {e.__class__.__name__}: {e}")
@@ -547,15 +394,7 @@ if __name__ == "__main__":
                         help="Number of video frames per CLIP ViT-L/14 forward pass. "
                              "Reduce if you run out of VRAM on long videos "
                              "(default: 16).")
-    parser.add_argument("--modalities", nargs="+",
-                        choices=list(_ALL_MODALITIES), default=list(_ALL_MODALITIES),
-                        metavar="MODALITY",
-                        help="Which modalities to extract.  Choose any subset of: "
-                             "video audio text ocr.  "
-                             "Default: all four.  "
-                             "Example: --modalities video audio")
     args = parser.parse_args()
     extract_all(args.video_dir, args.out_dir, args.fps, args.device,
                 overwrite=args.overwrite,
-                video_batch_size=args.video_batch_size,
-                modalities=args.modalities)
+                video_batch_size=args.video_batch_size)
