@@ -54,7 +54,7 @@ backbone:
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 768         # 4× d_model
+  sgp_mlp_dim: 768         # 1.5× d_model (512); set lower than default 4× to keep params manageable
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"

@@ -110,13 +110,18 @@ def test_config(config_path, device='cpu'):
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
-    configs_dir = os.path.join(_script_dir, 'configs')
+    configs_dir = os.path.join(_script_dir, 'configs', 'experiments')
     configs = [
-        ('default.yaml',              'ActionFormer (transformer + standard head)'),
-        ('temporalmaxer.yaml',        'TemporalMaxer (MaxPool + standard head)'),
-        ('tridet.yaml',               'TriDet (SGP + Trident head)'),
-        ('sgp_standard_head.yaml',    'Ablation: SGP + standard head'),
-        ('maxpool_trident_head.yaml', 'Ablation: MaxPool + Trident head'),
+        ('concat_actionformer.yaml',          'Concat + ActionFormer (transformer + standard)'),
+        ('concat_temporalmaxer.yaml',         'Concat + TemporalMaxer (MaxPool + standard)'),
+        ('concat_tridet.yaml',                'Concat + TriDet (SGP + trident)'),
+        ('trifuse_actionformer.yaml',         'TriFuse + ActionFormer (transformer + standard)'),
+        ('trifuse_temporalmaxer.yaml',        'TriFuse + TemporalMaxer (MaxPool + standard)'),
+        ('trifuse_tridet.yaml',               'TriFuse + TriDet (SGP + trident)'),
+        ('trifuse_trident_actionformer.yaml', 'TriFuse + ActionFormer + trident head'),
+        ('unimodal_video_actionformer.yaml',  'Unimodal video + ActionFormer'),
+        ('unimodal_audio_actionformer.yaml',  'Unimodal audio + ActionFormer'),
+        ('unimodal_text_actionformer.yaml',   'Unimodal text + ActionFormer'),
     ]
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'

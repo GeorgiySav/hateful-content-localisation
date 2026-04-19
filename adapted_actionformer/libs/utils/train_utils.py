@@ -87,8 +87,6 @@ def make_optimizer(model, cfg):
                 no_decay.add(fpn)
             elif pn.endswith('rel_pe'):
                 no_decay.add(fpn)
-            elif pn in ('mod_emb_v', 'mod_emb_a', 'mod_emb_x', 'bottleneck'):
-                no_decay.add(fpn)
 
     param_dict   = {pn: p for pn, p in model.named_parameters()}
     inter_params = decay & no_decay

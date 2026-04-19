@@ -17,10 +17,8 @@ dataset:
 
 preprocessor:
   type: "trifuse"
-  d_out: 256              # = d_model inside TriFuse, and n_in to backbone
+  d_out: 256              # d_model inside TriFuse; backbone n_in = 3 * d_out = 768
   n_heads: 4
-  n_bottleneck: 4
-  n_unimodal_layers: 4
   n_fusion_layers: 4
   dropout: 0.3
 

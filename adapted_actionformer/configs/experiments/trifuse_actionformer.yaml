@@ -30,13 +30,11 @@ dataset:
 
 preprocessor:
   type: "trifuse"
-  d_out: 768
+  d_out: 768              # d_model inside TriFuse; backbone n_in = 3 * d_out = 2304
   n_heads: 4
-  n_unimodal_layers: 0
   n_fusion_layers: 1
   dropout: 0.1
   modality_dropout: 0.1
-  mask_absent_text: false 
 
 # ActionFormer backbone
 backbone:

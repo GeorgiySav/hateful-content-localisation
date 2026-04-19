@@ -138,11 +138,15 @@ class HateMMDataset(Dataset):
                     'labels'  : labels,
                 }
             else:
-                # ── Weak supervision fallback ────────────────────────────────
+                # No temporal annotations — only include non-hate videos
+                # (as background examples with empty segment lists).
+                # Hate videos without temporal annotations are skipped:
+                # they cannot provide useful localization supervision.
                 is_hate = (video_label is not None and
                            video_label.lower() in ('hate', 'hateful'))
                 if is_hate:
-                    pass 
+                    skipped += 1
+                    continue
                 else:
                     self.annotations[vid_id] = {
                         'duration': duration,

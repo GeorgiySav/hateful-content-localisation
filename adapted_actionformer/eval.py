@@ -145,14 +145,25 @@ def main():
     ap_table, mAP, _ = evaluator.evaluate(results, verbose=True)
     mAP_per_tiou = ap_table.mean(axis=0).tolist()
 
+    prf_table = evaluator.compute_prf(results, verbose=False)
+
     print("\n[eval] Results:")
     for tiou_idx, tiou in enumerate(args.tiou):
-        print(f"  AP@{tiou:.1f} = {ap_table[0, tiou_idx]:.4f}")
+        p   = prf_table[0, tiou_idx, 0]
+        r   = prf_table[0, tiou_idx, 1]
+        f1  = prf_table[0, tiou_idx, 2]
+        acc = prf_table[0, tiou_idx, 3]
+        print(f"  AP@{tiou:.1f} = {ap_table[0, tiou_idx]:.4f}"
+              f"   P@{tiou:.1f} = {p:.4f}"
+              f"   R@{tiou:.1f} = {r:.4f}"
+              f"   F1@{tiou:.1f} = {f1:.4f}"
+              f"   Acc@{tiou:.1f} = {acc:.4f}")
     print(f"  mAP = {mAP:.4f}")
 
     if args.patch_checkpoint:
         ckpt['best_mAP_per_tiou'] = mAP_per_tiou
         ckpt['tiou_thresholds']   = args.tiou
+        ckpt['prf_per_tiou']      = prf_table[0].tolist()   # [[P, R, F1, Acc], ...]
         torch.save(ckpt, args.checkpoint)
         print(f"[eval] Patched {args.checkpoint}")
 
