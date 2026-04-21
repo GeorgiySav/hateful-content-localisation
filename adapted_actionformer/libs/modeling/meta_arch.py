@@ -326,7 +326,7 @@ class HatefulContentLocalizer(nn.Module):
             mha_win_size=mha_win_size,
             scale_factor=scale_factor,
             with_ln=True,
-            attn_pdrop=0.0,
+            attn_pdrop=bb_cfg.get('attn_pdrop', 0.0),
             proj_pdrop=train_cfg.get('dropout', 0.0),
             path_pdrop=train_cfg.get('droppath', 0.0),
             use_abs_pe=False,
@@ -664,10 +664,14 @@ class HatefulContentLocalizer(nn.Module):
             reg_targets = gt_segment.new_zeros((num_pts, 2))
             return cls_targets, reg_targets
 
-        lens   = gt_segment[:, 1] - gt_segment[:, 0]        # (N,)
-        lens   = lens[None, :].repeat(num_pts, 1)             # (FT, N)
+        # Convert GT seconds → feature indices so labeling is fps-agnostic.
+        # At 1 fps this is a no-op; at N fps the distances are scaled correctly.
+        gt_segment_fi = gt_segment * self.feature_fps          # (N, 2)
 
-        gt_segs = gt_segment[None].expand(num_pts, num_gts, 2)
+        lens   = gt_segment_fi[:, 1] - gt_segment_fi[:, 0]    # (N,)
+        lens   = lens[None, :].repeat(num_pts, 1)              # (FT, N)
+
+        gt_segs = gt_segment_fi[None].expand(num_pts, num_gts, 2)
         left  = concat_points[:, 0, None] - gt_segs[:, :, 0]  # (FT, N)
         right = gt_segs[:, :, 1] - concat_points[:, 0, None]  # (FT, N)
         reg_targets = torch.stack((left, right), dim=-1)        # (FT, N, 2)
