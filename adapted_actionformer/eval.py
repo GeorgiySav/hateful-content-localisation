@@ -29,14 +29,8 @@ from libs.modeling.meta_arch import HatefulContentLocalizer
 from libs.utils.eval_utils    import ANETdetection
 
 
-def _get_build_dataloader(cfg):
-    name = cfg.get('dataset', {}).get('name', 'hatemm')
-    if name == 'hateclipseg':
-        from libs.datasets.hateclipseg import build_dataloader
-    elif name == 'multihateclip':
-        from libs.datasets.multihateclip import build_dataloader
-    else:
-        from libs.datasets.hatemm import build_dataloader
+def _get_build_dataloader():
+    from libs.datasets.hateclipseg import build_dataloader
     return build_dataloader
 
 
@@ -85,7 +79,7 @@ def main():
     model.eval()
 
     # ── Data loader ────────────────────────────────────────────────────────────
-    build_dataloader = _get_build_dataloader(cfg)
+    build_dataloader = _get_build_dataloader()
     val_loader = build_dataloader(cfg, subset=args.subset, is_training=False)
 
     # ── Inference ──────────────────────────────────────────────────────────────

@@ -38,14 +38,8 @@ from libs.utils.train_utils    import (
 from libs.utils.eval_utils     import ANETdetection
 
 
-def _get_build_dataloader(cfg):
-    name = cfg.get('dataset', {}).get('name', 'hatemm')
-    if name == 'hateclipseg':
-        from libs.datasets.hateclipseg import build_dataloader
-    elif name == 'multihateclip':
-        from libs.datasets.multihateclip import build_dataloader
-    else:
-        from libs.datasets.hatemm import build_dataloader
+def _get_build_dataloader():
+    from libs.datasets.hateclipseg import build_dataloader
     return build_dataloader
 
 
@@ -85,7 +79,7 @@ def main():
         tb_writer = SummaryWriter(log_dir=os.path.join(args.output_dir, 'tb'))
 
     # ── Data loaders ──────────────────────────────────────────────────────────
-    build_dataloader  = _get_build_dataloader(cfg)
+    build_dataloader  = _get_build_dataloader()
     train_loader      = build_dataloader(cfg, subset='train', is_training=True)
     train_eval_loader = build_dataloader(cfg, subset='train', is_training=False)
     val_loader        = build_dataloader(cfg, subset='val',   is_training=False)

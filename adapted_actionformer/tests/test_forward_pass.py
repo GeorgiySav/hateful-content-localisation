@@ -1,8 +1,7 @@
 """
-Synthetic forward-pass tests for the HateMM temporal localizer.
+Synthetic forward-pass tests for the HateClipSeg temporal localizer.
 
 Run with:
-    cd data/hatemm/scripts
     python -m pytest tests/test_forward_pass.py -v
 
 Tests:
@@ -44,7 +43,7 @@ from libs.modeling.feature_preprocessors import (
 from libs.modeling.trifuse import TriFusePreprocessor
 from libs.modeling.backbone import ConvTransformerBackbone
 from libs.modeling.meta_arch import HatefulContentLocalizer
-from libs.datasets.hatemm import HateMMDataset
+from libs.datasets.hateclipseg import HateClipSegDataset
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -59,7 +58,7 @@ N_LEVELS   = 4          # 1 stem + 3 branches
 # Test-model config (smaller than production to keep tests fast)
 TEST_CFG = {
     'dataset': {
-        'name': 'hatemm',
+        'name': 'hateclipseg',
         'video_feat_dir': 'dummy',
         'audio_feat_dir': 'dummy',
         'text_feat_dir': 'dummy',
@@ -617,7 +616,7 @@ def test_gradients():
 
 def test_npz_round_trip():
     """
-    Create synthetic .pt feature files, load them through HateMMDataset, and
+    Create synthetic .pt feature files, load them through HateClipSegDataset, and
     verify the returned tensors have the correct shapes and dtypes.
     """
     import json
@@ -655,7 +654,7 @@ def test_npz_round_trip():
             json.dump(ann_data, f)
 
         # Build dataset
-        dataset = HateMMDataset(
+        dataset = HateClipSegDataset(
             video_feat_dir=vdir,
             audio_feat_dir=adir,
             text_feat_dir=tdir,
@@ -695,7 +694,7 @@ def test_npz_round_trip():
         model = HatefulContentLocalizer(TEST_CFG)
         model.eval()
 
-        from libs.datasets.hatemm import collate_fn
+        from libs.datasets.hateclipseg import collate_fn
         batch = collate_fn([sample])
         with torch.no_grad():
             output = model(batch)

@@ -219,7 +219,7 @@ class ANETdetection:
             segs = [(float(a['segment'][0]), float(a['segment'][1]))
                     for a in meta.get('annotations', [])
                     if a.get('label', 'hate').lower() in ('hate', 'hateful')]
-            # Weak-supervision fallback: mirrors HateMMDataset behaviour.
+            # Weak-supervision fallback: mirrors HateClipSegDataset behaviour.
             # A hate video with no temporal annotations is treated as a
             # full-video hateful segment during training, so evaluation must
             # use the same GT to be consistent.
