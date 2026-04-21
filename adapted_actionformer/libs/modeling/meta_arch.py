@@ -304,11 +304,8 @@ class HatefulContentLocalizer(nn.Module):
         assert len(self.reg_range) == self.n_levels
 
         # ── Stage 1: Feature preprocessor ───────────────────────────────────
-        # Supports "cma" (guided cross-modal attention), "unimodal" (single
-        # modality), or "concat" (concatenation + projection).  See
-        # libs/modeling/feature_preprocessors.py for details.
-        # Backward-compatible: configs with a ``fusion`` key (no ``preprocessor``
-        # key) are treated as CMA preprocessor configs automatically.
+        # Supports "unimodal", "concat", or "trifuse".
+        # See libs/modeling/feature_preprocessors.py for details.
         self.preprocessor, fused_dim = build_preprocessor(
             cfg, text_dim, audio_dim, video_dim
         )

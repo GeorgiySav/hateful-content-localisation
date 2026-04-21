@@ -36,7 +36,7 @@ dataset:
 
 preprocessor:
   type: "trifuse"
-  d_out: 768
+  d_out: 256
   n_heads: 4
   n_fusion_layers: 1
   dropout: 0.1
@@ -44,7 +44,7 @@ preprocessor:
 
 backbone:
   type: "sgp"
-  d_model: 512
+  d_model: 256
   n_proj_layers: 2
   n_layers: 5                            # strides: [1, 2, 4, 8, 16]
   n_heads: 2                             # ignored by sgp; kept for API compatibility
@@ -52,7 +52,7 @@ backbone:
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 512                       # 1.5× d_model; lower than default 4× to keep params manageable
+  sgp_mlp_dim: 256                       # 1.5× d_model; lower than default 4× to keep params manageable
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"
@@ -62,7 +62,7 @@ neck:
 
 heads:
   type: "trident"
-  n_layers: 2
+  n_layers: 1
   kernel_size: 3
   use_layer_norm: true
   boundary_kernel_size: 3

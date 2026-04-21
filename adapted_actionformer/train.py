@@ -16,8 +16,6 @@ The script:
 import os
 import sys
 import argparse
-import yaml
-
 import torch
 try:
     from torch.utils.tensorboard import SummaryWriter
@@ -36,6 +34,7 @@ from libs.utils.train_utils    import (
     ModelEma, save_checkpoint, train_one_epoch, valid_one_epoch
 )
 from libs.utils.eval_utils     import ANETdetection
+from libs.utils.config_utils   import load_config
 
 
 def _get_build_dataloader():
@@ -51,19 +50,6 @@ def parse_args():
     parser.add_argument('--resume',     default=None,   help="Checkpoint to resume from")
     parser.add_argument('--no_tb',      action='store_true', help="Disable TensorBoard")
     return parser.parse_args()
-
-
-def load_config(path):
-    # Resolve paths relative to the config file location
-    config_dir = os.path.dirname(os.path.abspath(path))
-    with open(path, 'r', encoding='utf-8') as f:
-        cfg = yaml.safe_load(f)
-    # Resolve relative paths in dataset config
-    ds = cfg['dataset']
-    for key in ('video_feat_dir', 'audio_feat_dir', 'text_feat_dir', 'annotation_file'):
-        if key in ds and not os.path.isabs(ds[key]):
-            ds[key] = os.path.normpath(os.path.join(config_dir, ds[key]))
-    return cfg
 
 
 def main():

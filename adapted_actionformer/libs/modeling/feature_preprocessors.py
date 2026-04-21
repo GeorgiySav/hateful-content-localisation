@@ -4,9 +4,9 @@ Feature preprocessors — transform raw modality features before the backbone.
 The preprocessor sits between the dataset-loaded raw features (text, audio, video)
 and the backbone encoder.  Swapping preprocessors lets you run:
 
-  - Fully multimodal experiments  (GuidedCMAPreprocessor — the default)
-  - Unimodal ablations            (UnimodalPreprocessor  — single modality)
-  - Simple fusion baselines       (ConcatPreprocessor    — concatenate then project)
+  - Unimodal ablations       (UnimodalPreprocessor  — single modality)
+  - Simple fusion baselines  (ConcatPreprocessor    — concatenate then project)
+  - Full trimodal fusion     (TriFusePreprocessor   — bottleneck attention)
 
 All preprocessors share the same interface:
 
@@ -14,15 +14,6 @@ All preprocessors share the same interface:
     .d_out : int   — output feature dimension passed to the backbone
 
 Config key: ``preprocessor``
-
-    preprocessor:
-      type: "cma"                      # GuidedCMAPreprocessor
-      d_out: 256
-      num_heads: 4
-      dropout: 0.0
-      query_modality: "text"           # "text" | "audio" | "video"  (default: "text")
-      kv_modalities: ["audio", "video"]  # default: the other two modalities
-      zero_out_missing_query: true     # zero output where query feature is absent
 
     preprocessor:
       type: "unimodal"  # UnimodalPreprocessor
@@ -34,10 +25,12 @@ Config key: ``preprocessor``
       modalities: ["audio", "video"]
       d_out: 256
 
-Backward compatibility
-----------------------
-If the config has a ``fusion`` key but no ``preprocessor`` key, the ``fusion``
-block is treated as a CMA preprocessor config (using ``d_cma`` as ``d_out``).
+    preprocessor:
+      type: "trifuse"   # TriFusePreprocessor
+      d_out: 256
+      n_heads: 8
+      n_fusion_layers: 4
+      dropout: 0.1
 """
 import torch
 from torch import nn
@@ -200,8 +193,7 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
     Returns
     -------
     module : nn.Module
-        One of GuidedCMAPreprocessor, UnimodalPreprocessor, ConcatPreprocessor,
-        MultiHateLocPreprocessor.
+        One of UnimodalPreprocessor, ConcatPreprocessor, TriFusePreprocessor.
     d_out : int
         Output feature dimension (passed as ``n_in`` to the backbone).
     """

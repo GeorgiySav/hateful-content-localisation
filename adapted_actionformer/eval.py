@@ -14,8 +14,6 @@ The script:
 import os
 import sys
 import argparse
-import yaml
-import json
 import pickle
 
 import torch
@@ -27,6 +25,7 @@ if _script_dir not in sys.path:
 
 from libs.modeling.meta_arch import HatefulContentLocalizer
 from libs.utils.eval_utils    import ANETdetection
+from libs.utils.config_utils  import load_config
 
 
 def _get_build_dataloader():
@@ -46,17 +45,6 @@ def parse_args():
     parser.add_argument('--patch_checkpoint', action='store_true',
                         help="Write best_mAP_per_tiou and tiou_thresholds back into the checkpoint")
     return parser.parse_args()
-
-
-def load_config(path):
-    config_dir = os.path.dirname(os.path.abspath(path))
-    with open(path, 'r') as f:
-        cfg = yaml.safe_load(f)
-    ds = cfg['dataset']
-    for key in ('video_feat_dir', 'audio_feat_dir', 'text_feat_dir', 'annotation_file'):
-        if key in ds and not os.path.isabs(ds[key]):
-            ds[key] = os.path.normpath(os.path.join(config_dir, ds[key]))
-    return cfg
 
 
 def main():

@@ -35,11 +35,7 @@ _scripts_dir = os.path.join(os.path.dirname(__file__), '..')
 if _scripts_dir not in sys.path:
     sys.path.insert(0, _scripts_dir)
 
-from libs.modeling.cross_modal_fusion import CrossModalFusion
-from libs.modeling.feature_preprocessors import (
-    GuidedCMAPreprocessor, UnimodalPreprocessor, ConcatPreprocessor,
-    MultiHateLocPreprocessor,
-)
+from libs.modeling.feature_preprocessors import UnimodalPreprocessor, ConcatPreprocessor
 from libs.modeling.trifuse import TriFusePreprocessor
 from libs.modeling.backbone import ConvTransformerBackbone
 from libs.modeling.meta_arch import HatefulContentLocalizer
@@ -68,13 +64,10 @@ TEST_CFG = {
         'max_seq_len': T_PAD,
         'input_dims': {'text': 768, 'audio': 1024, 'video': 768},
     },
-    'fusion': {
-        'd_cma': 256,
-        'num_heads': 4,
-        'dropout': 0.0,
-        'query_modality': 'text',
-        'key_modalities': ['audio', 'video'],
-        'zero_out_missing_query': True,
+    'preprocessor': {
+        'type': 'concat',
+        'modalities': ['text', 'audio', 'video'],
+        'd_out': 256,
     },
     'backbone': {
         'd_model': 128,         # smaller than production 512
@@ -179,51 +172,6 @@ def test_shape():
             f"segments should be (N, 2), got {segs.shape}"
 
     print("✓ shape_test passed")
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Test 2: Zero-out test
-# ──────────────────────────────────────────────────────────────────────────────
-
-def test_zero_out():
-    """
-    When text_feat is all-zero, the GuidedCMAPreprocessor output must be exactly
-    zero (the text-presence mask zeros out the CMA output for silent frames).
-    The model should still run and produce valid output.
-    """
-    d_cma = TEST_CFG['fusion']['d_cma']
-    preprocessor = GuidedCMAPreprocessor(
-        text_dim=768, audio_dim=1024, video_dim=768,
-        d_out=d_cma, num_heads=4, dropout=0.0,
-    )
-    preprocessor.eval()
-
-    text  = torch.zeros(B, T_PAD, 768)    # all-zero text
-    audio = torch.randn(B, T_PAD, 1024)
-    video = torch.randn(B, T_PAD, 768)
-
-    with torch.no_grad():
-        out = preprocessor(text, audio, video)  # (B, T, d_cma)
-
-    assert out.shape == (B, T_PAD, d_cma), \
-        f"Preprocessor output shape mismatch: {out.shape}"
-    assert torch.all(out == 0.0), \
-        "GuidedCMAPreprocessor output must be exactly zero when text is all-zero"
-
-    # Verify model still runs with all-zero text
-    model = HatefulContentLocalizer(TEST_CFG)
-    model.eval()
-    batch = make_batch(zero_text=True)
-    with torch.no_grad():
-        output = model(batch)
-    assert isinstance(output, list) and len(output) == B
-    # Scores should be in [0, 1] (they come from sigmoid)
-    for res in output:
-        if res['scores'].numel() > 0:
-            assert res['scores'].min() >= 0.0
-            assert res['scores'].max() <= 1.0
-
-    print("✓ zero_out_test passed")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -344,164 +292,13 @@ def test_model_concat_preprocessor():
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Test 3e: MultiHateLoc preprocessor — shape test
-# ──────────────────────────────────────────────────────────────────────────────
-
-def test_multihateloc_preprocessor():
-    """MultiHateLocPreprocessor: output shape must be (B, T, d_out)."""
-    d_out   = 128
-    d_inner = 64   # small for speed; must divide n_heads=4
-    prep = MultiHateLocPreprocessor(
-        text_dim=768, audio_dim=1024, video_dim=768,
-        d_out=d_out, n_heads=4, dropout=0.0, d_inner=d_inner,
-    )
-    prep.eval()
-
-    text  = torch.randn(B, T_PAD, 768)
-    audio = torch.randn(B, T_PAD, 1024)
-    video = torch.randn(B, T_PAD, 768)
-
-    with torch.no_grad():
-        out = prep(text, audio, video)
-
-    assert out.shape == (B, T_PAD, d_out), (
-        f"MultiHateLocPreprocessor output shape mismatch: {out.shape}"
-    )
-    print("✓ multihateloc_preprocessor_test passed")
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Test 3f: MultiHateLoc DMS gates — values in [0, 1]
-# ──────────────────────────────────────────────────────────────────────────────
-
-def test_multihateloc_dms_gates():
-    """DMS scalar gates (sigmoid outputs) must be in [0, 1] and shaped (B, T, 1)."""
-    D = 64
-    prep = MultiHateLocPreprocessor(
-        text_dim=768, audio_dim=1024, video_dim=768,
-        d_out=128, n_heads=4, dropout=0.0, d_inner=D,
-    )
-    prep.eval()
-
-    # Simulate post-MA-TE features (already in D-dimensional space)
-    F_text  = torch.randn(B, T_PAD, D)
-    F_audio = torch.randn(B, T_PAD, D)
-    F_video = torch.randn(B, T_PAD, D)
-
-    with torch.no_grad():
-        alpha_t = torch.sigmoid(prep.dms_text(F_text))    # (B, T, 1)
-        alpha_a = torch.sigmoid(prep.dms_audio(F_audio))  # (B, T, 1)
-        alpha_v = torch.sigmoid(prep.dms_video(F_video))  # (B, T, 1)
-
-    for name, alpha in [('text', alpha_t), ('audio', alpha_a), ('video', alpha_v)]:
-        assert alpha.shape == (B, T_PAD, 1), \
-            f"DMS {name} gate shape: expected (B,T,1), got {alpha.shape}"
-        assert alpha.min().item() >= 0.0, f"DMS {name} gate has values below 0"
-        assert alpha.max().item() <= 1.0, f"DMS {name} gate has values above 1"
-
-    print("✓ multihateloc_dms_gates_test passed")
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Test 3f-ii: MultiHateLoc modality dropout
-# ──────────────────────────────────────────────────────────────────────────────
-
-def _check_modality_dropout(prep, d_out, name):
-    """Shared helper: verify modality dropout is active in train, absent in eval."""
-    text  = torch.randn(B, T_PAD, 768)
-    audio = torch.randn(B, T_PAD, 1024)
-    video = torch.randn(B, T_PAD, 768)
-
-    # Eval mode must be deterministic
-    prep.eval()
-    with torch.no_grad():
-        out1 = prep(text, audio, video)
-        out2 = prep(text, audio, video)
-    assert torch.allclose(out1, out2), f"{name}: eval mode should be deterministic"
-    assert out1.shape == (B, T_PAD, d_out), f"{name}: shape mismatch {out1.shape}"
-
-    # Train mode with p=1.0: all modalities would be dropped but fallback keeps all
-    prep.modality_dropout = 1.0
-    prep.train()
-    out_train = prep(text, audio, video)
-    assert out_train.shape == (B, T_PAD, d_out), \
-        f"{name}: train shape mismatch {out_train.shape}"
-
-
-def test_multihateloc_modality_dropout():
-    """Modality dropout works for all multimodal preprocessors."""
-    _check_modality_dropout(
-        MultiHateLocPreprocessor(
-            text_dim=768, audio_dim=1024, video_dim=768,
-            d_out=128, n_heads=4, dropout=0.0, d_inner=64,
-            modality_dropout=0.5,
-        ),
-        d_out=128, name="MultiHateLocPreprocessor",
-    )
-    _check_modality_dropout(
-        GuidedCMAPreprocessor(
-            text_dim=768, audio_dim=1024, video_dim=768,
-            d_out=128, num_heads=4, dropout=0.0,
-            modality_dropout=0.5,
-        ),
-        d_out=128, name="GuidedCMAPreprocessor",
-    )
-    _check_modality_dropout(
-        ConcatPreprocessor(
-            modalities=['audio', 'video'], text_dim=768, audio_dim=1024, video_dim=768,
-            d_out=128, modality_dropout=0.5,
-        ),
-        d_out=128, name="ConcatPreprocessor",
-    )
-    print("✓ modality_dropout_test passed")
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Test 3g: Full model with MultiHateLoc preprocessor config
-# ──────────────────────────────────────────────────────────────────────────────
-
-def test_model_multihateloc_preprocessor():
-    """HatefulContentLocalizer should do a full forward+backward with the multihateloc preprocessor."""
-    import copy
-    cfg = copy.deepcopy(TEST_CFG)
-    cfg.pop('fusion', None)
-    cfg['preprocessor'] = {
-        'type': 'multihateloc',
-        'd_out': 256,
-        'd_inner': 64,    # small for test speed; must divide n_heads=4
-        'n_heads': 4,
-        'dropout': 0.0,
-    }
-    cfg['backbone']['d_model'] = 128
-
-    model = HatefulContentLocalizer(cfg)
-    model.train()
-    batch = make_batch()
-    losses = model(batch)
-    losses['final_loss'].backward()
-
-    assert 'final_loss' in losses, "Loss dict missing 'final_loss'"
-    assert losses['final_loss'].item() >= 0.0, "final_loss should be non-negative"
-
-    # Verify all non-droppath parameters received a gradient
-    no_grad = [
-        name for name, p in model.named_parameters()
-        if p.requires_grad and p.grad is None
-        and 'drop_path' not in name and 'pool_skip' not in name
-    ]
-    assert len(no_grad) == 0, f"Parameters missing gradients: {no_grad[:5]}"
-
-    print("✓ model_multihateloc_preprocessor_test passed")
-
-
-# ──────────────────────────────────────────────────────────────────────────────
 # Test 3: Pyramid test
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_pyramid():
     """Verify feature pyramid has the expected number of levels and resolutions."""
-    # The backbone receives d_cma-dimensional features from the preprocessor.
-    fused_dim = TEST_CFG['fusion']['d_cma']
+    # The backbone receives d_out-dimensional features from the preprocessor.
+    fused_dim = TEST_CFG['preprocessor']['d_out']
     d_model   = TEST_CFG['backbone']['d_model']
 
     # n_stem = downsample_start = 1, n_branch = n_layers - 1 - 1 = N_LEVELS - 1 - 1
@@ -961,15 +758,10 @@ def test_trifuse_mask_isolation():
 if __name__ == '__main__':
     print("Running forward-pass tests...\n")
     test_shape()
-    test_zero_out()
     test_unimodal_preprocessor()
     test_concat_preprocessor()
     test_model_unimodal_preprocessor()
     test_model_concat_preprocessor()
-    test_multihateloc_preprocessor()
-    test_multihateloc_dms_gates()
-    test_multihateloc_modality_dropout()
-    test_model_multihateloc_preprocessor()
     test_pyramid()
     test_mask()
     test_gradients()
