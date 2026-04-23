@@ -88,10 +88,6 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
-  temporal_mask_prob: 0.5
-  temporal_mask_num: 2
-  temporal_mask_max_len: 2
-  segment_jitter_sec: 0.5
 
 inference:
   score_threshold: 0.001

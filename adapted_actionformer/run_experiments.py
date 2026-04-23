@@ -135,6 +135,19 @@ EXPERIMENTS = [
         "runs/exp/bimodal_vt_actionformer",
         "Video+Text + ActionFormer (bimodal ablation, no audio)",
     ),
+    # ── FPS ablations ────────────────────────────────────────────────────────
+    (
+        "fps_ablation_2fps",
+        "configs/experiments/fps_ablation_2fps.yaml",
+        "runs/exp/fps_ablation_2fps",
+        "TriFuse + SGP + Trident @ 2fps (vs trifuse_tridet @ 1fps)",
+    ),
+    (
+        "fps_ablation_4fps",
+        "configs/experiments/fps_ablation_4fps.yaml",
+        "runs/exp/fps_ablation_4fps",
+        "TriFuse + SGP + Trident @ 4fps (vs trifuse_tridet @ 1fps)",
+    ),
     # ── Unimodal experiments ─────────────────────────────────────────────────
     (
         "unimodal_video_actionformer",

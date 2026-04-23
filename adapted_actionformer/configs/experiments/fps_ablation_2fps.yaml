@@ -1,40 +1,30 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Experiment: TriDet (SGP backbone + trident head) + concat preprocessor
+# FPS Ablation: TriFuse + SGP + Trident @ 2 fps
 #
-# Architecture:   concat → sgp → identity → trident
-# Purpose:        Canonical TriDet configuration (Sun et al., CVPR 2023).
-#                 Combines SGP's efficient depthwise-conv backbone with the
-#                 trident boundary-distribution head. The distribution head
-#                 predicts soft start/end distributions over num_bins bins,
-#                 which handles ambiguous boundaries better than direct offsets.
-#                 This is the strongest single-model configuration in TriDet.
+# Architecture identical to trifuse_tridet.yaml (1fps baseline).
+# Only fps-dependent parameters change:
+#   feature_fps        1.0  → 2.0
+#   max_seq_len        512  → 1024   (covers max observed T=729; 1024÷16=64 ✓)
+#   regression_ranges  ×2          (feature-index units scale with fps)
 #
-# Preprocessor:   concat (video+audio+text, d_out=2560)
-# Backbone:       sgp (depthwise conv pyramid, 5 levels)
-# Neck:           identity
-# Heads:          trident (boundary distribution)
+# Feature stats @ 2fps:  min T=359  max T=729  mean T=479  p99 T=642
 # ─────────────────────────────────────────────────────────────────────────────
 
 dataset:
   name: "hateclipseg"
-  video_feat_dir: "../../../data/hateclipseg/video_features"
-  audio_feat_dir: "../../../data/hateclipseg/audio_features"
-  text_feat_dir:  "../../../data/hateclipseg/text_features"
+  video_feat_dir: "../../../data/hateclipseg/2fps/video_features"
+  audio_feat_dir: "../../../data/hateclipseg/2fps/audio_features"
+  text_feat_dir:  "../../../data/hateclipseg/2fps/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
-  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  use_json_split: false
   split_seed: 42
   num_classes: 1
-  feature_fps: 1.0
-  max_seq_len: 512
+  feature_fps: 2.0
+  max_seq_len: 1024
   input_dims:
     text: 768
     audio: 1024
     video: 768
-
-#preprocessor:
-#  type: "concat"
-#  modalities: ["video", "audio", "text"]
-#  d_out: 2560
 
 preprocessor:
   type: "trifuse"
@@ -48,13 +38,13 @@ backbone:
   type: "sgp"
   d_model: 512
   n_proj_layers: 2
-  n_layers: 5               # strides: [1, 2, 4, 8, 16]
-  n_heads: 2                # ignored by sgp; kept for API compatibility
-  window_size: 17           # ignored by sgp; kept for API compatibility
+  n_layers: 5
+  n_heads: 2
+  window_size: 17
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 768         # 1.5× d_model (512); set lower than default 4× to keep params manageable
+  sgp_mlp_dim: 768
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"
@@ -71,12 +61,13 @@ heads:
   num_bins: 16
   iou_weight_power: 2
 
+# Ranges in feature-index units — scaled ×2 vs 1fps to cover same durations.
 regression_ranges:
-  - [0,    4]
-  - [4,    8]
-  - [8,   16]
-  - [16,  32]
-  - [32,  100000]
+  - [0,    8]
+  - [8,    16]
+  - [16,   32]
+  - [32,   64]
+  - [64,   100000]
 
 loss:
   focal_alpha: 0.45

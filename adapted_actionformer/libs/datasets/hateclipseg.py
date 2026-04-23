@@ -122,7 +122,12 @@ class HateClipSegDataset(Dataset):
                     seg   = ann['segment']
                     label = ann.get('label', 'hate')
                     if label.lower() in ('hate', 'hateful'):
-                        segs.append([float(seg[0]), float(seg[1])])
+                        s, e = float(seg[0]), float(seg[1])
+                        if s == e:
+                            continue  # skip zero-length annotations
+                        if s > e:
+                            s, e = e, s  # fix inverted timestamps
+                        segs.append([s, e])
                         labels.append(0)  # hate = class 0
                 self.annotations[vid_id] = {
                     'duration': duration,
@@ -219,36 +224,11 @@ class HateClipSegDataset(Dataset):
 
         noise_std = cfg.get('feature_noise_std', 0.0)
         if noise_std > 0.0:
-            video_feat = video_feat + torch.randn_like(video_feat) * noise_std
-            audio_feat = audio_feat + torch.randn_like(audio_feat) * noise_std
-            text_feat  = text_feat  + torch.randn_like(text_feat)  * noise_std
-
-        mask_prob = cfg.get('temporal_mask_prob', 0.0)
-        if mask_prob > 0.0 and torch.rand(1).item() < mask_prob:
-            T_valid  = int(mask.sum().item())
-            n_masks  = cfg.get('temporal_mask_num', 2)
-            max_len  = cfg.get('temporal_mask_max_len', 5)
-            for _ in range(n_masks):
-                if T_valid <= 2:
-                    break
-                m_len   = torch.randint(1, max_len + 1, (1,)).item()
-                m_start = torch.randint(0, T_valid - min(m_len, T_valid - 1), (1,)).item()
-                video_feat[m_start:m_start + m_len] = 0.0
-                audio_feat[m_start:m_start + m_len] = 0.0
-                text_feat [m_start:m_start + m_len] = 0.0
-
-        jitter_sec = cfg.get('segment_jitter_sec', 0.0)
-        if jitter_sec > 0.0 and segments.shape[0] > 0:
-            crop_dur = self.max_seq_len / self.feature_fps
-            noise    = (torch.rand_like(segments) * 2.0 - 1.0) * jitter_sec
-            segments = segments + noise
-            segments[:, 0] = segments[:, 0].clamp(0.0, crop_dur)
-            segments[:, 1] = segments[:, 1].clamp(0.0, crop_dur)
-            inverted = segments[:, 0] > segments[:, 1]
-            segments[inverted] = segments[inverted].flip(1)
-            valid    = segments[:, 1] > segments[:, 0]
-            segments = segments[valid]
-            labels   = labels[valid]
+            # mask prevents noise from corrupting zero-padded frames
+            noise_mask = mask.unsqueeze(1)
+            video_feat = video_feat + torch.randn_like(video_feat) * noise_std * noise_mask
+            audio_feat = audio_feat + torch.randn_like(audio_feat) * noise_std * noise_mask
+            text_feat  = text_feat  + torch.randn_like(text_feat)  * noise_std * noise_mask
 
         return video_feat, audio_feat, text_feat, segments, labels
 
