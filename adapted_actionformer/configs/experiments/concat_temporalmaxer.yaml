@@ -32,7 +32,7 @@ dataset:
 preprocessor:
   type: "concat"
   modalities: ["video", "audio", "text"]
-  d_out: 2560                           # 768 + 1024 + 768
+  modality_dropout: 0.1
 
 backbone:
   type: "temporalmaxer"
@@ -85,6 +85,7 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
+  temporal_shift_max_frames: 8
 
 inference:
   score_threshold: 0.001

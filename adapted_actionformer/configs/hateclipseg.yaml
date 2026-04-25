@@ -31,20 +31,9 @@ dataset:
     audio: 1024                         # Wav2Vec2 Large
     video: 768                          # CLIP ViT-L/14
 
-# Cross-modal fusion
-#preprocessor:
-#  type: "cma"
-#  d_out: 128
-#  num_heads: 2
-#  dropout: 0.1
-#  query_modality: "text"
-#  kv_modalities: ["audio", "video"]
-#  zero_out_missing_query: true
-
 preprocessor:
   type: "unimodal"
   modality: "video"
-  d_out: 768
 
 # ActionFormer backbone
 backbone:
@@ -111,6 +100,7 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
+  temporal_shift_max_frames: 8
 
 # Inference
 inference:

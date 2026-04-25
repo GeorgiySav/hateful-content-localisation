@@ -87,23 +87,20 @@ class UnimodalPreprocessor(nn.Module):
         text_dim  : Native dimension of text features.
         audio_dim : Native dimension of audio features.
         video_dim : Native dimension of video features.
-        d_out     : Output dimension (= backbone input dimension).
-                    If equal to the native feature dim, no projection is applied.
 
     Output shape: (B, T, d_out)
     """
 
-    def __init__(self, modality, text_dim, audio_dim, video_dim, d_out):
+    def __init__(self, modality, text_dim, audio_dim, video_dim):
         super().__init__()
         assert modality in ('text', 'audio', 'video'), (
             f"modality must be 'text', 'audio', or 'video', got '{modality}'"
         )
         self.modality = modality
-        self.d_out    = d_out
 
         dim_map = {'text': text_dim, 'audio': audio_dim, 'video': video_dim}
         in_dim  = dim_map[modality]
-        self.proj = nn.Linear(in_dim, d_out) if in_dim != d_out else nn.Identity()
+        self.d_out    = in_dim
 
     def forward(self, text, audio, video):
         """
@@ -115,7 +112,7 @@ class UnimodalPreprocessor(nn.Module):
             out : (B, T, d_out)
         """
         feat_map = {'text': text, 'audio': audio, 'video': video}
-        return self.proj(feat_map[self.modality])
+        return feat_map[self.modality]
 
 
 class ConcatPreprocessor(nn.Module):
@@ -131,14 +128,13 @@ class ConcatPreprocessor(nn.Module):
         text_dim         : Native dimension of text features.
         audio_dim        : Native dimension of audio features.
         video_dim        : Native dimension of video features.
-        d_out            : Output dimension (= backbone input dimension).
         modality_dropout : Probability of zeroing an entire modality for a sample
                            during training.  Default 0.0 (disabled).
 
     Output shape: (B, T, d_out)
     """
 
-    def __init__(self, modalities, text_dim, audio_dim, video_dim, d_out,
+    def __init__(self, modalities, text_dim, audio_dim, video_dim,
                  modality_dropout=0.0):
         super().__init__()
         assert len(modalities) >= 1, "modalities must not be empty"
@@ -147,12 +143,11 @@ class ConcatPreprocessor(nn.Module):
                 f"Unknown modality '{m}'. Expected one of: 'text', 'audio', 'video'."
             )
         self.modalities       = list(modalities)
-        self.d_out            = d_out
         self.modality_dropout = modality_dropout
 
         dim_map = {'text': text_dim, 'audio': audio_dim, 'video': video_dim}
         in_dim  = sum(dim_map[m] for m in modalities)
-        self.proj = nn.Linear(in_dim, d_out)
+        self.d_out            = in_dim
 
     def forward(self, text, audio, video):
         """
@@ -169,7 +164,7 @@ class ConcatPreprocessor(nn.Module):
             )
         feat_map = {'text': text, 'audio': audio, 'video': video}
         feats = [feat_map[m] for m in self.modalities]
-        return self.proj(torch.cat(feats, dim=-1))
+        return torch.cat(feats, dim=-1)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -206,7 +201,6 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
         )
 
     ptype = prep_cfg.get('type', 'concat')
-    d_out = prep_cfg['d_out']
 
     if ptype == 'unimodal':
         module = UnimodalPreprocessor(
@@ -214,7 +208,6 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
             text_dim=text_dim,
             audio_dim=audio_dim,
             video_dim=video_dim,
-            d_out=d_out,
         )
 
     elif ptype == 'concat':
@@ -223,7 +216,6 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
             text_dim=text_dim,
             audio_dim=audio_dim,
             video_dim=video_dim,
-            d_out=d_out,
             modality_dropout=prep_cfg.get('modality_dropout', 0.0),
         )
 
@@ -233,7 +225,7 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
             text_dim=text_dim,
             audio_dim=audio_dim,
             video_dim=video_dim,
-            d_model=d_out,
+            d_model=prep_cfg['d_model'],
             n_heads=prep_cfg.get('n_heads', 8),
             n_fusion_layers=prep_cfg.get('n_fusion_layers', 4),
             dropout=prep_cfg.get('dropout', 0.1),

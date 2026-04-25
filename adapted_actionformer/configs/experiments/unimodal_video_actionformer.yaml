@@ -31,7 +31,6 @@ dataset:
 preprocessor:
   type: "unimodal"
   modality: "video"
-  d_out: 768                            # CLIP ViT-L/14 dim
 
 # ActionFormer backbone
 backbone:
@@ -89,6 +88,7 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
+  temporal_shift_max_frames: 8
 
 # Inference
 inference:

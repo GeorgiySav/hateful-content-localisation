@@ -31,14 +31,9 @@ dataset:
     audio: 1024
     video: 768
 
-#preprocessor:
-#  type: "concat"
-#  modalities: ["video", "audio", "text"]
-#  d_out: 2560
-
 preprocessor:
   type: "trifuse"
-  d_out: 768
+  d_model: 768
   n_heads: 4
   n_fusion_layers: 1
   dropout: 0.1
@@ -105,6 +100,7 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
+  temporal_shift_max_frames: 8
 
 inference:
   score_threshold: 0.001

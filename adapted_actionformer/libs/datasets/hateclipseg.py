@@ -203,7 +203,7 @@ class HateClipSegDataset(Dataset):
             mask = torch.ones(T, dtype=torch.float32)
 
         if self.is_training and self.aug_cfg.get('enabled', False):
-            video_feat, audio_feat, text_feat, segments, labels = self._augment(
+            video_feat, audio_feat, text_feat, mask, segments, labels = self._augment(
                 video_feat, audio_feat, text_feat, segments, labels, mask)
 
         return {
@@ -222,6 +222,13 @@ class HateClipSegDataset(Dataset):
     def _augment(self, video_feat, audio_feat, text_feat, segments, labels, mask):
         cfg = self.aug_cfg
 
+        shift_max = cfg.get('temporal_shift_max_frames', 0)
+        if shift_max > 0:
+            shift = torch.randint(-shift_max, shift_max + 1, (1,)).item()
+            if shift != 0:
+                video_feat, audio_feat, text_feat, mask, segments, labels = self._temporal_shift(
+                    video_feat, audio_feat, text_feat, mask, segments, labels, shift)
+
         noise_std = cfg.get('feature_noise_std', 0.0)
         if noise_std > 0.0:
             # mask prevents noise from corrupting zero-padded frames
@@ -230,7 +237,36 @@ class HateClipSegDataset(Dataset):
             audio_feat = audio_feat + torch.randn_like(audio_feat) * noise_std * noise_mask
             text_feat  = text_feat  + torch.randn_like(text_feat)  * noise_std * noise_mask
 
-        return video_feat, audio_feat, text_feat, segments, labels
+        return video_feat, audio_feat, text_feat, mask, segments, labels
+
+    def _temporal_shift(self, video_feat, audio_feat, text_feat, mask, segments, labels, shift):
+        """
+        Shift content by `shift` frames along the temporal axis, preserving total length.
+        Positive `shift` pads zero frames at the start and crops from the end (delays content);
+        negative `shift` crops from the start and pads zero frames at the end (advances content).
+        Segments are time-shifted by `shift / feature_fps`, clamped to the valid extent, and
+        any segment that ends up outside [0, max_seq_len/feature_fps] is dropped.
+        """
+        if shift > 0:
+            video_feat = torch.cat([torch.zeros(shift, video_feat.shape[1]), video_feat[:-shift]], dim=0)
+            audio_feat = torch.cat([torch.zeros(shift, audio_feat.shape[1]), audio_feat[:-shift]], dim=0)
+            text_feat  = torch.cat([torch.zeros(shift, text_feat.shape[1]),  text_feat[:-shift]],  dim=0)
+            mask       = torch.cat([torch.zeros(shift),                      mask[:-shift]],       dim=0)
+        else:
+            s = -shift
+            video_feat = torch.cat([video_feat[s:], torch.zeros(s, video_feat.shape[1])], dim=0)
+            audio_feat = torch.cat([audio_feat[s:], torch.zeros(s, audio_feat.shape[1])], dim=0)
+            text_feat  = torch.cat([text_feat[s:],  torch.zeros(s, text_feat.shape[1])],  dim=0)
+            mask       = torch.cat([mask[s:],       torch.zeros(s)],                      dim=0)
+
+        if segments.shape[0] > 0:
+            crop_dur = self.max_seq_len / self.feature_fps
+            segments = segments + shift / self.feature_fps
+            valid    = (segments[:, 1] > 0) & (segments[:, 0] < crop_dur)
+            segments = segments[valid].clamp(min=0.0, max=crop_dur)
+            labels   = labels[valid]
+
+        return video_feat, audio_feat, text_feat, mask, segments, labels
 
     @staticmethod
     def _match_length(feat, target_len, expected_dim):

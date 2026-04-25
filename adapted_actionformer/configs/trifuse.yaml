@@ -17,10 +17,11 @@ dataset:
 
 preprocessor:
   type: "trifuse"
-  d_out: 256              # d_model inside TriFuse; backbone n_in = 3 * d_out = 768
+  d_model: 256
   n_heads: 4
   n_fusion_layers: 4
   dropout: 0.3
+  modality_dropout: 0.1
 
 backbone:
   type: "transformer"
@@ -74,6 +75,7 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
+  temporal_shift_max_frames: 8
 
 inference:
   score_threshold: 0.001

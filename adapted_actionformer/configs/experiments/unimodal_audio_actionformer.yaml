@@ -31,7 +31,6 @@ dataset:
 preprocessor:
   type: "unimodal"
   modality: "audio"
-  d_out: 1024                           # Wav2Vec2 Large dim
 
 # ActionFormer backbone
 backbone:
@@ -89,6 +88,7 @@ training:
 augmentation:
   enabled: true
   feature_noise_std: 0.02
+  temporal_shift_max_frames: 8
 
 # Inference
 inference:
