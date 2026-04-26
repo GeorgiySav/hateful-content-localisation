@@ -2,11 +2,14 @@
 Sequential experiment runner for architecture experiments on HateClipSeg.
 
 Usage:
-    # Run all experiments (skip any already done):
+    # Run all experiments with the default seed (42), skipping any already done:
     python run_experiments.py
 
-    # Force re-run a specific experiment (by name):
-    python run_experiments.py --force low_dropout
+    # Run every experiment with multiple seeds for variance reporting:
+    python run_experiments.py --seeds 42,123,2024
+
+    # Force re-run a specific experiment (deletes all its seed checkpoints):
+    python run_experiments.py --force trifuse_actionformer
 
     # Dry-run: print what would run without training:
     python run_experiments.py --dry_run
@@ -17,21 +20,28 @@ Usage:
 After all experiments finish (or are skipped) a comparison table is printed and
 results are saved to runs/experiment_results.json.
 
-Skip logic:
-    If <output_dir>/model_best.pth.tar already exists for an experiment, training
-    is skipped and best_mAP is read directly from the checkpoint.  Use --force
-    <name> to delete that file and re-run a single experiment.
+Output layout (per seed):
+    runs/exp/<name>/seed_<N>/model_best.pth.tar
+    runs/exp/<name>/seed_<N>/checkpoint.pth.tar   (last in-progress state)
 
-Resume logic:
-    If training is interrupted mid-run, <output_dir>/checkpoint.pth.tar holds the
-    last saved state.  On the next invocation the runner resumes automatically by
-    passing --resume <output_dir>/checkpoint.pth.tar to train.py (unless a
-    model_best already exists, in which case it is skipped).
+Skip / resume logic is per (experiment, seed):
+    * If <output_dir>/seed_<N>/model_best.pth.tar exists for a seed, that seed
+      is skipped and best_mAP is read from the checkpoint.
+    * If <output_dir>/seed_<N>/checkpoint.pth.tar exists (mid-run), that seed
+      resumes via --resume <checkpoint>.
+    * --force NAME deletes both files for every seed of experiment NAME.
+
+Note on what varies between seeds:
+    --seed only perturbs model init, dropout, data-order, and augmentation RNG.
+    The train/val/test split is governed by the separate `split_seed` field in
+    the dataset config and is held constant across all seed runs (so variance
+    reflects model stochasticity on a fixed split, not split variance).
 """
 import os
 import sys
 import json
 import argparse
+import statistics
 import subprocess
 
 import torch
@@ -172,19 +182,23 @@ EXPERIMENTS = [
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-def best_ckpt_path(output_dir):
-    return os.path.join(_SCRIPT_DIR, output_dir, "model_best.pth.tar")
+def _seed_dir(output_dir, seed):
+    return os.path.join(_SCRIPT_DIR, output_dir, f"seed_{seed}")
 
 
-def resume_ckpt_path(output_dir):
-    return os.path.join(_SCRIPT_DIR, output_dir, "checkpoint.pth.tar")
+def best_ckpt_path(output_dir, seed):
+    return os.path.join(_seed_dir(output_dir, seed), "model_best.pth.tar")
 
 
-def read_best_map(output_dir):
+def resume_ckpt_path(output_dir, seed):
+    return os.path.join(_seed_dir(output_dir, seed), "checkpoint.pth.tar")
+
+
+def read_best_map(output_dir, seed):
     """Return (best_mAP, mAP_per_tiou, tiou_thresholds) from model_best.pth.tar.
     Returns (None, [], []) if the checkpoint does not exist or cannot be read.
     """
-    path = best_ckpt_path(output_dir)
+    path = best_ckpt_path(output_dir, seed)
     try:
         ckpt = torch.load(path, map_location="cpu")
         mAP = float(ckpt.get("best_mAP", ckpt.get("mAP", 0.0)))
@@ -198,10 +212,10 @@ def read_best_map(output_dir):
         return None, [], []
 
 
-def run_evaluation(name, config_path, output_dir, python_exe):
+def run_evaluation(name, config_path, output_dir, seed, python_exe):
     """Call eval.py to compute per-threshold mAP and patch it into model_best.pth.tar."""
     abs_config = os.path.join(_SCRIPT_DIR, config_path)
-    abs_ckpt   = best_ckpt_path(output_dir)
+    abs_ckpt   = best_ckpt_path(output_dir, seed)
     cmd = [
         python_exe,
         os.path.join(_SCRIPT_DIR, "eval.py"),
@@ -209,19 +223,19 @@ def run_evaluation(name, config_path, output_dir, python_exe):
         "--checkpoint", abs_ckpt,
         "--patch_checkpoint",
     ]
-    print(f"\n[eval] '{name}' missing per-threshold data — re-evaluating checkpoint ...")
+    print(f"\n[eval] '{name}' seed={seed} missing per-threshold data — re-evaluating checkpoint ...")
     print(f"  Command: {' '.join(cmd)}")
     try:
         subprocess.run(cmd, check=True, cwd=_SCRIPT_DIR)
     except subprocess.CalledProcessError as e:
-        print(f"  [warn] Evaluation failed for '{name}' (exit code {e.returncode})")
+        print(f"  [warn] Evaluation failed for '{name}' seed={seed} (exit code {e.returncode})")
 
 
-def run_training(name, config_path, output_dir, python_exe, seed=42):
-    """Call train.py as a subprocess; returns True on success."""
+def run_training(name, config_path, output_dir, seed, python_exe):
+    """Call train.py as a subprocess for one (experiment, seed) pair; returns True on success."""
     abs_config = os.path.join(_SCRIPT_DIR, config_path)
-    abs_output = os.path.join(_SCRIPT_DIR, output_dir)
-    resume_ckpt = resume_ckpt_path(output_dir)
+    abs_output = _seed_dir(output_dir, seed)
+    resume_ckpt = resume_ckpt_path(output_dir, seed)
 
     cmd = [
         python_exe,
@@ -235,9 +249,9 @@ def run_training(name, config_path, output_dir, python_exe, seed=42):
         print(f"  -> Resuming from {resume_ckpt}")
 
     print(f"\n{'='*70}")
-    print(f"  RUNNING: {name}")
+    print(f"  RUNNING: {name}  (seed={seed})")
     print(f"  Config : {config_path}")
-    print(f"  Output : {output_dir}")
+    print(f"  Output : {os.path.relpath(abs_output, _SCRIPT_DIR)}")
     print(f"  Command: {' '.join(cmd)}")
     print(f"{'='*70}\n")
 
@@ -245,10 +259,10 @@ def run_training(name, config_path, output_dir, python_exe, seed=42):
         subprocess.run(cmd, check=True, cwd=_SCRIPT_DIR)
         return True
     except subprocess.CalledProcessError as e:
-        print(f"\n  [ERROR] Training failed for '{name}' (exit code {e.returncode})")
+        print(f"\n  [ERROR] Training failed for '{name}' seed={seed} (exit code {e.returncode})")
         return False
     except KeyboardInterrupt:
-        print(f"\n  [INTERRUPTED] Training for '{name}' was interrupted.")
+        print(f"\n  [INTERRUPTED] Training for '{name}' seed={seed} was interrupted.")
         raise  # re-raise so the outer loop can catch it and print summary
 
 
@@ -258,7 +272,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Run TriFuse preprocessor experiments on HateClipSeg")
     parser.add_argument(
         "--force", default=None, metavar="NAME",
-        help="Force re-run a specific experiment by name (deletes its model_best.pth.tar)",
+        help="Force re-run a specific experiment by name (deletes its seed_*/model_best.pth.tar files)",
     )
     parser.add_argument(
         "--dry_run", action="store_true",
@@ -269,8 +283,8 @@ def parse_args():
         help="Python executable to use for training subprocesses",
     )
     parser.add_argument(
-        "--seed", type=int, default=42,
-        help="Random seed passed to train.py",
+        "--seeds", default="42",
+        help="Comma-separated list of random seeds; each experiment is run once per seed (default: '42')",
     )
     parser.add_argument(
         "--only", default=None, metavar="NAME",
@@ -279,14 +293,64 @@ def parse_args():
     return parser.parse_args()
 
 
-def print_table(results):
-    """Print a comparison table sorted by best_mAP descending."""
-    baseline_map = next(
-        (r["best_mAP"] for r in results if r["name"] == "trifuse_actionformer" and r["best_mAP"] is not None),
-        None,
-    )
+def parse_seeds(seeds_str):
+    """Parse a comma-separated string of integers, e.g. '42,123,2024' -> [42, 123, 2024]."""
+    seeds = []
+    for tok in seeds_str.split(","):
+        tok = tok.strip()
+        if not tok:
+            continue
+        try:
+            seeds.append(int(tok))
+        except ValueError:
+            raise SystemExit(f"[error] --seeds must be comma-separated integers (got '{tok}')")
+    if not seeds:
+        raise SystemExit("[error] --seeds must contain at least one integer")
+    return seeds
 
-    # Collect the union of tIoU thresholds seen across all results
+
+def _aggregate_group(group):
+    """Compute (mean_mAP, std_mAP, n_ok, n_total, per_tiou_mean, thresholds) for a list of seed records."""
+    valid = [r for r in group if r["best_mAP"] is not None]
+    n_total = len(group)
+    n_ok = len(valid)
+    if not valid:
+        return None, None, n_ok, n_total, [], []
+    mAPs = [r["best_mAP"] for r in valid]
+    mean_mAP = statistics.mean(mAPs)
+    std_mAP = statistics.stdev(mAPs) if len(mAPs) >= 2 else None
+
+    thresholds = valid[0].get("tiou_thresholds") or []
+    per_tiou_mean = []
+    if thresholds:
+        for i in range(len(thresholds)):
+            vals = [
+                r["best_mAP_per_tiou"][i]
+                for r in valid
+                if r.get("tiou_thresholds") == thresholds
+                and len(r.get("best_mAP_per_tiou", [])) > i
+            ]
+            per_tiou_mean.append(statistics.mean(vals) if vals else None)
+    return mean_mAP, std_mAP, n_ok, n_total, per_tiou_mean, thresholds
+
+
+def print_table(results):
+    """Print comparison table: aggregate row per experiment, then per-seed rows."""
+    # Group by experiment name, preserving first-seen order
+    groups = {}  # name -> list[result]
+    order = []
+    for r in results:
+        if r["name"] not in groups:
+            groups[r["name"]] = []
+            order.append(r["name"])
+        groups[r["name"]].append(r)
+
+    # Baseline mean for the "vs base" delta column
+    baseline_mean = None
+    if "trifuse_actionformer" in groups:
+        baseline_mean, *_ = _aggregate_group(groups["trifuse_actionformer"])
+
+    # Union of tIoU thresholds across all results, for column headers
     all_thresholds = []
     for r in results:
         for t in r.get("tiou_thresholds", []):
@@ -294,51 +358,82 @@ def print_table(results):
                 all_thresholds.append(t)
     all_thresholds = sorted(all_thresholds)
 
-    # Build header
     tiou_header = "  ".join(f"@{t:.1f}" for t in all_thresholds)
-    tiou_width  = max(len(tiou_header), 1)
-    sep_width   = 28 + tiou_width + 26 + 40
+    name_w = 28
+    mAP_w = 16  # wide enough for "0.1234+/-0.1234"
+    delta_w = 9
+    sep_width = name_w + (len(tiou_header) + 2 if all_thresholds else 0) + mAP_w + delta_w + 50
+
     header = (
-        f"  {'Experiment':<20}"
+        f"  {'Experiment':<{name_w}}"
         + (f"  {tiou_header}" if all_thresholds else "")
-        + f"  {'mAP':>6}  {'vs base':>8}  Description"
+        + f"  {'mAP':>{mAP_w}}  {'vs base':>{delta_w}}  Description"
     )
     print("\n" + "-" * sep_width)
     print(header)
     print("-" * sep_width)
 
-    sorted_results = sorted(
-        results,
-        key=lambda r: (r["best_mAP"] is not None, r["best_mAP"] or 0.0),
-        reverse=True,
-    )
-    for r in sorted_results:
-        mAP_str = f"{r['best_mAP']:.4f}" if r["best_mAP"] is not None else "  N/A"
-        if baseline_map is not None and r["best_mAP"] is not None:
-            delta_str = f"{r['best_mAP'] - baseline_map:+.4f}"
+    # Sort by aggregate mean mAP descending (None last)
+    def sort_key(name):
+        m, *_ = _aggregate_group(groups[name])
+        return (m is not None, m or 0.0)
+    sorted_names = sorted(order, key=sort_key, reverse=True)
+
+    for name in sorted_names:
+        rs = groups[name]
+        mean_mAP, std_mAP, n_ok, n_total, per_tiou_mean, thresholds = _aggregate_group(rs)
+        description = rs[0]["description"]
+
+        # Aggregate row
+        if mean_mAP is None:
+            mAP_str = "N/A"
+            delta_str = "?"
         else:
-            delta_str = "      ?"
-        status = ""
-        if r["skipped"]:
-            status = " [skipped]"
-        elif r["failed"]:
-            status = " [FAILED]"
+            mAP_str = (
+                f"{mean_mAP:.4f}+/-{std_mAP:.4f}" if std_mAP is not None
+                else f"{mean_mAP:.4f}"
+            )
+            delta_str = (
+                f"{mean_mAP - baseline_mean:+.4f}"
+                if baseline_mean is not None else "?"
+            )
 
         if all_thresholds:
-            per_tiou_map = dict(zip(r.get("tiou_thresholds", []), r.get("best_mAP_per_tiou", [])))
+            per_tiou_map = dict(zip(thresholds, per_tiou_mean))
             tiou_str = "  ".join(
-                f"{per_tiou_map[t]:.4f}" if t in per_tiou_map else "  N/A"
+                f"{per_tiou_map[t]:.4f}" if t in per_tiou_map and per_tiou_map[t] is not None else "  N/A"
                 for t in all_thresholds
             )
-            row = f"  {r['name']:<20}  {tiou_str}  {mAP_str:>6}  {delta_str:>8}  {r['description']}{status}"
+            row = f"  {name:<{name_w}}  {tiou_str}  {mAP_str:>{mAP_w}}  {delta_str:>{delta_w}}  {description} [n={n_ok}/{n_total}]"
         else:
-            row = f"  {r['name']:<20}  {mAP_str:>6}  {delta_str:>8}  {r['description']}{status}"
+            row = f"  {name:<{name_w}}  {mAP_str:>{mAP_w}}  {delta_str:>{delta_w}}  {description} [n={n_ok}/{n_total}]"
         print(row)
+
+        # Per-seed rows (only if more than one seed, otherwise the aggregate IS the seed)
+        if len(rs) > 1:
+            for r in rs:
+                tag = f"seed={r['seed']}"
+                if r["skipped"]:
+                    tag += " [skipped]"
+                elif r["failed"]:
+                    tag += " [FAILED]"
+                seed_label = f"      {tag}"
+                seed_mAP_str = f"{r['best_mAP']:.4f}" if r["best_mAP"] is not None else "N/A"
+                if all_thresholds:
+                    per_tiou_map = dict(zip(r.get("tiou_thresholds", []), r.get("best_mAP_per_tiou", [])))
+                    tiou_str = "  ".join(
+                        f"{per_tiou_map[t]:.4f}" if t in per_tiou_map else "  N/A"
+                        for t in all_thresholds
+                    )
+                    print(f"  {seed_label:<{name_w}}  {tiou_str}  {seed_mAP_str:>{mAP_w}}  {'':>{delta_w}}")
+                else:
+                    print(f"  {seed_label:<{name_w}}  {seed_mAP_str:>{mAP_w}}  {'':>{delta_w}}")
     print("-" * sep_width + "\n")
 
 
 def main():
     args = parse_args()
+    seeds = parse_seeds(args.seeds)
 
     # Filter to a single experiment if requested
     experiments = EXPERIMENTS
@@ -349,80 +444,85 @@ def main():
                   + ", ".join(e[0] for e in EXPERIMENTS))
             sys.exit(1)
 
-    # Force re-run: delete both checkpoints for that experiment so no stale
-    # weights are resumed (important when the architecture changes between runs)
+    # Force re-run: delete every seed's checkpoints for that experiment so no
+    # stale weights are resumed (important when the architecture changes).
     if args.force is not None:
         forced = [e for e in experiments if e[0] == args.force]
         if not forced:
             print(f"[error] No experiment named '{args.force}'.")
             sys.exit(1)
-        for ckpt_path in (best_ckpt_path(forced[0][2]), resume_ckpt_path(forced[0][2])):
-            if os.path.isfile(ckpt_path):
-                os.remove(ckpt_path)
-                print(f"[force] Deleted {ckpt_path}")
-            else:
-                print(f"[force] Nothing to delete at {ckpt_path}")
+        for seed in seeds:
+            for ckpt_path in (best_ckpt_path(forced[0][2], seed),
+                              resume_ckpt_path(forced[0][2], seed)):
+                if os.path.isfile(ckpt_path):
+                    os.remove(ckpt_path)
+                    print(f"[force] Deleted {ckpt_path}")
+                else:
+                    print(f"[force] Nothing to delete at {ckpt_path}")
 
     results = []
     interrupted = False
 
     for name, config_path, output_dir, description in experiments:
-        result = dict(
-            name=name,
-            config=config_path,
-            output_dir=output_dir,
-            description=description,
-            best_mAP=None,
-            best_mAP_per_tiou=[],
-            tiou_thresholds=[],
-            skipped=False,
-            failed=False,
-        )
+        if interrupted:
+            break
+        for seed in seeds:
+            result = dict(
+                name=name,
+                seed=seed,
+                config=config_path,
+                output_dir=output_dir,
+                description=description,
+                best_mAP=None,
+                best_mAP_per_tiou=[],
+                tiou_thresholds=[],
+                skipped=False,
+                failed=False,
+            )
 
-        # Check if already done
-        existing_mAP, existing_per_tiou, existing_thresholds = read_best_map(output_dir)
-        if existing_mAP is not None and args.force != name:
-            if not existing_per_tiou and not args.dry_run:
-                run_evaluation(name, config_path, output_dir, args.python)
-                existing_mAP, existing_per_tiou, existing_thresholds = read_best_map(output_dir)
-            print(f"\n[skip] '{name}' already has model_best.pth.tar  (best_mAP={existing_mAP:.4f})")
-            result["best_mAP"]          = existing_mAP
-            result["best_mAP_per_tiou"] = existing_per_tiou
-            result["tiou_thresholds"]   = existing_thresholds
-            result["skipped"] = True
-            results.append(result)
-            continue
+            existing_mAP, existing_per_tiou, existing_thresholds = read_best_map(output_dir, seed)
+            if existing_mAP is not None and args.force != name:
+                if not existing_per_tiou and not args.dry_run:
+                    run_evaluation(name, config_path, output_dir, seed, args.python)
+                    existing_mAP, existing_per_tiou, existing_thresholds = read_best_map(output_dir, seed)
+                print(f"\n[skip] '{name}' seed={seed} already has model_best.pth.tar  (best_mAP={existing_mAP:.4f})")
+                result["best_mAP"]          = existing_mAP
+                result["best_mAP_per_tiou"] = existing_per_tiou
+                result["tiou_thresholds"]   = existing_thresholds
+                result["skipped"] = True
+                results.append(result)
+                continue
 
-        if args.dry_run:
-            print(f"\n[dry_run] Would train: {name} -> {config_path}")
-            results.append(result)
-            continue
+            if args.dry_run:
+                rel_out = os.path.relpath(_seed_dir(output_dir, seed), _SCRIPT_DIR)
+                print(f"\n[dry_run] Would train: {name} seed={seed} -> {config_path}  (out: {rel_out})")
+                results.append(result)
+                continue
 
-        try:
-            success = run_training(name, config_path, output_dir, args.python, seed=args.seed)
-        except KeyboardInterrupt:
-            interrupted = True
-            # Read whatever was saved so far
-            mAP, per_tiou, thresholds = read_best_map(output_dir)
+            try:
+                success = run_training(name, config_path, output_dir, seed, args.python)
+            except KeyboardInterrupt:
+                interrupted = True
+                mAP, per_tiou, thresholds = read_best_map(output_dir, seed)
+                result["best_mAP"]          = mAP
+                result["best_mAP_per_tiou"] = per_tiou
+                result["tiou_thresholds"]   = thresholds
+                result["failed"] = True
+                results.append(result)
+                break
+
+            mAP, per_tiou, thresholds = read_best_map(output_dir, seed)
             result["best_mAP"]          = mAP
             result["best_mAP_per_tiou"] = per_tiou
             result["tiou_thresholds"]   = thresholds
-            result["failed"] = True
-            results.append(result)
-            break
-
-        mAP, per_tiou, thresholds = read_best_map(output_dir)
-        result["best_mAP"]          = mAP
-        result["best_mAP_per_tiou"] = per_tiou
-        result["tiou_thresholds"]   = thresholds
-        if success:
-            if result["best_mAP"] is None:
-                print(f"  [warn] Training succeeded but no model_best.pth.tar found for '{name}'")
+            if success:
+                if result["best_mAP"] is None:
+                    print(f"  [warn] Training succeeded but no model_best.pth.tar found for '{name}' seed={seed}")
+                    result["failed"] = True
+            else:
                 result["failed"] = True
-        else:
-            result["failed"] = True
 
-        results.append(result)
+            results.append(result)
 
     # ── Save results to JSON ──────────────────────────────────────────────────
     results_file = os.path.join(_SCRIPT_DIR, "runs", "experiment_results.json")

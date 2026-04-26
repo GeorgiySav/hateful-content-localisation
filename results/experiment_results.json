@@ -1,0 +1,1202 @@
+[
+  {
+    "name": "trifuse_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/trifuse_actionformer.yaml",
+    "output_dir": "runs/exp/trifuse_actionformer",
+    "description": "TriFuse + ActionFormer (windowed self-attention backbone)",
+    "best_mAP": 0.34277355670928955,
+    "best_mAP_per_tiou": [
+      0.5341525077819824,
+      0.3692254424095154,
+      0.12494276463985443
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/trifuse_actionformer.yaml",
+    "output_dir": "runs/exp/trifuse_actionformer",
+    "description": "TriFuse + ActionFormer (windowed self-attention backbone)",
+    "best_mAP": 0.34534183144569397,
+    "best_mAP_per_tiou": [
+      0.5445665717124939,
+      0.3685733377933502,
+      0.1228855550289154
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/trifuse_actionformer.yaml",
+    "output_dir": "runs/exp/trifuse_actionformer",
+    "description": "TriFuse + ActionFormer (windowed self-attention backbone)",
+    "best_mAP": 0.31489402055740356,
+    "best_mAP_per_tiou": [
+      0.5019172430038452,
+      0.3348909020423889,
+      0.10787393897771835
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_temporalmaxer",
+    "seed": 42,
+    "config": "configs/experiments/trifuse_temporalmaxer.yaml",
+    "output_dir": "runs/exp/trifuse_temporalmaxer",
+    "description": "TriFuse + TemporalMaxer (parameter-free MaxPool backbone)",
+    "best_mAP": 0.34189677238464355,
+    "best_mAP_per_tiou": [
+      0.5300074815750122,
+      0.3505527079105377,
+      0.1451302170753479
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_temporalmaxer",
+    "seed": 123,
+    "config": "configs/experiments/trifuse_temporalmaxer.yaml",
+    "output_dir": "runs/exp/trifuse_temporalmaxer",
+    "description": "TriFuse + TemporalMaxer (parameter-free MaxPool backbone)",
+    "best_mAP": 0.3302605152130127,
+    "best_mAP_per_tiou": [
+      0.5135979652404785,
+      0.3438951075077057,
+      0.13328853249549866
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_temporalmaxer",
+    "seed": 6767,
+    "config": "configs/experiments/trifuse_temporalmaxer.yaml",
+    "output_dir": "runs/exp/trifuse_temporalmaxer",
+    "description": "TriFuse + TemporalMaxer (parameter-free MaxPool backbone)",
+    "best_mAP": 0.33887341618537903,
+    "best_mAP_per_tiou": [
+      0.5304551720619202,
+      0.35874468088150024,
+      0.12742047011852264
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_trident_temporalmaxer",
+    "seed": 42,
+    "config": "configs/experiments/trifuse_trident_temporalmaxer.yaml",
+    "output_dir": "runs/exp/trifuse_trident_temporalmaxer",
+    "description": "TriFuse + TemporalMaxer + trident head (boundary distribution)",
+    "best_mAP": 0.35003647208213806,
+    "best_mAP_per_tiou": [
+      0.5401932597160339,
+      0.3694475591182709,
+      0.14046865701675415
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_trident_temporalmaxer",
+    "seed": 123,
+    "config": "configs/experiments/trifuse_trident_temporalmaxer.yaml",
+    "output_dir": "runs/exp/trifuse_trident_temporalmaxer",
+    "description": "TriFuse + TemporalMaxer + trident head (boundary distribution)",
+    "best_mAP": 0.3376854658126831,
+    "best_mAP_per_tiou": [
+      0.5314125418663025,
+      0.36055460572242737,
+      0.12108920514583588
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_trident_temporalmaxer",
+    "seed": 6767,
+    "config": "configs/experiments/trifuse_trident_temporalmaxer.yaml",
+    "output_dir": "runs/exp/trifuse_trident_temporalmaxer",
+    "description": "TriFuse + TemporalMaxer + trident head (boundary distribution)",
+    "best_mAP": 0.3389102518558502,
+    "best_mAP_per_tiou": [
+      0.5346559286117554,
+      0.3615398108959198,
+      0.12053503096103668
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_tridet",
+    "seed": 42,
+    "config": "configs/experiments/trifuse_tridet.yaml",
+    "output_dir": "runs/exp/trifuse_tridet",
+    "description": "TriFuse + TriDet (SGP backbone + trident distribution head)",
+    "best_mAP": 0.3533303439617157,
+    "best_mAP_per_tiou": [
+      0.5487037301063538,
+      0.3865112066268921,
+      0.12477608025074005
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_tridet",
+    "seed": 123,
+    "config": "configs/experiments/trifuse_tridet.yaml",
+    "output_dir": "runs/exp/trifuse_tridet",
+    "description": "TriFuse + TriDet (SGP backbone + trident distribution head)",
+    "best_mAP": 0.33438095450401306,
+    "best_mAP_per_tiou": [
+      0.5342494249343872,
+      0.3604755401611328,
+      0.10841791331768036
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_tridet",
+    "seed": 6767,
+    "config": "configs/experiments/trifuse_tridet.yaml",
+    "output_dir": "runs/exp/trifuse_tridet",
+    "description": "TriFuse + TriDet (SGP backbone + trident distribution head)",
+    "best_mAP": 0.34744009375572205,
+    "best_mAP_per_tiou": [
+      0.5435509085655212,
+      0.3665280342102051,
+      0.13224130868911743
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/concat_actionformer.yaml",
+    "output_dir": "runs/exp/concat_actionformer",
+    "description": "Concat + ActionFormer (baseline for trifuse_actionformer)",
+    "best_mAP": 0.32897239923477173,
+    "best_mAP_per_tiou": [
+      0.5313603281974792,
+      0.34679096937179565,
+      0.10876590013504028
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/concat_actionformer.yaml",
+    "output_dir": "runs/exp/concat_actionformer",
+    "description": "Concat + ActionFormer (baseline for trifuse_actionformer)",
+    "best_mAP": 0.3182266354560852,
+    "best_mAP_per_tiou": [
+      0.504103422164917,
+      0.3302158713340759,
+      0.1203606128692627
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/concat_actionformer.yaml",
+    "output_dir": "runs/exp/concat_actionformer",
+    "description": "Concat + ActionFormer (baseline for trifuse_actionformer)",
+    "best_mAP": 0.3268508315086365,
+    "best_mAP_per_tiou": [
+      0.5240253210067749,
+      0.35167184472084045,
+      0.10485533624887466
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_temporalmaxer",
+    "seed": 42,
+    "config": "configs/experiments/concat_temporalmaxer.yaml",
+    "output_dir": "runs/exp/concat_temporalmaxer",
+    "description": "Concat + TemporalMaxer (baseline for trifuse_temporalmaxer)",
+    "best_mAP": 0.31588566303253174,
+    "best_mAP_per_tiou": [
+      0.5021110773086548,
+      0.3265650272369385,
+      0.11898086965084076
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_temporalmaxer",
+    "seed": 123,
+    "config": "configs/experiments/concat_temporalmaxer.yaml",
+    "output_dir": "runs/exp/concat_temporalmaxer",
+    "description": "Concat + TemporalMaxer (baseline for trifuse_temporalmaxer)",
+    "best_mAP": 0.3289252817630768,
+    "best_mAP_per_tiou": [
+      0.5148621201515198,
+      0.3491365611553192,
+      0.12277720868587494
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_temporalmaxer",
+    "seed": 6767,
+    "config": "configs/experiments/concat_temporalmaxer.yaml",
+    "output_dir": "runs/exp/concat_temporalmaxer",
+    "description": "Concat + TemporalMaxer (baseline for trifuse_temporalmaxer)",
+    "best_mAP": 0.32002970576286316,
+    "best_mAP_per_tiou": [
+      0.5092484951019287,
+      0.33132582902908325,
+      0.11951473355293274
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_tridet",
+    "seed": 42,
+    "config": "configs/experiments/concat_tridet.yaml",
+    "output_dir": "runs/exp/concat_tridet",
+    "description": "Concat + TriDet (baseline for trifuse_tridet)",
+    "best_mAP": 0.32033050060272217,
+    "best_mAP_per_tiou": [
+      0.5175184607505798,
+      0.34390395879745483,
+      0.09956909716129303
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_tridet",
+    "seed": 123,
+    "config": "configs/experiments/concat_tridet.yaml",
+    "output_dir": "runs/exp/concat_tridet",
+    "description": "Concat + TriDet (baseline for trifuse_tridet)",
+    "best_mAP": 0.3369331359863281,
+    "best_mAP_per_tiou": [
+      0.5209195017814636,
+      0.3609728217124939,
+      0.12890702486038208
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_tridet",
+    "seed": 6767,
+    "config": "configs/experiments/concat_tridet.yaml",
+    "output_dir": "runs/exp/concat_tridet",
+    "description": "Concat + TriDet (baseline for trifuse_tridet)",
+    "best_mAP": 0.33838799595832825,
+    "best_mAP_per_tiou": [
+      0.5301108956336975,
+      0.3628678321838379,
+      0.12218524515628815
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_trident_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/trifuse_trident_actionformer.yaml",
+    "output_dir": "runs/exp/trifuse_trident_actionformer",
+    "description": "TriFuse + ActionFormer + trident head (vs standard in trifuse_actionformer)",
+    "best_mAP": 0.3498099148273468,
+    "best_mAP_per_tiou": [
+      0.5461562275886536,
+      0.37175115942955017,
+      0.13152238726615906
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_trident_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/trifuse_trident_actionformer.yaml",
+    "output_dir": "runs/exp/trifuse_trident_actionformer",
+    "description": "TriFuse + ActionFormer + trident head (vs standard in trifuse_actionformer)",
+    "best_mAP": 0.3361293375492096,
+    "best_mAP_per_tiou": [
+      0.5286188125610352,
+      0.3626692295074463,
+      0.11710000038146973
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_trident_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/trifuse_trident_actionformer.yaml",
+    "output_dir": "runs/exp/trifuse_trident_actionformer",
+    "description": "TriFuse + ActionFormer + trident head (vs standard in trifuse_actionformer)",
+    "best_mAP": 0.34146544337272644,
+    "best_mAP_per_tiou": [
+      0.531336784362793,
+      0.36479654908180237,
+      0.12826299667358398
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_sgp_standard",
+    "seed": 42,
+    "config": "configs/experiments/trifuse_sgp_standard.yaml",
+    "output_dir": "runs/exp/trifuse_sgp_standard",
+    "description": "TriFuse + SGP + standard head (vs trident in trifuse_tridet)",
+    "best_mAP": 0.32248684763908386,
+    "best_mAP_per_tiou": [
+      0.5116350650787354,
+      0.3351800739765167,
+      0.12064545601606369
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_sgp_standard",
+    "seed": 123,
+    "config": "configs/experiments/trifuse_sgp_standard.yaml",
+    "output_dir": "runs/exp/trifuse_sgp_standard",
+    "description": "TriFuse + SGP + standard head (vs trident in trifuse_tridet)",
+    "best_mAP": 0.31114187836647034,
+    "best_mAP_per_tiou": [
+      0.4949929118156433,
+      0.3177591562271118,
+      0.12067361176013947
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "trifuse_sgp_standard",
+    "seed": 6767,
+    "config": "configs/experiments/trifuse_sgp_standard.yaml",
+    "output_dir": "runs/exp/trifuse_sgp_standard",
+    "description": "TriFuse + SGP + standard head (vs trident in trifuse_tridet)",
+    "best_mAP": 0.3179137408733368,
+    "best_mAP_per_tiou": [
+      0.5133403539657593,
+      0.32768917083740234,
+      0.11271174997091293
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_trident_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/concat_trident_actionformer.yaml",
+    "output_dir": "runs/exp/concat_trident_actionformer",
+    "description": "Concat + ActionFormer + trident head (vs standard in concat_actionformer)",
+    "best_mAP": 0.3209667503833771,
+    "best_mAP_per_tiou": [
+      0.5298566222190857,
+      0.34500154852867126,
+      0.08804210275411606
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_trident_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/concat_trident_actionformer.yaml",
+    "output_dir": "runs/exp/concat_trident_actionformer",
+    "description": "Concat + ActionFormer + trident head (vs standard in concat_actionformer)",
+    "best_mAP": 0.33003759384155273,
+    "best_mAP_per_tiou": [
+      0.5363864898681641,
+      0.34701597690582275,
+      0.10671032220125198
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_trident_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/concat_trident_actionformer.yaml",
+    "output_dir": "runs/exp/concat_trident_actionformer",
+    "description": "Concat + ActionFormer + trident head (vs standard in concat_actionformer)",
+    "best_mAP": 0.34275195002555847,
+    "best_mAP_per_tiou": [
+      0.5436820387840271,
+      0.3685024678707123,
+      0.11607129126787186
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_trident_temporalmaxer",
+    "seed": 42,
+    "config": "configs/experiments/concat_trident_temporalmaxer.yaml",
+    "output_dir": "runs/exp/concat_trident_temporalmaxer",
+    "description": "Concat + TemporalMaxer + trident head (vs standard in concat_temporalmaxer)",
+    "best_mAP": 0.3285802900791168,
+    "best_mAP_per_tiou": [
+      0.5294429659843445,
+      0.34157273173332214,
+      0.11472515761852264
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_trident_temporalmaxer",
+    "seed": 123,
+    "config": "configs/experiments/concat_trident_temporalmaxer.yaml",
+    "output_dir": "runs/exp/concat_trident_temporalmaxer",
+    "description": "Concat + TemporalMaxer + trident head (vs standard in concat_temporalmaxer)",
+    "best_mAP": 0.3334958553314209,
+    "best_mAP_per_tiou": [
+      0.5228168964385986,
+      0.35560718178749084,
+      0.12206351011991501
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_trident_temporalmaxer",
+    "seed": 6767,
+    "config": "configs/experiments/concat_trident_temporalmaxer.yaml",
+    "output_dir": "runs/exp/concat_trident_temporalmaxer",
+    "description": "Concat + TemporalMaxer + trident head (vs standard in concat_temporalmaxer)",
+    "best_mAP": 0.3384052813053131,
+    "best_mAP_per_tiou": [
+      0.5289405584335327,
+      0.3614262044429779,
+      0.12484903633594513
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_sgp_standard",
+    "seed": 42,
+    "config": "configs/experiments/concat_sgp_standard.yaml",
+    "output_dir": "runs/exp/concat_sgp_standard",
+    "description": "Concat + SGP + standard head (vs trident in concat_tridet)",
+    "best_mAP": 0.2837822735309601,
+    "best_mAP_per_tiou": [
+      0.4655076563358307,
+      0.2960144579410553,
+      0.08982466161251068
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_sgp_standard",
+    "seed": 123,
+    "config": "configs/experiments/concat_sgp_standard.yaml",
+    "output_dir": "runs/exp/concat_sgp_standard",
+    "description": "Concat + SGP + standard head (vs trident in concat_tridet)",
+    "best_mAP": 0.3239642083644867,
+    "best_mAP_per_tiou": [
+      0.5160131454467773,
+      0.33300745487213135,
+      0.12287206947803497
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "concat_sgp_standard",
+    "seed": 6767,
+    "config": "configs/experiments/concat_sgp_standard.yaml",
+    "output_dir": "runs/exp/concat_sgp_standard",
+    "description": "Concat + SGP + standard head (vs trident in concat_tridet)",
+    "best_mAP": 0.2848086655139923,
+    "best_mAP_per_tiou": [
+      0.47587308287620544,
+      0.29534289240837097,
+      0.08320998400449753
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_va_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/bimodal_va_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_va_actionformer",
+    "description": "Video+Audio + ActionFormer (bimodal ablation, no text)",
+    "best_mAP": 0.29563790559768677,
+    "best_mAP_per_tiou": [
+      0.487806111574173,
+      0.308491975069046,
+      0.09061561524868011
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_va_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/bimodal_va_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_va_actionformer",
+    "description": "Video+Audio + ActionFormer (bimodal ablation, no text)",
+    "best_mAP": 0.30115166306495667,
+    "best_mAP_per_tiou": [
+      0.48421820998191833,
+      0.320004403591156,
+      0.09923243522644043
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_va_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/bimodal_va_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_va_actionformer",
+    "description": "Video+Audio + ActionFormer (bimodal ablation, no text)",
+    "best_mAP": 0.29888471961021423,
+    "best_mAP_per_tiou": [
+      0.4920767545700073,
+      0.31115487217903137,
+      0.0934225395321846
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_at_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/bimodal_at_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_at_actionformer",
+    "description": "Audio+Text + ActionFormer (bimodal ablation, no video)",
+    "best_mAP": 0.3239404857158661,
+    "best_mAP_per_tiou": [
+      0.522021472454071,
+      0.33635061979293823,
+      0.11344937980175018
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_at_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/bimodal_at_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_at_actionformer",
+    "description": "Audio+Text + ActionFormer (bimodal ablation, no video)",
+    "best_mAP": 0.33178672194480896,
+    "best_mAP_per_tiou": [
+      0.5257261991500854,
+      0.3495030403137207,
+      0.12013086676597595
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_at_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/bimodal_at_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_at_actionformer",
+    "description": "Audio+Text + ActionFormer (bimodal ablation, no video)",
+    "best_mAP": 0.3197489082813263,
+    "best_mAP_per_tiou": [
+      0.5179609060287476,
+      0.33697250485420227,
+      0.10431335121393204
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_vt_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/bimodal_vt_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_vt_actionformer",
+    "description": "Video+Text + ActionFormer (bimodal ablation, no audio)",
+    "best_mAP": 0.3139967918395996,
+    "best_mAP_per_tiou": [
+      0.5161882638931274,
+      0.33840033411979675,
+      0.08740177750587463
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_vt_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/bimodal_vt_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_vt_actionformer",
+    "description": "Video+Text + ActionFormer (bimodal ablation, no audio)",
+    "best_mAP": 0.32159528136253357,
+    "best_mAP_per_tiou": [
+      0.5273197293281555,
+      0.34222713112831116,
+      0.09523898363113403
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "bimodal_vt_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/bimodal_vt_actionformer.yaml",
+    "output_dir": "runs/exp/bimodal_vt_actionformer",
+    "description": "Video+Text + ActionFormer (bimodal ablation, no audio)",
+    "best_mAP": 0.3120139539241791,
+    "best_mAP_per_tiou": [
+      0.5071923136711121,
+      0.3242109417915344,
+      0.10463865101337433
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "fps_ablation_2fps",
+    "seed": 42,
+    "config": "configs/experiments/fps_ablation_2fps.yaml",
+    "output_dir": "runs/exp/fps_ablation_2fps",
+    "description": "TriFuse + SGP + Trident @ 2fps (vs trifuse_tridet @ 1fps)",
+    "best_mAP": 0.35356947779655457,
+    "best_mAP_per_tiou": [
+      0.5480865836143494,
+      0.3776441812515259,
+      0.13497768342494965
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "fps_ablation_2fps",
+    "seed": 123,
+    "config": "configs/experiments/fps_ablation_2fps.yaml",
+    "output_dir": "runs/exp/fps_ablation_2fps",
+    "description": "TriFuse + SGP + Trident @ 2fps (vs trifuse_tridet @ 1fps)",
+    "best_mAP": 0.3608238697052002,
+    "best_mAP_per_tiou": [
+      0.5367335081100464,
+      0.3883626461029053,
+      0.15737545490264893
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "fps_ablation_2fps",
+    "seed": 6767,
+    "config": "configs/experiments/fps_ablation_2fps.yaml",
+    "output_dir": "runs/exp/fps_ablation_2fps",
+    "description": "TriFuse + SGP + Trident @ 2fps (vs trifuse_tridet @ 1fps)",
+    "best_mAP": 0.36096346378326416,
+    "best_mAP_per_tiou": [
+      0.5471854209899902,
+      0.3848686218261719,
+      0.15083633363246918
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "fps_ablation_4fps",
+    "seed": 42,
+    "config": "configs/experiments/fps_ablation_4fps.yaml",
+    "output_dir": "runs/exp/fps_ablation_4fps",
+    "description": "TriFuse + SGP + Trident @ 4fps (vs trifuse_tridet @ 1fps)",
+    "best_mAP": 0.31453922390937805,
+    "best_mAP_per_tiou": [
+      0.5244051218032837,
+      0.32446637749671936,
+      0.09474625438451767
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "fps_ablation_4fps",
+    "seed": 123,
+    "config": "configs/experiments/fps_ablation_4fps.yaml",
+    "output_dir": "runs/exp/fps_ablation_4fps",
+    "description": "TriFuse + SGP + Trident @ 4fps (vs trifuse_tridet @ 1fps)",
+    "best_mAP": 0.32029348611831665,
+    "best_mAP_per_tiou": [
+      0.516312837600708,
+      0.3307954668998718,
+      0.11377213895320892
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "fps_ablation_4fps",
+    "seed": 6767,
+    "config": "configs/experiments/fps_ablation_4fps.yaml",
+    "output_dir": "runs/exp/fps_ablation_4fps",
+    "description": "TriFuse + SGP + Trident @ 4fps (vs trifuse_tridet @ 1fps)",
+    "best_mAP": 0.3323187530040741,
+    "best_mAP_per_tiou": [
+      0.5184064507484436,
+      0.34599506855010986,
+      0.13255469501018524
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_video_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/unimodal_video_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_video_actionformer",
+    "description": "Video-only + ActionFormer (CLIP ViT-L/14 unimodal ablation)",
+    "best_mAP": 0.2922976016998291,
+    "best_mAP_per_tiou": [
+      0.49659574031829834,
+      0.3036753833293915,
+      0.07662168145179749
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_video_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/unimodal_video_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_video_actionformer",
+    "description": "Video-only + ActionFormer (CLIP ViT-L/14 unimodal ablation)",
+    "best_mAP": 0.2794437110424042,
+    "best_mAP_per_tiou": [
+      0.47745281457901,
+      0.28726404905319214,
+      0.07361423224210739
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_video_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/unimodal_video_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_video_actionformer",
+    "description": "Video-only + ActionFormer (CLIP ViT-L/14 unimodal ablation)",
+    "best_mAP": 0.29915934801101685,
+    "best_mAP_per_tiou": [
+      0.5007283091545105,
+      0.3152964115142822,
+      0.08145330846309662
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_audio_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/unimodal_audio_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_audio_actionformer",
+    "description": "Audio-only + ActionFormer (Wav2Vec2 Large unimodal ablation)",
+    "best_mAP": 0.2905413806438446,
+    "best_mAP_per_tiou": [
+      0.4704415500164032,
+      0.2994823455810547,
+      0.10170020908117294
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_audio_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/unimodal_audio_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_audio_actionformer",
+    "description": "Audio-only + ActionFormer (Wav2Vec2 Large unimodal ablation)",
+    "best_mAP": 0.2807812988758087,
+    "best_mAP_per_tiou": [
+      0.46454504132270813,
+      0.2870160937309265,
+      0.09078270196914673
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_audio_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/unimodal_audio_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_audio_actionformer",
+    "description": "Audio-only + ActionFormer (Wav2Vec2 Large unimodal ablation)",
+    "best_mAP": 0.2877809405326843,
+    "best_mAP_per_tiou": [
+      0.4712972640991211,
+      0.29144033789634705,
+      0.10060516744852066
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_text_actionformer",
+    "seed": 42,
+    "config": "configs/experiments/unimodal_text_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_text_actionformer",
+    "description": "Text-only + ActionFormer (HateBERT CLS unimodal ablation)",
+    "best_mAP": 0.2883758246898651,
+    "best_mAP_per_tiou": [
+      0.4745921492576599,
+      0.29903995990753174,
+      0.09149540215730667
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_text_actionformer",
+    "seed": 123,
+    "config": "configs/experiments/unimodal_text_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_text_actionformer",
+    "description": "Text-only + ActionFormer (HateBERT CLS unimodal ablation)",
+    "best_mAP": 0.2781417667865753,
+    "best_mAP_per_tiou": [
+      0.4692402780056,
+      0.28439968824386597,
+      0.08078537881374359
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  },
+  {
+    "name": "unimodal_text_actionformer",
+    "seed": 6767,
+    "config": "configs/experiments/unimodal_text_actionformer.yaml",
+    "output_dir": "runs/exp/unimodal_text_actionformer",
+    "description": "Text-only + ActionFormer (HateBERT CLS unimodal ablation)",
+    "best_mAP": 0.30331888794898987,
+    "best_mAP_per_tiou": [
+      0.4926168620586395,
+      0.3168230950832367,
+      0.10051672160625458
+    ],
+    "tiou_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "skipped": false,
+    "failed": false
+  }
+]
