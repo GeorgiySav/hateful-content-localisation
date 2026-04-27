@@ -232,7 +232,6 @@ def train_one_epoch(
     curr_epoch,
     model_ema=None,
     clip_grad_norm=1.0,
-    tb_writer=None,
     print_freq=20,
 ):
     """Train for one epoch."""
@@ -270,15 +269,6 @@ def train_one_epoch(
                 losses_tracker[key].update(value.item())
 
             lr = scheduler.get_last_lr()[0]
-            global_step = curr_epoch * num_iters + iter_idx
-
-            if tb_writer is not None:
-                tb_writer.add_scalar('train/lr', lr, global_step)
-                tag_dict = {k: v.val for k, v in losses_tracker.items()
-                            if k != 'final_loss'}
-                tb_writer.add_scalars('train/losses', tag_dict, global_step)
-                tb_writer.add_scalar('train/final_loss',
-                                     losses_tracker['final_loss'].val, global_step)
 
             loss_str = '  '.join(
                 f'{k} {v.val:.4f}' for k, v in losses_tracker.items())
@@ -299,7 +289,6 @@ def valid_one_epoch(
     curr_epoch,
     evaluator=None,
     output_file=None,
-    tb_writer=None,
     print_freq=1000,
 ):
     """
@@ -371,10 +360,5 @@ def valid_one_epoch(
         import pickle
         with open(output_file, 'wb') as f:
             pickle.dump(results, f)
-
-    if tb_writer is not None:
-        tb_writer.add_scalar('val/mAP', mAP, curr_epoch)
-        for t, ap in zip(evaluator.tiou_thresholds if evaluator else [], mAP_per_tiou):
-            tb_writer.add_scalar(f'val/mAP@{t:.1f}', ap, curr_epoch)
 
     return mAP, mAP_per_tiou

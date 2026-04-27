@@ -134,10 +134,9 @@ Options:
 | Flag | Description |
 |------|-------------|
 | `--config` | Path to YAML config (required) |
-| `--output_dir` | Directory for checkpoints and TensorBoard logs |
+| `--output_dir` | Directory for checkpoints |
 | `--seed` | Random seed (default 42) |
 | `--resume` | Resume from checkpoint |
-| `--no_tb` | Disable TensorBoard |
 
 ---
 
