@@ -81,12 +81,6 @@ class HateClipSegDataset(Dataset):
         else:
             split_map = None
 
-        if split_map is not None:
-            self.split_video_ids = {vid for vid, s in split_map.items() if s == subset}
-        else:
-            self.split_video_ids = {vid for vid, meta in db.items()
-                                    if meta.get('subset', 'train') == subset}
-
         self.video_ids    = []
         self.annotations  = {}
         self.video_labels = []
@@ -142,6 +136,8 @@ class HateClipSegDataset(Dataset):
 
             self.video_ids.append(vid_id)
             self.video_labels.append(1 if self.annotations[vid_id]['segments'] else 0)
+
+        self.split_video_ids = set(self.video_ids)
 
         print(f"[{self._name}] Loaded {len(self.video_ids)} videos for subset='{subset}'"
               + (f" ({skipped} skipped)" if skipped else ""))

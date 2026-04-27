@@ -1,5 +1,5 @@
 """
-Evaluation entry point for HateMM temporal hateful content localization.
+Evaluation entry point for hateclipseg temporal hateful content localization.
 
 Usage:
     python eval.py --config configs/default.yaml --checkpoint /path/to/model_best.pth.tar
@@ -34,7 +34,7 @@ def _get_build_dataloader():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Evaluate HateMM temporal localizer")
+    parser = argparse.ArgumentParser(description="Evaluate hateclipseg model")
     parser.add_argument('--config',      required=True, help="Path to YAML config")
     parser.add_argument('--checkpoint',  required=True, help="Path to .pth.tar checkpoint")
     parser.add_argument('--subset',      default='val', choices=['val', 'test'])
@@ -42,8 +42,6 @@ def parse_args():
     parser.add_argument('--tiou',        nargs='+',     type=float,
                         default=[0.3, 0.5, 0.7],
                         help="tIoU thresholds for mAP")
-    parser.add_argument('--patch_checkpoint', action='store_true',
-                        help="Write best_mAP_per_tiou and tiou_thresholds back into the checkpoint")
     return parser.parse_args()
 
 
@@ -54,7 +52,7 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"[eval] Using device: {device}")
 
-    # ── Model ──────────────────────────────────────────────────────────────────
+    # Model
     model = HatefulContentLocalizer(cfg).to(device)
 
     ckpt = torch.load(args.checkpoint, map_location='cpu')
@@ -66,11 +64,11 @@ def main():
     print(f"[eval] Loaded checkpoint: {args.checkpoint}")
     model.eval()
 
-    # ── Data loader ────────────────────────────────────────────────────────────
+    # Data loader
     build_dataloader = _get_build_dataloader()
     val_loader = build_dataloader(cfg, subset=args.subset, is_training=False)
 
-    # ── Inference ──────────────────────────────────────────────────────────────
+    # Inference
     results = {
         'video-id': [],
         't-start' : [],
@@ -107,13 +105,13 @@ def main():
         for k in ('t-start', 't-end', 'label', 'score'):
             results[k] = np.array([])
 
-    # ── Optional: save raw predictions ────────────────────────────────────────
+    # Optional: save raw predictions
     if args.output_file is not None:
         with open(args.output_file, 'wb') as f:
             pickle.dump(results, f)
         print(f"[eval] Saved predictions to {args.output_file}")
 
-    # ── Evaluation ────────────────────────────────────────────────────────────
+    # Evaluation
     evaluator = ANETdetection(
         ground_truth_file=cfg['dataset']['annotation_file'],
         subset=args.subset,
@@ -125,29 +123,11 @@ def main():
     )
 
     ap_table, mAP, _ = evaluator.evaluate(results, verbose=True)
-    mAP_per_tiou = ap_table.mean(axis=0).tolist()
-
-    prf_table = evaluator.compute_prf(results, verbose=False)
 
     print("\n[eval] Results:")
     for tiou_idx, tiou in enumerate(args.tiou):
-        p   = prf_table[0, tiou_idx, 0]
-        r   = prf_table[0, tiou_idx, 1]
-        f1  = prf_table[0, tiou_idx, 2]
-        acc = prf_table[0, tiou_idx, 3]
-        print(f"  AP@{tiou:.1f} = {ap_table[0, tiou_idx]:.4f}"
-              f"   P@{tiou:.1f} = {p:.4f}"
-              f"   R@{tiou:.1f} = {r:.4f}"
-              f"   F1@{tiou:.1f} = {f1:.4f}"
-              f"   Acc@{tiou:.1f} = {acc:.4f}")
+        print(f"  AP@{tiou:.1f} = {ap_table[0, tiou_idx]:.4f}")
     print(f"  mAP = {mAP:.4f}")
-
-    if args.patch_checkpoint:
-        ckpt['best_mAP_per_tiou'] = mAP_per_tiou
-        ckpt['tiou_thresholds']   = args.tiou
-        ckpt['prf_per_tiou']      = prf_table[0].tolist()   # [[P, R, F1, Acc], ...]
-        torch.save(ckpt, args.checkpoint)
-        print(f"[eval] Patched {args.checkpoint}")
 
 
 if __name__ == '__main__':
