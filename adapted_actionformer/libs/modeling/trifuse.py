@@ -1,20 +1,12 @@
 """
-TriFuse — Trimodal Cross-Modal Attention Preprocessor.
+Trimodal Cross-Modal Attention Preprocessor.
 
 Architecture (3 stages):
+  1. All three modalities are projected to a shared d_model dimension.
 
-  Stage 1 — Linear projection.
-             All three modalities are projected to a shared d_model dimension.
+  2. Position-wise cross-modal attention .
 
-  Stage 2 — Position-wise cross-modal attention (n_fusion_layers layers).
-             Time is flattened into the batch dimension so each layer sees
-             only (v_t, a_t, x_t) at each individual timestep — no temporal
-             mixing.  For each modality, multi-head attention is applied with
-             that modality as query and the other two as keys/values, followed
-             by a position-wise FFN (pre-norm, residual throughout).
-
-  Stage 3 — Concat aggregation.
-             The three enriched streams are concatenated.
+  3. The three streams are concatenated.
 
 Interface contract (same as every other preprocessor):
     forward(text, audio, video) -> (B, T, 3 * d_model)
@@ -23,25 +15,21 @@ Interface contract (same as every other preprocessor):
 Config key:
     preprocessor:
       type: "trifuse"
-      d_out: 256          # d_model inside TriFuse; backbone n_in = 3 * d_out
+      d_model: 256 
       n_heads: 4
-      n_fusion_layers: 4
+      n_fusion_layers: 1
       dropout: 0.1
+      modality_dropout: 0.1
 """
 import torch
 from torch import nn
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Building block
-# ──────────────────────────────────────────────────────────────────────────────
-
 class PositionwiseFFN(nn.Module):
     """
     Pre-norm position-wise feed-forward block.
 
-    Applied identically and independently at every timestep — no information
-    flows between positions.  Multiple instances can be stacked for depth.
+    Applied identically and independently at every timestep.
 
     Args:
         d_model : Feature dimension.
@@ -63,14 +51,8 @@ class PositionwiseFFN(nn.Module):
         return x + self.net(self.ln(x))
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Stage 2 building block
-# ──────────────────────────────────────────────────────────────────────────────
-
 class CrossModalAttentionLayer(nn.Module):
     """
-    One layer of position-wise cross-modal attention (Stage 2).
-
     For each modality, multi-head attention is applied with that modality as
     query and the other two modalities as keys/values, followed by a
     position-wise FFN.  All sub-layers use pre-norm residual connections.
@@ -101,12 +83,11 @@ class CrossModalAttentionLayer(nn.Module):
         x: torch.Tensor,   # (BT, 1, D)
     ):
         """Returns: (v, a, x) with the same shapes as the inputs."""
-        # Normalise each modality once; reuse for both Q and KV roles.
         v_n = self.ln_v(v)
         a_n = self.ln_a(a)
         x_n = self.ln_x(x)
 
-        # Use pre-update (normalised) features as KV — no ordering bias.
+        # Use normalised features as KV
         kv_ax = torch.cat([a_n, x_n], dim=1)   # (BT, 2, D) — KV for video
         kv_vx = torch.cat([v_n, x_n], dim=1)   # (BT, 2, D) — KV for audio
         kv_va = torch.cat([v_n, a_n], dim=1)   # (BT, 2, D) — KV for text
@@ -122,18 +103,11 @@ class CrossModalAttentionLayer(nn.Module):
         return v, a, x
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Full TriFuse preprocessor
-# ──────────────────────────────────────────────────────────────────────────────
-
 class TriFusePreprocessor(nn.Module):
     """
     Trimodal cross-modal attention preprocessor.
 
     All three modality inputs arrive pre-aligned at (B, T, D_m).
-
-    No positional encoding is applied — temporal context aggregation is left
-    entirely to the backbone, which adds its own PE.
 
     Args:
         text_dim          : Native text feature dimension.
@@ -141,15 +115,12 @@ class TriFusePreprocessor(nn.Module):
         video_dim         : Native video feature dimension.
         d_model           : Shared internal dimension.
         n_heads           : Number of attention heads (must divide d_model).
-        n_fusion_layers   : Number of cross-modal attention layers (Stage 2).
+        n_fusion_layers   : Number of cross-modal attention layers.
         dropout           : Dropout probability throughout.
         modality_dropout  : Probability of zeroing an entire modality per sample
-                            during training (independent per modality).  If all
-                            three would be dropped, all are kept instead.
-                            Default 0.0 (disabled).
+                            during training.
 
     Output shape: (B, T, 3 * d_model)
-    Attribute   : d_out = 3 * d_model
     """
 
     def __init__(
@@ -168,21 +139,20 @@ class TriFusePreprocessor(nn.Module):
             f"d_model ({d_model}) must be divisible by n_heads ({n_heads})"
         )
         self.d_model           = d_model
-        self.d_out             = 3 * d_model   # Stage 3 concat — no projection
+        self.d_out             = 3 * d_model
         self.modality_dropout  = modality_dropout
 
-        # ── Stage 1: projections ──────────────────────────────────────────────
+        # Stage 1: projections
         self.proj_v = nn.Linear(video_dim, d_model)
         self.proj_a = nn.Linear(audio_dim, d_model)
         self.proj_x = nn.Linear(text_dim,  d_model)
 
-        # ── Stage 2: cross-modal attention ────────────────────────────────────
+        # Stage 2: cross-modal attention
         self.fusion_layers = nn.ModuleList([
             CrossModalAttentionLayer(d_model, n_heads, dropout)
             for _ in range(n_fusion_layers)
         ])
 
-    # ── Forward ───────────────────────────────────────────────────────────────
 
     def forward(
         self,
@@ -192,10 +162,8 @@ class TriFusePreprocessor(nn.Module):
     ) -> torch.Tensor:         # (B, T, 3 * d_model)
         B, T, _ = video.shape
 
-        # ── Modality dropout (training only) ──────────────────────────────────
+        # Modality dropout
         if self.training and self.modality_dropout > 0.0:
-            # Mirrors _apply_modality_dropout in feature_preprocessors.py.
-            # Cannot import it here (that module imports us — circular).
             keep = torch.bernoulli(
                 torch.full((B, 3), 1.0 - self.modality_dropout, device=video.device)
             )
@@ -204,12 +172,10 @@ class TriFusePreprocessor(nn.Module):
             audio = audio * keep[:, 1].view(B, 1, 1)
             text  = text  * keep[:, 2].view(B, 1, 1)
 
-        # ── Stage 1 ───────────────────────────────────────────────────────────
         v = self.proj_v(video)
         a = self.proj_a(audio)
         x = self.proj_x(text)
 
-        # ── Stage 2 ───────────────────────────────────────────────────────────
         # Flatten time into batch so each layer operates position-wise.
         D = self.d_model
         v_pw = v.reshape(B * T, 1, D)
@@ -223,5 +189,4 @@ class TriFusePreprocessor(nn.Module):
         a = a_pw.reshape(B, T, D)
         x = x_pw.reshape(B, T, D)
 
-        # ── Stage 3 ───────────────────────────────────────────────────────────
         return torch.cat([v, a, x], dim=-1)   # (B, T, 3 * d_model)

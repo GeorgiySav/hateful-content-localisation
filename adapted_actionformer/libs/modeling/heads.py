@@ -5,19 +5,11 @@ Three head types are available:
 
 1. ClsHead    : Shared 1D conv classification head applied at every FPN level.
 2. RegHead    : Shared 1D conv regression head, outputs (d_start, d_end).
-3. TridentRegHead : TriDet Trident-head regression (arXiv:2303.07347).
+3. TridentRegHead : TriDet Trident-head regression.
                     Outputs 2*(num_bins+1) channels encoding a distribution over
                     neighbouring temporal bins for improved boundary localization.
                     Used together with start/end ClsHeads (with detach_feat=True)
                     to form the complete Trident-head from TriDet.
-
-Ported from ActionFormer / TriDet with these adaptations:
-  - Binary classification (num_classes=1, single sigmoid) instead of C-class.
-  - Configurable num_classes for future multi-class extensions.
-  - Regression output (d_start, d_end) with ReLU to ensure non-negative distances.
-  - Per-FPN-level Scale multipliers on regression output (from ActionFormer).
-  - ClsHead supports detach_feat=True for the boundary heads in Trident-head.
-  - No registry decorator.
 """
 import math
 import torch
@@ -49,14 +41,14 @@ class ClsHead(nn.Module):
     Shared 1D Conv classification head applied at every FPN level.
 
     Architecture (per level):
-        [MaskedConv1D → LayerNorm → ReLU] × (n_layers - 1)  →  MaskedConv1D classifier
+        [MaskedConv1D -> LayerNorm → ReLU] * (n_layers - 1)  ->  MaskedConv1D classifier
 
     Args:
         input_dim  : Input channel dimension (= FPN output dim).
         feat_dim   : Internal channel dimension.
         num_classes: Number of output classes (1 for binary hate/no-hate).
-        prior_prob : Prior probability used to initialise classifier bias (for stability).
-        n_layers   : Total number of conv layers including the classifier (default 3).
+        prior_prob : Prior probability used to initialise classifier bias.
+        n_layers   : Total number of conv layers including the classifier.
         kernel_size: Conv kernel size.
         with_ln    : If True, LayerNorm after intermediate conv layers.
     """
@@ -86,7 +78,7 @@ class ClsHead(nn.Module):
             stride=1, padding=kernel_size // 2,
         )
 
-        # Prior probability initialisation for better early-training stability
+        # Prior probability initialisation for early-training stability
         if prior_prob > 0:
             bias_value = -(math.log((1 - prior_prob) / prior_prob))
             nn.init.constant_(self.cls_head.conv.bias, bias_value)
@@ -98,7 +90,7 @@ class ClsHead(nn.Module):
             fpn_masks: list of (B, 1, T_i)  bool
 
         Returns:
-            out_logits: tuple of (B, num_classes, T_i)  (raw logits, not sigmoided)
+            out_logits: tuple of (B, num_classes, T_i)
         """
         assert len(fpn_feats) == len(fpn_masks)
         out_logits = tuple()
@@ -115,17 +107,17 @@ class ClsHead(nn.Module):
 class RegHead(nn.Module):
     """
     Shared 1D Conv regression head applied at every FPN level.
-    Predicts (d_start, d_end) — distances to segment boundaries, non-negative.
+    Predicts (d_start, d_end) — distances to segment boundaries.
 
     Architecture (per level):
-        [MaskedConv1D → LayerNorm → ReLU] × (n_layers - 1)  →  MaskedConv1D offset head
-        → ReLU (ensures non-negative distances) → Scale (per-level learnable multiplier)
+        [MaskedConv1D -> LayerNorm → ReLU] * (n_layers - 1)  ->  MaskedConv1D offset head
+        -> ReLU -> Scale
 
     Args:
         input_dim  : Input channel dimension.
         feat_dim   : Internal channel dimension.
-        fpn_levels : Number of FPN levels (one Scale module per level).
-        n_layers   : Total number of conv layers (default 3).
+        fpn_levels : Number of FPN levels.
+        n_layers   : Total number of conv layers.
         kernel_size: Conv kernel size.
         with_ln    : If True, LayerNorm after intermediate conv layers.
     """
@@ -173,18 +165,13 @@ class RegHead(nn.Module):
                 x, _ = conv(x, cur_mask)
                 x = self.act(norm(x))
             offsets, _ = self.offset_head(x, cur_mask)
-            # ReLU + per-level scale ensures non-negative distances
             out_offsets += (F.relu(self.scale[l](offsets)),)
         return out_offsets
 
 
 class TridentRegHead(nn.Module):
     """
-    Trident-head regression module from TriDet (CVPR 2023, arXiv:2303.07347).
-
-    Instead of directly regressing boundary offsets (d_start, d_end), this head
-    predicts a relative probability distribution over neighbouring temporal bins.
-    The final offset is the expected value of that distribution.
+    Trident-head regression module from TriDet.
 
     Concretely, the head outputs 2*(num_bins+1) channels per time step:
       - Channels [0 .. num_bins]   : center-offset logits for the LEFT boundary
@@ -194,14 +181,13 @@ class TridentRegHead(nn.Module):
     (ClsHead with detach_feat=True) inside HatefulContentLocalizer.decode_offset().
 
     Args:
-        input_dim  : Input channel dimension (= FPN output dim).
+        input_dim  : Input channel dimension.
         feat_dim   : Internal channel dimension.
-        fpn_levels : Number of FPN levels (one Scale module per level).
-        n_layers   : Total number of conv layers (default 3).
+        fpn_levels : Number of FPN levels.
+        n_layers   : Total number of conv layers.
         kernel_size: Conv kernel size.
         with_ln    : If True, LayerNorm after intermediate conv layers.
-        num_bins   : Number of distribution bins (default 16, excluding the
-                     zero-offset bin, so output has num_bins+1 bins per side).
+        num_bins   : Number of distribution bins.
     """
 
     def __init__(

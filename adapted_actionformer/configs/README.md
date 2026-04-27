@@ -287,7 +287,6 @@ regression_ranges:
 | `dropout` | float | Dropout probability in backbone and heads. |
 | `droppath` | float | Stochastic depth (drop-path) rate. |
 | `label_smoothing` | float | Label smoothing for the classification loss (`0.0` to disable). |
-| `weighted_sampling` | bool | Oversample positive videos during training (optional). |
 
 ---
 

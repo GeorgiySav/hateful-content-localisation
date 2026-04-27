@@ -91,7 +91,6 @@ training:
   dropout: 0.2
   droppath: 0.1
   label_smoothing: 0.00
-  weighted_sampling: false
   patience: 10
 
 augmentation:

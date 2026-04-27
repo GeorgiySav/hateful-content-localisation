@@ -1,31 +1,5 @@
 """
-Full model: CrossModalFusion → Projection+Encoder → Decoder heads → Loss / Decode.
-
-Architecture differences from vanilla ActionFormer:
-  1. Input: three separate modality arrays (text, audio, video) from .npz files,
-     fused via CrossModalFusion (CMA), instead of a single pre-fused feature.
-  2. CrossModalFusion module inserted before the backbone projection layers.
-  3. Binary hate/no-hate classification (1 sigmoid) via configurable num_classes.
-  4. Feature stride = 1 s (1 FPS) instead of ~0.13 s; regression ranges calibrated.
-  5. Weak-supervision fallback handled in the dataset (no change in model logic).
-
-Architecture differences from vanilla MM-HSD:
-  1. Per-timestep temporal localization + boundary regression, not video-level label.
-  2. Three modalities only, no OCR.
-  3. ActionFormer's transformer encoder replaces MM-HSD's LSTM/FC encoders.
-  4. Output: temporal segments with confidence, not a binary label.
-
-Forward pass (training):
-  (text, audio, video) → FeaturePreprocessor → (B, T, fused_dim)
-  → permute to (B, fused_dim, T)
-  → ConvTransformerBackbone (projection + transformer pyramid)
-  → Identity FPN (layer norm per level)
-  → ClsHead + RegHead
-  → focal loss + DIoU loss
-
-Forward pass (inference):
-  Same backbone → decode candidate segments → Soft-NMS
-  → list of (start_time, end_time, confidence) tuples
+Full model: CrossModalFusion -> Projection+Encoder -> Decoder heads -> Loss / Decode.
 """
 import math
 import torch
@@ -38,10 +12,7 @@ from .heads import ClsHead, RegHead, TridentRegHead
 from .blocks import MaskedConv1D, LayerNorm
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Loss functions (ported from ActionFormer's losses.py)
-# ──────────────────────────────────────────────────────────────────────────────
-
 def sigmoid_focal_loss(inputs, targets, alpha=0.25, gamma=2.0, reduction="none"):
     """
     Sigmoid Focal Loss for binary classification.
@@ -123,10 +94,7 @@ def ctr_diou_loss_1d(input_offsets, target_offsets, reduction="none", eps=1e-8):
     return loss
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Point generator (ported from ActionFormer's loc_generators.py)
-# ──────────────────────────────────────────────────────────────────────────────
-
 class PointGenerator(nn.Module):
     """
     Pre-computes temporal grid points for each FPN level.
@@ -141,7 +109,7 @@ class PointGenerator(nn.Module):
         self.fpn_strides     = fpn_strides
         self.regression_range = regression_range
 
-        # Buffer the point lists (non-persistent so they are not saved in checkpoints)
+        # Buffer the point lists
         points_list = []
         for l, stride in enumerate(fpn_strides):
             reg_range  = torch.as_tensor(regression_range[l], dtype=torch.float)
@@ -165,10 +133,7 @@ class PointGenerator(nn.Module):
         return pts_list
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Identity FPN neck (layer norm only, no lateral/top-down fusion)
-# ──────────────────────────────────────────────────────────────────────────────
-
+# Identity FPN neck
 class FPNIdentity(nn.Module):
     """Pass-through neck with per-level LayerNorm."""
 
@@ -250,10 +215,7 @@ class FPN1D(nn.Module):
         return fpn_feats, fpn_masks
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Full model
-# ──────────────────────────────────────────────────────────────────────────────
-
 class HatefulContentLocalizer(nn.Module):
     """
     Temporal hateful content localization model.
@@ -265,7 +227,7 @@ class HatefulContentLocalizer(nn.Module):
 
     def __init__(self, cfg):
         super().__init__()
-        # ── Config shortcuts ─────────────────────────────────────────────────
+        # Config shortcuts
         ds_cfg    = cfg['dataset']
         bb_cfg    = cfg['backbone']
         hd_cfg    = cfg['heads']
@@ -278,10 +240,10 @@ class HatefulContentLocalizer(nn.Module):
         video_dim = ds_cfg['input_dims']['video']  # 768
         num_classes = ds_cfg.get('num_classes', 1)
 
-        d_model    = bb_cfg['d_model']       # 128
-        n_layers   = bb_cfg['n_layers']      # 3
-        n_head     = bb_cfg['n_heads']       # 2
-        n_proj     = bb_cfg['n_proj_layers'] # 1
+        d_model    = bb_cfg['d_model']
+        n_layers   = bb_cfg['n_layers']
+        n_head     = bb_cfg['n_heads']
+        n_proj     = bb_cfg['n_proj_layers']
         win_size   = bb_cfg.get('window_size', 17)
         ds_start   = bb_cfg.get('downsample_start', 1)
         scale_factor = bb_cfg.get('downsample_ratio', 2)
@@ -303,14 +265,14 @@ class HatefulContentLocalizer(nn.Module):
             self.reg_range = reg_ranges_cfg
         assert len(self.reg_range) == self.n_levels
 
-        # ── Stage 1: Feature preprocessor ───────────────────────────────────
+        # Stage 1: Feature preprocessor
         # Supports "unimodal", "concat", or "trifuse".
         # See libs/modeling/feature_preprocessors.py for details.
         self.preprocessor, fused_dim = build_preprocessor(
             cfg, text_dim, audio_dim, video_dim
         )
 
-        # ── Stage 2: Backbone (type-dispatched) ──────────────────────────────
+        # Stage 2: Backbone
         mha_win_size = [win_size] * (1 + n_branch)
         self.backbone = build_backbone(
             backbone_type,
@@ -338,7 +300,7 @@ class HatefulContentLocalizer(nn.Module):
             downsample_type=bb_cfg.get('sgp_downsample_type', 'max'),
         )
 
-        # ── Neck (identity or FPN) ────────────────────────────────────────────
+        # Neck (identity or FPN)
         neck_cfg  = cfg.get('neck', {})
         neck_type = neck_cfg.get('type', 'identity')
         if neck_type == 'fpn':
@@ -351,7 +313,7 @@ class HatefulContentLocalizer(nn.Module):
         else:
             self.neck = FPNIdentity(self.n_levels, d_model, with_ln=True)
 
-        # ── Stage 3: Decoder heads ────────────────────────────────────────────
+        # Stage 3: Decoder heads
         head_type   = hd_cfg.get('type', 'standard')
         num_bins    = hd_cfg.get('num_bins', 16)
         self.use_trident_head = (head_type == 'trident')
@@ -369,8 +331,6 @@ class HatefulContentLocalizer(nn.Module):
         )
 
         if self.use_trident_head:
-            # Boundary heads (detached features — they predict class logits used
-            # as sliding-window distribution logits for start/end boundaries)
             self.start_head = ClsHead(
                 input_dim=d_model,
                 feat_dim=d_model,
@@ -410,7 +370,7 @@ class HatefulContentLocalizer(nn.Module):
                 with_ln=hd_cfg['use_layer_norm'],
             )
 
-        # ── Point generator ───────────────────────────────────────────────────
+        # Point generator
         max_buf = ds_cfg.get('max_seq_len', 2304) * 4
         self.point_generator = PointGenerator(
             max_seq_len=max_buf,
@@ -418,7 +378,7 @@ class HatefulContentLocalizer(nn.Module):
             regression_range=self.reg_range,
         )
 
-        # ── Loss config ───────────────────────────────────────────────────────
+        # Loss config
         self.focal_alpha  = loss_cfg.get('focal_alpha', 0.25)
         self.focal_gamma  = loss_cfg.get('focal_gamma', 2.0)
         self.lambda_reg   = loss_cfg.get('lambda_reg', 1.0)
@@ -430,7 +390,7 @@ class HatefulContentLocalizer(nn.Module):
         self.loss_normalizer = 100
         self.loss_normalizer_momentum = 0.9
 
-        # ── Inference config ──────────────────────────────────────────────────
+        # Inference config
         self.score_threshold = infer_cfg.get('score_threshold', 0.001)
         self.nms_sigma       = infer_cfg.get('nms_sigma', 0.4)
         self.nms_threshold   = infer_cfg.get('nms_threshold', 0.1)
@@ -439,8 +399,6 @@ class HatefulContentLocalizer(nn.Module):
 
         # Maximum sequence length needed for padding divisibility check
         self.max_seq_len = ds_cfg.get('max_seq_len', 2304)
-        # Compute max_div_factor: transformer uses window-based constraint;
-        # MaxPool/SGP backbones only need to be divisible by the largest stride.
         if backbone_type == 'transformer':
             max_div = 1
             for s, w in zip(self.fpn_strides, mha_win_size):
@@ -453,7 +411,7 @@ class HatefulContentLocalizer(nn.Module):
 
     @staticmethod
     def _default_reg_range(n_levels):
-        """Default regression ranges in seconds (at 1 FPS feature stride)."""
+        """Default regression ranges in seconds"""
         ranges = []
         r = 4
         for i in range(n_levels):
@@ -469,10 +427,6 @@ class HatefulContentLocalizer(nn.Module):
     @property
     def device(self):
         return next(self.parameters()).device
-
-    # ─────────────────────────────────────────────────────────────────────────
-    # Trident-head offset decoding (TriDet, CVPR 2023, arXiv:2303.07347)
-    # ─────────────────────────────────────────────────────────────────────────
 
     def decode_offset(self, out_offsets, pred_start_neighbours, pred_end_neighbours):
         """
@@ -533,7 +487,6 @@ class HatefulContentLocalizer(nn.Module):
     def _make_boundary_neighbours(self, boundary_logits, pad_left):
         """
         Create a sliding-window view of boundary logits for Trident-head.
-        pad_left=True pads on the left (start branch); False pads on the right (end).
         """
         nb = self.num_bins
         result = []
@@ -553,10 +506,6 @@ class HatefulContentLocalizer(nn.Module):
             result.append(x_strided.permute(0, 2, 1, 3))  # (B, T_i, C, nb+1)
         return result
 
-    # ─────────────────────────────────────────────────────────────────────────
-    # Forward
-    # ─────────────────────────────────────────────────────────────────────────
-
     def forward(self, batch):
         """
         Args (training):
@@ -572,7 +521,7 @@ class HatefulContentLocalizer(nn.Module):
             dict with cls_loss, reg_loss, final_loss
 
         Returns (inference):
-            list of dicts with video_id, segments (T×2), scores (T,), labels (T,)
+            list of dicts with video_id, segments (T*2), scores (T,), labels (T,)
         """
         text  = batch['text_feat'].to(self.device)    # (B, T, 768)
         audio = batch['audio_feat'].to(self.device)   # (B, T, 1024)
@@ -581,7 +530,7 @@ class HatefulContentLocalizer(nn.Module):
 
         B, T, _ = text.shape
 
-        # ── Stage 1: Feature preprocessor ────────────────────────────────────
+        # Stage 1: Feature preprocessor
         fused = self.preprocessor(text, audio, video)  # (B, T, fused_dim)
 
         # Convert to (B, fused_dim, T) for Conv1D backbone
@@ -589,16 +538,16 @@ class HatefulContentLocalizer(nn.Module):
         # Mask: (B, 1, T) bool
         mask_bcT = mask_float.unsqueeze(1).bool()  # (B, 1, T)
 
-        # ── Stage 2: Multiscale transformer encoder ──────────────────────────
+        # Stage 2: Multiscale transformer encoder
         feats, masks = self.backbone(x, mask_bcT)
 
-        # ── Identity FPN neck ─────────────────────────────────────────────────
+        # Identity FPN neck
         fpn_feats, fpn_masks = self.neck(feats, masks)
 
-        # ── FPN grid points ───────────────────────────────────────────────────
+        # FPN grid points
         points = self.point_generator(fpn_feats)
 
-        # ── Stage 3: Classification + regression heads ────────────────────────
+        # Stage 3: Classification + regression heads
         out_cls_logits = self.cls_head(fpn_feats, fpn_masks)  # tuple of (B, C, T_i)
         out_offsets    = self.reg_head(fpn_feats, fpn_masks)  # tuple of (B, 2 or 2*(nb+1), T_i)
 
@@ -630,10 +579,7 @@ class HatefulContentLocalizer(nn.Module):
                 out_lb_logits, out_rb_logits,
             )
 
-    # ─────────────────────────────────────────────────────────────────────────
     # Label assignment
-    # ─────────────────────────────────────────────────────────────────────────
-
     @torch.no_grad()
     def label_points(self, points, gt_segments, gt_labels):
         concat_points = torch.cat(points, dim=0)  # (FT, 4)
@@ -661,8 +607,7 @@ class HatefulContentLocalizer(nn.Module):
             reg_targets = gt_segment.new_zeros((num_pts, 2))
             return cls_targets, reg_targets
 
-        # Convert GT seconds → feature indices so labeling is fps-agnostic.
-        # At 1 fps this is a no-op; at N fps the distances are scaled correctly.
+        # Convert GT seconds to feature indices.
         gt_segment_fi = gt_segment * self.feature_fps          # (N, 2)
 
         lens   = gt_segment_fi[:, 1] - gt_segment_fi[:, 0]    # (N,)
@@ -707,9 +652,6 @@ class HatefulContentLocalizer(nn.Module):
         reg_targets /= concat_points[:, 3, None]   # normalise by stride
         return cls_targets, reg_targets
 
-    # ─────────────────────────────────────────────────────────────────────────
-    # Loss computation
-    # ─────────────────────────────────────────────────────────────────────────
 
     def losses(
         self, fpn_masks, out_cls_logits, out_offsets, gt_cls_labels, gt_offsets,
@@ -739,7 +681,7 @@ class HatefulContentLocalizer(nn.Module):
             + (1 - self.loss_normalizer_momentum) * max(num_pos, 1)
         )
 
-        # ── Decode offsets (standard or Trident) ──────────────────────────────
+        # Decode offsets (standard or Trident)
         if self.use_trident_head:
             start_neighbours = self._make_boundary_neighbours(out_lb_logits, pad_left=True)
             end_neighbours   = self._make_boundary_neighbours(out_rb_logits, pad_left=False)
@@ -752,7 +694,7 @@ class HatefulContentLocalizer(nn.Module):
                 pred_offsets = decoded_offsets.squeeze(-2)   # (#Pos, 2)
                 gt_off       = torch.stack(gt_offsets)[pos_mask]
             else:
-                # gt_cls[pos_mask].bool() selects per-class entries
+                # gt_cls[pos_mask].bool() selects per-class
                 pred_offsets = decoded_offsets[gt_cls[pos_mask].bool()]
                 vid          = torch.where(gt_cls[pos_mask])[0]
                 gt_off       = torch.stack(gt_offsets)[pos_mask][vid]
@@ -760,7 +702,7 @@ class HatefulContentLocalizer(nn.Module):
             pred_offsets = torch.cat(out_offsets, dim=1)[pos_mask]  # (#Pos, 2)
             gt_off       = torch.stack(gt_offsets)[pos_mask]
 
-        # ── Classification loss (focal) ───────────────────────────────────────
+        # Focal loss for classification
         gt_target = gt_cls[valid_mask]
         if self.label_smoothing > 0:
             gt_target = gt_target * (1 - self.label_smoothing)
@@ -790,7 +732,7 @@ class HatefulContentLocalizer(nn.Module):
 
         cls_loss = cls_loss.sum() / self.loss_normalizer
 
-        # ── Regression loss (DIoU) ────────────────────────────────────────────
+        # Regression loss (DIoU)
         if num_pos == 0:
             reg_loss = 0 * pred_offsets.sum()
         else:
@@ -804,10 +746,6 @@ class HatefulContentLocalizer(nn.Module):
             'reg_loss'   : reg_loss,
             'final_loss' : final_loss,
         }
-
-    # ─────────────────────────────────────────────────────────────────────────
-    # Inference
-    # ─────────────────────────────────────────────────────────────────────────
 
     @torch.no_grad()
     def inference(
@@ -842,7 +780,7 @@ class HatefulContentLocalizer(nn.Module):
                 score_k = score[keep]
                 pts_k   = pts_i[keep]
 
-                # Decode offsets: standard vs Trident
+                # Decode offsets
                 if self.use_trident_head:
                     # Build per-level boundary neighbour views (C, T_i, nb+1)
                     nb = self.num_bins

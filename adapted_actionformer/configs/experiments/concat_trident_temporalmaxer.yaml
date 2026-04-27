@@ -85,7 +85,6 @@ training:
   dropout: 0.2
   droppath: 0.0           # MaxPool backbone has no learnable blocks; droppath has no effect
   label_smoothing: 0.00
-  weighted_sampling: false
   patience: 10
 
 augmentation:

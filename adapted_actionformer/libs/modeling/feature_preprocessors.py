@@ -1,48 +1,38 @@
 """
-Feature preprocessors — transform raw modality features before the backbone.
+Feature preprocessors
 
 The preprocessor sits between the dataset-loaded raw features (text, audio, video)
-and the backbone encoder.  Swapping preprocessors lets you run:
-
-  - Unimodal ablations       (UnimodalPreprocessor  — single modality)
-  - Simple fusion baselines  (ConcatPreprocessor    — concatenate then project)
-  - Full trimodal fusion     (TriFusePreprocessor   — bottleneck attention)
+and the backbone encoder.
 
 All preprocessors share the same interface:
-
     forward(text, audio, video) -> (B, T, d_out)
     .d_out : int   — output feature dimension passed to the backbone
 
 Config key: ``preprocessor``
-
     preprocessor:
       type: "unimodal"  # UnimodalPreprocessor
       modality: "video" # one of "text" | "audio" | "video"
-      d_out: 256
 
     preprocessor:
       type: "concat"    # ConcatPreprocessor
       modalities: ["audio", "video"]
-      d_out: 256
+      modality_dropout: 0.1
 
     preprocessor:
       type: "trifuse"   # TriFusePreprocessor
-      d_out: 256
-      n_heads: 8
-      n_fusion_layers: 4
+      d_model: 256
+      n_heads: 4
+      n_fusion_layers: 1
       dropout: 0.1
+      modality_dropout: 0.1
 """
 import torch
 from torch import nn
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Shared modality-dropout helper
-# ──────────────────────────────────────────────────────────────────────────────
-
 def _apply_modality_dropout(text, audio, video, active_modalities, p):
     """
-    Zero entire modalities independently with probability *p* (training only).
+    Zero entire modalities independently with probability *p*.
 
     Args:
         text / audio / video : Raw feature tensors, each (B, T, D_m).
@@ -61,7 +51,7 @@ def _apply_modality_dropout(text, audio, video, active_modalities, p):
     keep = torch.bernoulli(
         torch.full((B, n), 1.0 - p, device=text.device)
     )
-    # Prevent all-modalities-dropped for any sample
+    # Prevent all modalities from being dropped
     all_dropped = keep.sum(dim=1) == 0          # (B,)
     keep[all_dropped] = 1.0
     for i, m in enumerate(active_modalities):
@@ -69,18 +59,10 @@ def _apply_modality_dropout(text, audio, video, active_modalities, p):
     return feat_map['text'], feat_map['audio'], feat_map['video']
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Preprocessor modules
-# ──────────────────────────────────────────────────────────────────────────────
-
-
 class UnimodalPreprocessor(nn.Module):
     """
     Passes a single chosen modality to the backbone.
-
-    The raw feature is linearly projected to ``d_out`` if its native dimension
-    differs.  Use this for unimodal ablations — set ``modality`` to one of
-    ``"text"``, ``"audio"``, or ``"video"``.
 
     Args:
         modality  : Which modality to use: ``"text"`` | ``"audio"`` | ``"video"``.
@@ -100,7 +82,7 @@ class UnimodalPreprocessor(nn.Module):
 
         dim_map = {'text': text_dim, 'audio': audio_dim, 'video': video_dim}
         in_dim  = dim_map[modality]
-        self.d_out    = in_dim
+        self.d_out = in_dim
 
     def forward(self, text, audio, video):
         """
@@ -117,11 +99,7 @@ class UnimodalPreprocessor(nn.Module):
 
 class ConcatPreprocessor(nn.Module):
     """
-    Concatenates the chosen modalities and projects to ``d_out``.
-
-    A simple fusion baseline that does not use attention — concatenation + a
-    single learned linear projection.  Set ``modalities`` to any non-empty
-    subset of ``["text", "audio", "video"]``.
+    Concatenates the chosen modalities.
 
     Args:
         modalities       : List of modality names to concatenate, e.g. ``["audio", "video"]``.
@@ -147,7 +125,7 @@ class ConcatPreprocessor(nn.Module):
 
         dim_map = {'text': text_dim, 'audio': audio_dim, 'video': video_dim}
         in_dim  = sum(dim_map[m] for m in modalities)
-        self.d_out            = in_dim
+        self.d_out = in_dim
 
     def forward(self, text, audio, video):
         """
@@ -167,16 +145,10 @@ class ConcatPreprocessor(nn.Module):
         return torch.cat(feats, dim=-1)
 
 
-# ──────────────────────────────────────────────────────────────────────────────
 # Factory
-# ──────────────────────────────────────────────────────────────────────────────
-
 def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
     """
     Instantiate the correct preprocessor from the model config dict.
-
-    Looks for a ``preprocessor`` key first.  If absent, falls back to the
-    legacy ``fusion`` key and treats it as a CMA preprocessor config.
 
     Parameters
     ----------
@@ -200,7 +172,7 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
             "('unimodal', 'concat', or 'trifuse')."
         )
 
-    ptype = prep_cfg.get('type', 'concat')
+    ptype = prep_cfg['type']
 
     if ptype == 'unimodal':
         module = UnimodalPreprocessor(
@@ -226,8 +198,8 @@ def build_preprocessor(cfg, text_dim, audio_dim, video_dim):
             audio_dim=audio_dim,
             video_dim=video_dim,
             d_model=prep_cfg['d_model'],
-            n_heads=prep_cfg.get('n_heads', 8),
-            n_fusion_layers=prep_cfg.get('n_fusion_layers', 4),
+            n_heads=prep_cfg.get('n_heads', 4),
+            n_fusion_layers=prep_cfg.get('n_fusion_layers', 1),
             dropout=prep_cfg.get('dropout', 0.1),
             modality_dropout=prep_cfg.get('modality_dropout', 0.0),
         )

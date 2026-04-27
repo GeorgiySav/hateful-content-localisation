@@ -2,7 +2,7 @@
 Core building blocks for the temporal localization backbone.
 
 Ported from ActionFormer (https://github.com/happyharrycn/actionformer_release)
-with minimal changes:
+with changes:
  - Removed registry decorators (standalone module)
  - Replaced custom trunc_normal_ with torch.nn.init.trunc_normal_
  - No other functional changes
@@ -69,8 +69,8 @@ class MaskedConv1D(nn.Module):
 class LayerNorm(nn.Module):
     """
     LayerNorm that supports inputs of size (B, C, T).
-    Standard nn.LayerNorm expects the normalized axis last; this version
-    normalizes along the channel (C) axis, matching ActionFormer convention.
+    Standard nn.LayerNorm expects the normalized axis last.
+    This version normalizes along the channel (C) axis, matching ActionFormer.
     """
     def __init__(self, num_channels, eps=1e-5, affine=True, device=None, dtype=None):
         super().__init__()
@@ -232,11 +232,10 @@ class MaskedMHCA(nn.Module):
 
 class LocalMaskedMHCA(nn.Module):
     """
-    Local Multi-Head Conv Attention with mask (Longformer-style sliding window).
-    window_size must be odd and > 1.
+    Local Multi-Head Conv Attention with mask window_size must be odd and > 1.
 
     NOTE: The input sequence length T (after the internal depthwise conv stride)
-    must be divisible by (window_size // 2) * 2.  Ensure max_seq_len and all
+    must be divisible by (window_size // 2) * 2. Make sure max_seq_len and all
     downsampled lengths satisfy this when configuring the model.
     """
     def __init__(self, n_embd, n_head, window_size,
@@ -559,23 +558,18 @@ class AffineDropPath(nn.Module):
         return drop_path(self.scale * x, self.drop_prob, self.training)
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# TemporalMaxer block (from arXiv:2303.09055, https://github.com/TuanTNG/TemporalMaxer)
-# ──────────────────────────────────────────────────────────────────────────────
-
+# TemporalMaxer block (https://github.com/TuanTNG/TemporalMaxer)
 class TemporalMaxerBlock(nn.Module):
     """
-    Parameter-free temporal context block from TemporalMaxer (arXiv:2303.09055).
+    Parameter-free temporal context block from TemporalMaxer.
 
-    Replaces self-attention with a local MaxPool1D operation. No learnable
-    parameters in the pooling itself — only the downstream layers matter.
-    Results in 2.8× fewer GMACs and 3× faster inference vs ActionFormer.
+    Replaces self-attention with a local MaxPool1D operation.
 
     Args:
-        kernel_size: MaxPool kernel size (default 3).
-        stride     : Downsampling stride (default 2 for pyramid downsampling).
-        padding    : Padding to keep temporal length consistent (default 1).
-        n_embd     : Feature channel dimension (unused by pooling itself).
+        kernel_size: MaxPool kernel size.
+        stride     : Downsampling stride.
+        padding    : Padding to keep temporal length consistent.
+        n_embd     : Feature channel dimension.
     """
 
     def __init__(self, kernel_size, stride, padding, n_embd):
@@ -599,29 +593,19 @@ class TemporalMaxerBlock(nn.Module):
         return out, out_mask.bool()
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# SGP block (from TriDet, CVPR 2023, arXiv:2303.07347, https://github.com/dingfengshi/TriDet)
-# ──────────────────────────────────────────────────────────────────────────────
-
+# SGP block (https://github.com/dingfengshi/TriDet)
 class SGPBlock(nn.Module):
     """
-    Scalable-Granularity Perception (SGP) layer from TriDet (CVPR 2023, arXiv:2303.07347).
-
-    Replaces self-attention with a dual-branch depthwise convolutional structure:
-      - Instant-level branch : depthwise conv at kernel_size (captures fine-grained features)
-      - Window-level branch  : depthwise conv at a larger kernel (up_size ≈ k * kernel_size)
-      - Global branch        : channel-wise global average pooling
-    All three are combined multiplicatively/additively without cross-channel mixing,
-    resolving the "rank loss problem" where attention collapses feature diversity.
-
+    Scalable-Granularity Perception (SGP) layer from TriDet.
+    
     Args:
         n_embd          : Feature channel dimension.
         kernel_size     : Instant-level depthwise conv kernel size (must be odd).
         n_ds_stride     : Downsampling stride (1 = no downsampling).
-        k               : Scale factor for window-level kernel size (default 1.5).
-        group           : Groups for the FFN MLP conv (default 1 = standard conv).
-        n_out           : Output dimension (default = n_embd).
-        n_hidden        : Hidden dimension in the FFN MLP (default = 4 * n_embd).
+        k               : Scale factor for window-level kernel size.
+        group           : Groups for the FFN MLP conv.
+        n_out           : Output dimension.
+        n_hidden        : Hidden dimension in the FFN MLP.
         path_pdrop      : Drop-path rate.
         act_layer       : Activation function class.
         downsample_type : How to downsample when n_ds_stride > 1: 'max' or 'avg'.
@@ -654,7 +638,7 @@ class SGPBlock(nn.Module):
         self.ln = LayerNorm(n_embd)
         self.gn = nn.GroupNorm(16, n_embd)
 
-        # Window-level kernel size (larger, odd)
+        # Window level kernel size
         up_size = round((kernel_size + 1) * k)
         up_size = up_size + 1 if up_size % 2 == 0 else up_size
 
@@ -700,7 +684,7 @@ class SGPBlock(nn.Module):
             nn.Conv1d(n_hidden, n_out, 1, groups=group),
         )
 
-        # Drop-path regularisation
+        # Drop path regularisation
         if path_pdrop > 0.0:
             self.drop_path_out = AffineDropPath(n_embd, drop_prob=path_pdrop)
             self.drop_path_mlp = AffineDropPath(n_out,  drop_prob=path_pdrop)

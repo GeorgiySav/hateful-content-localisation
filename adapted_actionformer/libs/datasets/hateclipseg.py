@@ -1,19 +1,14 @@
 """
 HateClipSeg Dataset for temporal hateful content localization.
 
-Loads pre-extracted per-video .pt feature files and temporal annotations.
-
-Feature format (one .pt file per video per modality):
-    <video_feat_dir>/<video_id>.pt  : (T, 768)   CLIP ViT-L/14 frame features
-    <audio_feat_dir>/<video_id>.pt  : (T, 1024)  Wav2Vec2 Large features (zero if no audio)
-    <text_feat_dir>/<video_id>.pt   : (T, 768)   HateBERT sentence embeddings (zero at silent frames)
+Loads pre-extracted per-video .pt feature files and annotations.
 
 Annotation format (annotations.json):
     {
         "database": {
             "<video_id>": {
                 "duration": <float>,
-                "subset": "train" | "val" | "test",
+                "subset": "train" | "val",
                 "annotations": [
                     {"segment": [<start>, <end>], "label": "hate"},
                     ...
@@ -29,7 +24,7 @@ Annotations must first be prepared with:
 import os
 import json
 import torch
-from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
+from torch.utils.data import Dataset, DataLoader
 
 
 class HateClipSegDataset(Dataset):
@@ -42,10 +37,8 @@ class HateClipSegDataset(Dataset):
         text_feat_dir  : Path to directory containing per-video text .pt files.
         annotation_file: Path to annotations.json.
         max_seq_len    : Sequences are padded (or randomly cropped) to this length.
-        subset         : "train", "val", or "test" — filters by the "subset" field.
-        feature_fps    : Features per second (default 1.0).
-        is_training    : If True, randomly crop sequences > max_seq_len.
-                         If False, take the first max_seq_len timesteps.
+        subset         : "train", "val".
+        feature_fps    : Features per second.
     """
 
     _name = "HateClipSegDataset"
@@ -135,8 +128,6 @@ class HateClipSegDataset(Dataset):
                     'labels'  : labels,
                 }
             else:
-                # Hate videos without temporal annotations cannot provide localization
-                # supervision, so skip them; keep non-hate as background examples.
                 is_hate = (video_label is not None and
                            video_label.lower() in ('hate', 'hateful'))
                 if is_hate:
@@ -153,7 +144,7 @@ class HateClipSegDataset(Dataset):
             self.video_labels.append(1 if self.annotations[vid_id]['segments'] else 0)
 
         print(f"[{self._name}] Loaded {len(self.video_ids)} videos for subset='{subset}'"
-              + (f" ({skipped} skipped — features not yet available)" if skipped else ""))
+              + (f" ({skipped} skipped)" if skipped else ""))
 
     def __len__(self):
         return len(self.video_ids)
@@ -217,8 +208,7 @@ class HateClipSegDataset(Dataset):
             'duration'  : duration,
         }
 
-    # ── Helpers ───────────────────────────────────────────────────────────────
-
+    # Helpers
     def _augment(self, video_feat, audio_feat, text_feat, segments, labels, mask):
         cfg = self.aug_cfg
 
@@ -242,10 +232,10 @@ class HateClipSegDataset(Dataset):
     def _temporal_shift(self, video_feat, audio_feat, text_feat, mask, segments, labels, shift):
         """
         Shift content by `shift` frames along the temporal axis, preserving total length.
-        Positive `shift` pads zero frames at the start and crops from the end (delays content);
-        negative `shift` crops from the start and pads zero frames at the end (advances content).
-        Segments are time-shifted by `shift / feature_fps`, clamped to the valid extent, and
-        any segment that ends up outside [0, max_seq_len/feature_fps] is dropped.
+        Positive `shift` pads zero frames at the start and crops from the end.
+        Negative `shift` crops from the start and pads zero frames at the end.
+        Segments are shifted by `shift / feature_fps`.
+        Any segment that ends up outside [0, max_seq_len/feature_fps] is dropped.
         """
         if shift > 0:
             video_feat = torch.cat([torch.zeros(shift, video_feat.shape[1]), video_feat[:-shift]], dim=0)
@@ -369,33 +359,16 @@ def build_dataloader(cfg, subset, is_training=False):
     train_cfg  = cfg.get('training', {})
     batch_size = train_cfg.get('batch_size', 2) if is_training else 1
 
-    sampler = None
-    shuffle = False
+    shuffle = is_training
     if is_training:
         labels     = dataset.video_labels
         n_hate     = sum(labels)
         n_non_hate = len(labels) - n_hate
-        use_weighted = train_cfg.get('weighted_sampling', True)
-        if use_weighted:
-            weight_per_class = [
-                1.0 / max(n_non_hate, 1),
-                1.0 / max(n_hate,     1),
-            ]
-            weights = [weight_per_class[lbl] for lbl in labels]
-            sampler = WeightedRandomSampler(
-                weights     =weights,
-                num_samples =len(weights),
-                replacement =True,
-            )
-            print(f"[{dataset._name}] Stratified sampler: {n_hate} hate / {n_non_hate} non-hate")
-        else:
-            shuffle = True
-            print(f"[{dataset._name}] Uniform shuffle: {n_hate} hate / {n_non_hate} non-hate (weighted_sampling=false)")
+        print(f"[{dataset._name}] Uniform shuffle: {n_hate} hate / {n_non_hate} non-hate")
 
     return DataLoader(
         dataset,
         batch_size =batch_size,
-        sampler    =sampler,
         shuffle    =shuffle,
         num_workers=4,
         pin_memory =True,
