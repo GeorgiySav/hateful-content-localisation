@@ -94,7 +94,8 @@ training:
   cls_prior_prob: 0.01
   dropout: 0.2
   droppath: 0.1
-  label_smoothing: 0.00  patience: 10
+  label_smoothing: 0.00
+  patience: 10
 
 # Temporal augmentation (training only)
 augmentation:
