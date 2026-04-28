@@ -3,13 +3,8 @@ __pycache__/
 .claude/
 .pytest_cache/
 
-actionformer
-TriDet
-TemporalMaxer
-mm-hsd
 runs
 videos
 video_features
 audio_features
 text_features
-ocr_features
