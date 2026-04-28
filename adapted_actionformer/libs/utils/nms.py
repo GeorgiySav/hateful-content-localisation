@@ -1,12 +1,8 @@
 """
-Pure-Python Soft-NMS for 1D temporal segments.
+Soft-NMS for 1D temporal segments.
 
-The original ActionFormer used a compiled C++ extension (nms_1d_cpu) which is
-not portable.  This module provides a pure-PyTorch Soft-NMS that requires no
-compilation and produces equivalent results.
-
-Reference: Bodla et al., "Soft-NMS -- Improving Object Detection With One Line
-of Code" (ICCV 2017) — Gaussian variant.
+The original ActionFormer used a compiled C++ extension (nms_1d_cpu) which
+isn't convenient.
 """
 import torch
 
@@ -109,8 +105,7 @@ def soft_nms(segs, scores, sigma=0.4, min_score=1e-3, max_num=200):
 
 def seg_voting(nms_segs, all_segs, all_scores, iou_threshold, score_offset=1.5):
     """
-    Boundary refinement via weighted combination with neighbouring segments
-    (bounding-box voting from object detection literature).
+    Boundary refinement via weighted combination with neighbouring segments.
 
     Args:
         nms_segs    : (K, 2) NMS-selected segments.

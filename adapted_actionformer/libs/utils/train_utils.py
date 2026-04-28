@@ -1,12 +1,3 @@
-"""
-Training utilities: optimizer, LR scheduler, EMA, training/validation loops.
-
-Ported from ActionFormer's train_utils.py with these adaptations:
-  - Adapted for HatefulContentLocalizer (dict-based batch, not video_list)
-  - LR scheduler: Adam with linear warmup + cosine annealing (from config)
-  - EMA: optional exponential moving average of model weights
-  - make_optimizer: separates decay/no_decay parameter groups
-"""
 import os
 import time
 import random
@@ -20,10 +11,6 @@ import torch.backends.cudnn as cudnn
 
 from ..modeling.blocks import MaskedConv1D, LayerNorm, Scale, AffineDropPath
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Reproducibility
-# ──────────────────────────────────────────────────────────────────────────────
 
 def fix_random_seed(seed, include_cuda=True):
     rng_generator = torch.manual_seed(seed)
@@ -44,10 +31,6 @@ def fix_random_seed(seed, include_cuda=True):
     return rng_generator
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Checkpoint
-# ──────────────────────────────────────────────────────────────────────────────
-
 def save_checkpoint(state, is_best, file_folder, file_name='checkpoint.pth.tar'):
     os.makedirs(file_folder, exist_ok=True)
     torch.save(state, os.path.join(file_folder, file_name))
@@ -57,17 +40,9 @@ def save_checkpoint(state, is_best, file_folder, file_name='checkpoint.pth.tar')
         torch.save(best_state, os.path.join(file_folder, 'model_best.pth.tar'))
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Optimizer
-# ──────────────────────────────────────────────────────────────────────────────
-
 def make_optimizer(model, cfg):
     """
-    Build AdamW optimizer with separate weight-decay groups.
-
-    Parameters whose names end with 'bias', belong to LayerNorm / GroupNorm,
-    or are Scale / AffineDropPath scalars or relative-PE parameters do NOT
-    receive weight decay (following ActionFormer's pattern).
+    AdamW optimizer with different weight-decay groups.
     """
     decay   = set()
     no_decay = set()
@@ -105,12 +80,8 @@ def make_optimizer(model, cfg):
     return optimizer
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# LR Scheduler: linear warmup + cosine annealing
-# ──────────────────────────────────────────────────────────────────────────────
-
 class LinearWarmupCosineAnnealingLR(torch.optim.lr_scheduler._LRScheduler):
-    """Linear warmup then cosine annealing, stepped per iteration."""
+    """Linear warmup then cosine annealing."""
 
     def __init__(self, optimizer, warmup_steps, max_steps,
                  warmup_start_lr=0.0, eta_min=1e-8, last_epoch=-1):
@@ -171,10 +142,6 @@ def make_scheduler(optimizer, cfg, num_iters_per_epoch, last_epoch=-1):
     return scheduler
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# EMA
-# ──────────────────────────────────────────────────────────────────────────────
-
 class ModelEma(torch.nn.Module):
     """Exponential Moving Average of model weights."""
 
@@ -204,10 +171,6 @@ class ModelEma(torch.nn.Module):
             ema_v.copy_(m_v)
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# AverageMeter
-# ──────────────────────────────────────────────────────────────────────────────
-
 class AverageMeter:
     def __init__(self):
         self.val = self.avg = self.sum = 0.0
@@ -219,10 +182,6 @@ class AverageMeter:
         self.count += n
         self.avg   = self.sum / self.count
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Training loop
-# ──────────────────────────────────────────────────────────────────────────────
 
 def train_one_epoch(
     train_loader,
@@ -279,10 +238,6 @@ def train_one_epoch(
     print(f"[Train] Epoch {curr_epoch} done  lr={lr:.8f}\n")
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Validation loop
-# ──────────────────────────────────────────────────────────────────────────────
-
 def valid_one_epoch(
     val_loader,
     model,
@@ -293,8 +248,6 @@ def valid_one_epoch(
 ):
     """
     Run inference on val set and compute mAP.
-
-    Either evaluator (ANETdetection) or output_file must be provided.
     """
     assert (evaluator is not None) or (output_file is not None), \
         "Provide evaluator or output_file"
@@ -312,7 +265,7 @@ def valid_one_epoch(
 
     start = time.time()
     for iter_idx, batch in enumerate(val_loader, 0):
-        # Only evaluate on hateful videos (those with ground truth segments)
+        # Only evaluate on hateful videos
         if not any(s.shape[0] > 0 for s in batch['segments']):
             continue
 
