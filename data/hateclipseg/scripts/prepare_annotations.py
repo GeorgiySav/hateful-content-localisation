@@ -1,8 +1,5 @@
 """
-prepare_annotations.py — Convert HateCliPSeg CSV to ActionFormer JSON format.
-
-Outputs:
-    data/hateclipseg/annotations/hateclipseg.json
+Convert HateCliPSeg CSV to ActionFormer JSON format.
 
 The CSV has one row per video with:
   - Video Id: e.g. "bit_0EHvMSiEHVoc"
@@ -11,14 +8,8 @@ The CSV has one row per video with:
   - Segment Timestamp: list of [start, end] pairs (seconds)
 
 A segment is "hate" if any of label indices 1-5 is 1.
-All videos are included: those with hate segments as positives, the rest as
-true negatives (empty annotations list). Only videos whose feature file is
-present on disk are included (negatives without features are skipped).
-Train/val split is 80/20 within each group separately to keep the ratio
-balanced, then merged. Split is deterministic via random.seed(42).
-Duration is inferred from the last segment's end time (or feature file if present).
 
-Usage (run from repo root):
+Usage:
     python data/hateclipseg/scripts/prepare_annotations.py
 """
 
@@ -63,14 +54,12 @@ def main():
                 if is_hate_segment(lbl)
             ]
 
-            # duration: from feature file if available, else last segment end
             feat_path = os.path.join(FEAT_DIR, f"{video_id}.pt")
             if os.path.isfile(feat_path):
                 feat = torch.load(feat_path, map_location="cpu")
                 duration = float(feat.shape[0])
             else:
                 if not hate_segs:
-                    # no features and no hate segments — can't determine duration
                     continue
                 duration = float(timestamps[-1][1])
 
@@ -83,8 +72,7 @@ def main():
     print(f"Found {len(positives)} videos with hate segments, "
           f"{len(negatives)} true-negative videos.")
 
-    # stratified split: maintain 80/20 within each group so the val set
-    # always contains both positives and negatives
+    # stratified split
     random.seed(SEED)
     random.shuffle(positives)
     random.shuffle(negatives)

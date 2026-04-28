@@ -1,31 +1,17 @@
 """
-extract_features.py — Offline feature extraction pipeline (Section 3.1).
-
-Reproduces exactly the three-modality feature extraction described in
-the paper before training begins:
-
-  Video : CLIP ViT-L/14 frame-level features   (768-dim per frame)
+Extracts the following modalities:
+  Video : CLIP ViT-L/14 frame-level features    (768-dim per frame)
   Audio : wav2vec 2.0 Large features            (1024-dim per step, resampled to T)
   Text  : Sentence-wise HateBERT embeddings     (768-dim per sentence, padded to T)
-
-The text pipeline follows the four steps in Section 3.1 / Fig. 3:
-  1. Whisper ASR → raw transcript with word timestamps
-  2. Split into sentence-wise fragments using NLTK sentence tokeniser
-  3. HateBERT encodes each sentence → 768-dim CLS embedding
-  4. Each sentence embedding is repeated over its timestamp span → (T, 768)
 
 All outputs are saved as .pt tensors to:
     data/HateMM/video_features/<video_id>.pt   — (T, 768)
     data/HateMM/audio_features/<video_id>.pt   — (T, 1024)
     data/HateMM/text_features/<video_id>.pt    — (T, 768)
 
-Requirements (installed separately, not needed for training itself):
-    pip install torch torchaudio transformers openai-whisper nltk
-    pip install git+https://github.com/openai/CLIP.git
-
 Usage:
-    python extract_features.py --video_dir /path/to/hateMM/videos \\
-                                --out_dir   data/HateMM \\
+    python extract_features.py --video_dir /path/to/hateclipseg/videos \\
+                                --out_dir   data/hateclipseg \\
                                 --fps       1
 """
 
@@ -40,7 +26,6 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 
-# ── lazy imports (only needed at extraction time, not training) ────────────
 try:
     import cv2
     from PIL import Image
@@ -56,10 +41,6 @@ try:
 except ImportError:
     HAS_EXTRACTION_DEPS = False
 
-
-# ════════════════════════════════════════════════════════════════════════════════
-# Video features  —  CLIP ViT-L/14  (Section 3.1)
-# ════════════════════════════════════════════════════════════════════════════════
 
 class VideoFeatureExtractor:
     """
@@ -80,15 +61,13 @@ class VideoFeatureExtractor:
         Returns (T, 768) where T = number of sampled frames.
 
         batch_size controls how many frames are forwarded through CLIP at once.
-        Reduce it if you hit OOM on very long videos (default 16 is safe for
-        most 8 GB+ VRAM GPUs).
         """
         cap = cv2.VideoCapture(video_path)
         native_fps = cap.get(cv2.CAP_PROP_FPS)
         frame_interval = max(1, int(round(native_fps / fps)))
 
         all_feats = []
-        pending   = []          # accumulate raw frame tensors for batching
+        pending   = [] # accumulate raw frame tensors for batching
         frame_idx = 0
 
         def _flush(buf):
@@ -121,14 +100,10 @@ class VideoFeatureExtractor:
         return torch.cat(all_feats, dim=0)   # (T, 768)
 
 
-# ════════════════════════════════════════════════════════════════════════════════
-# Audio features  —  wav2vec 2.0 Large  (Section 3.1)
-# ════════════════════════════════════════════════════════════════════════════════
+
 
 _WAV2VEC_SR         = 16000
 _WAV2VEC_CHUNK_SAMPLES = 30 * _WAV2VEC_SR   # 30 seconds per chunk
-
-
 class AudioFeatureExtractor:
     """
     Extracts 1024-dim wav2vec 2.0 Large features from the audio track, then
@@ -153,13 +128,12 @@ class AudioFeatureExtractor:
             waveform, sr = torchaudio.load(video_path)
             if waveform.numel() == 0:
                 raise ValueError("empty waveform")
-            waveform = waveform.mean(0)   # stereo → mono
+            waveform = waveform.mean(0)   # stereo to mono
             if sr != _WAV2VEC_SR:
                 waveform = torchaudio.functional.resample(
                     waveform, sr, _WAV2VEC_SR)
             return waveform
         except Exception as primary_err:
-            # ffmpeg fallback: pipe raw PCM into torchaudio
             try:
                 cmd = [
                     "ffmpeg", "-i", video_path,
@@ -193,7 +167,7 @@ class AudioFeatureExtractor:
         if waveform.numel() == 0:
             return torch.zeros(target_len, 1024)
 
-        # ── run wav2vec 2.0 in 30-second chunks to avoid OOM ──────────────
+        # run wav2vec 2.0 in 30-second chunks to avoid OOM
         hidden_chunks = []
         total_samples = waveform.shape[0]
         for start in range(0, total_samples, _WAV2VEC_CHUNK_SAMPLES):
@@ -209,7 +183,7 @@ class AudioFeatureExtractor:
 
         feats = torch.cat(hidden_chunks, dim=0)   # (T_wav2vec, 1024)
 
-        # ── linear interpolation to target_len  (Section 3.1) ────────────
+        # linear interpolation to target_len
         feats = feats.unsqueeze(0).permute(0, 2, 1)   # (1, 1024, T_wav2vec)
         feats = F.interpolate(feats, size=target_len,
                               mode="linear", align_corners=False)
@@ -217,27 +191,22 @@ class AudioFeatureExtractor:
         return feats.float().cpu()
 
 
-# ════════════════════════════════════════════════════════════════════════════════
-# Text features  —  sentence-wise HateBERT  (Section 3.1, Fig. 3)
-# ════════════════════════════════════════════════════════════════════════════════
-
 class TextFeatureExtractor:
     """
-    Implements the four-step sentence-wise text embedding (Section 3.1):
-      1. Whisper ASR with word timestamps
-      2. Sentence-split using NLTK
+    Implements the four-step sentence-wise text embedding:
+      1. Whisper ASR with sentence timestamps
       3. HateBERT CLS encoding per sentence
-      4. Repeat each embedding over its timestamp span → (T, 768)
+      4. Repeat each embedding over its timestamp span
     """
 
     def __init__(self, device="cpu", whisper_model="base"):
         assert HAS_EXTRACTION_DEPS, "Install transformers, whisper, nltk first."
         self.device = device
 
-        # Whisper for ASR (step 1)
+        # Whisper for ASR
         self.asr = whisper.load_model(whisper_model, device=device)
 
-        # HateBERT for sentence encoding (step 3)
+        # HateBERT for sentence encoding
         self.tokenizer = BertTokenizer.from_pretrained("GroNLP/hateBERT")
         self.bert = BertModel.from_pretrained("GroNLP/hateBERT").to(device).eval()
 
@@ -247,17 +216,15 @@ class TextFeatureExtractor:
         """
         Returns (target_len, 768).
         """
-        # ── Step 1: Whisper ASR ────────────────────────────────────────────
+        # Step 1: Whisper ASR
         result = self.asr.transcribe(video_path, word_timestamps=True)
         segments = result["segments"]   # each has 'start', 'end', 'text'
 
         if not segments:
             return torch.zeros(target_len, 768)
 
-        # ── Step 2: sentence-wise splitting ───────────────────────────────
-        # We treat each Whisper segment as one "sentence" (they are natural
-        # phrase units with start/end timestamps).  Alternatively NLTK
-        # sent_tokenize could further split long segments.
+        # Step 2: sentence-wise splitting
+        # We treat each Whisper segment as one "sentence"
         sentence_feats_by_frame = [None] * target_len
         duration_total = segments[-1]["end"]   # seconds
 
@@ -266,7 +233,7 @@ class TextFeatureExtractor:
             t_start = seg["start"]   # seconds
             t_end   = seg["end"]
 
-            # ── Step 3: HateBERT encode ────────────────────────────────────
+            # Step 3: HateBERT encode
             tokens = self.tokenizer(
                 text, return_tensors="pt",
                 truncation=True, max_length=512,
@@ -275,7 +242,7 @@ class TextFeatureExtractor:
             out = self.bert(**tokens)
             feat = out.last_hidden_state[:, 0, :].squeeze(0)  # CLS (768,)
 
-            # ── Step 4: expand to frame range ─────────────────────────────
+            # Step 4: expand to frame range
             frame_start = int(t_start * fps)
             frame_end   = int(t_end   * fps)
             for f in range(frame_start, min(frame_end, target_len)):
@@ -287,10 +254,6 @@ class TextFeatureExtractor:
                   for f in sentence_feats_by_frame]
         return torch.stack(frames)   # (target_len, 768)
 
-
-# ════════════════════════════════════════════════════════════════════════════════
-# Main extraction entry point
-# ════════════════════════════════════════════════════════════════════════════════
 
 def extract_all(video_dir: str, out_dir: str, fps: float = 1.0,
                 device: str = "cpu", overwrite: bool = False,
@@ -340,17 +303,17 @@ def extract_all(video_dir: str, out_dir: str, fps: float = 1.0,
         print(f"[{idx+1}/{len(video_files)}] Extracting: {vid_id}")
 
         try:
-            # ── video ─────────────────────────────────────────────────────
+            # video
             v_feat = vfe.extract(str(vp), fps=fps,
                                    batch_size=video_batch_size)   # (T, 768)
             T = v_feat.shape[0]
             torch.save(v_feat, v_path)
 
-            # ── audio (zeros for silent videos) ───────────────────────────
+            # audio
             a_feat = afe.extract(str(vp), target_len=T)       # (T, 1024)
             torch.save(a_feat, a_path)
 
-            # ── text ──────────────────────────────────────────────────────
+            # text
             t_feat = tfe.extract(str(vp), target_len=T, fps=fps)  # (T, 768)
             torch.save(t_feat, t_path)
 
@@ -363,7 +326,7 @@ def extract_all(video_dir: str, out_dir: str, fps: float = 1.0,
             failed.append((vid_id, str(e)))
             continue
 
-    # ── summary ───────────────────────────────────────────────────────────
+    # summary
     done = len(video_files) - len(skipped) - len(failed)
     print(f"\n{'='*50}")
     print(f"Extraction complete.")
