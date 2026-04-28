@@ -1,17 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Experiment: TriFuse preprocessor + SGP backbone + standard head
-#
-# Architecture:   trifuse → sgp → standard head
-# Purpose:        Isolates the head contribution in the SGP backbone setting.
-#                 Pair with trifuse_tridet.yaml (SGP + trident) to measure
-#                 how much the trident boundary-distribution head adds over the
-#                 standard direct-regression head on top of SGP features.
-#
-# Preprocessor:   trifuse (d_out=768, 1 fusion layer)
-# Backbone:       sgp (depthwise conv pyramid, 5 levels)
-# Heads:          standard (direct regression)
-# ─────────────────────────────────────────────────────────────────────────────
-
 dataset:
   name: "hateclipseg"
   video_feat_dir: "../../../data/hateclipseg/1fps/video_features"
@@ -24,9 +10,9 @@ dataset:
   feature_fps: 1.0
   max_seq_len: 512
   input_dims:
-    text: 768                           # HateBERT CLS
-    audio: 1024                         # Wav2Vec2 Large
-    video: 768                          # CLIP ViT-L/14
+    text: 768
+    audio: 1024
+    video: 768
 
 preprocessor:
   type: "trifuse"
@@ -40,13 +26,13 @@ backbone:
   type: "sgp"
   d_model: 512
   n_proj_layers: 2
-  n_layers: 5                           # strides: [1, 2, 4, 8, 16]
-  n_heads: 2                            # ignored by sgp; kept for API compatibility
-  window_size: 17                       # ignored by sgp; kept for API compatibility
+  n_layers: 5
+  n_heads: 2
+  window_size: 17
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 768                      # 4× d_model (≈1.5× used by TriDet paper)
+  sgp_mlp_dim: 768
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"

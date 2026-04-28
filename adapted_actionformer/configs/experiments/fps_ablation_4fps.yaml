@@ -1,16 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# FPS Ablation: TriFuse + SGP + Trident @ 4 fps
-#
-# Architecture identical to trifuse_tridet.yaml (1fps baseline).
-# Only fps-dependent parameters change:
-#   feature_fps        1.0  → 4.0
-#   max_seq_len        512  → 2048   (covers max observed T=1457; 2048÷16=128 ✓)
-#   regression_ranges  ×4          (feature-index units scale with fps)
-#   batch_size         8   → 4    (4× seq len raises peak memory)
-#
-# Feature stats @ 4fps:  min T=675  max T=1457  mean T=948  p99 T=1319
-# ─────────────────────────────────────────────────────────────────────────────
-
 dataset:
   name: "hateclipseg"
   video_feat_dir: "../../../data/hateclipseg/4fps/video_features"
@@ -62,7 +49,6 @@ heads:
   num_bins: 16
   iou_weight_power: 2
 
-# Ranges in feature-index units — scaled ×4 vs 1fps to cover same durations.
 regression_ranges:
   - [0,    16]
   - [16,   32]
@@ -78,7 +64,7 @@ loss:
   center_sampling_radius: 2.0
 
 training:
-  batch_size: 4                         # halved — 4× seq len raises peak memory
+  batch_size: 4
   epochs: 30
   learning_rate: 1.0e-4
   weight_decay: 1.0e-3

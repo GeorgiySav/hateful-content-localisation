@@ -1,25 +1,10 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Experiment: Concat preprocessor + SGP backbone + Trident head
-#
-# Architecture:   concat → sgp → identity → trident
-# Purpose:        Baseline for trifuse_tridet.yaml — the canonical TriDet
-#                 configuration (Sun et al., CVPR 2023) with simple concatenation
-#                 in place of TriFuse.  Any gain from trifuse_tridet over this
-#                 config is attributable solely to TriFuse's cross-modal fusion.
-#
-# Preprocessor:   concat (video+audio+text, d_out=2560)
-# Backbone:       sgp (depthwise conv pyramid, 5 levels)
-# Neck:           identity
-# Heads:          trident (boundary distribution, 16 bins)
-# ─────────────────────────────────────────────────────────────────────────────
-
 dataset:
   name: "hateclipseg"
   video_feat_dir: "../../../data/hateclipseg/1fps/video_features"
   audio_feat_dir: "../../../data/hateclipseg/1fps/audio_features"
   text_feat_dir:  "../../../data/hateclipseg/1fps/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
-  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  use_json_split: false
   split_seed: 42
   num_classes: 1
   feature_fps: 1.0
@@ -37,14 +22,14 @@ preprocessor:
 backbone:
   type: "sgp"
   d_model: 512
-  n_proj_layers: 2                      # two proj convs to reduce 2560 → 512
-  n_layers: 5               # strides: [1, 2, 4, 8, 16]
-  n_heads: 2                # ignored by sgp; kept for API compatibility
-  window_size: 17           # ignored by sgp; kept for API compatibility
+  n_proj_layers: 2
+  n_layers: 5
+  n_heads: 2
+  window_size: 17
   downsample_start: 1
   downsample_ratio: 2
   sgp_kernel_size: 3
-  sgp_mlp_dim: 768         # matches trifuse_tridet (not 4× d_model — check if intentional)
+  sgp_mlp_dim: 768
   sgp_k: 1.5
   sgp_init_conv_vars: 1
   sgp_downsample_type: "max"

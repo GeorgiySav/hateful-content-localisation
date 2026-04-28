@@ -1,18 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Experiment: TriFuse preprocessor + TemporalMaxer backbone
-#
-# Architecture:   trifuse → temporalmaxer → standard head
-# Purpose:        Tests whether TriFuse's trimodal bottleneck fusion can drive
-#                 TemporalMaxer's parameter-free MaxPool backbone.  TemporalMaxer
-#                 has no learnable parameters in the backbone itself, so the
-#                 quality of the fused representation going in is critical —
-#                 making it a good stress-test for TriFuse.
-#
-# Preprocessor:   trifuse (d_out=256, 2 unimodal + 2 fusion layers)
-# Backbone:       temporalmaxer (MaxPool1D pyramid, 5 levels, 2x downsample)
-# Heads:          standard
-# ─────────────────────────────────────────────────────────────────────────────
-
 dataset:
   name: "hateclipseg"
   video_feat_dir: "../../../data/hateclipseg/1fps/video_features"
@@ -25,9 +10,9 @@ dataset:
   feature_fps: 1.0
   max_seq_len: 512
   input_dims:
-    text: 768                           # HateBERT CLS
-    audio: 1024                         # Wav2Vec2 Large
-    video: 768                          # CLIP ViT-L/14
+    text: 768
+    audio: 1024
+    video: 768
 
 preprocessor:
   type: "trifuse"
@@ -40,10 +25,10 @@ preprocessor:
 backbone:
   type: "temporalmaxer"
   d_model: 512
-  n_proj_layers: 2        # single proj conv — preprocessor already projects to d_model
-  n_layers: 5             # 1 stem + 4 branch → 5 pyramid levels, strides [1,2,4,8,16]
-  n_heads: 4              # unused by temporalmaxer; kept for API compatibility
-  window_size: 17         # unused by temporalmaxer; kept for API compatibility
+  n_proj_layers: 2
+  n_layers: 5
+  n_heads: 4
+  window_size: 17
   downsample_start: 1
   downsample_ratio: 2
   pool_kernel_size: 3
@@ -80,7 +65,7 @@ training:
   clip_grad_norm: 1.0
   cls_prior_prob: 0.01
   dropout: 0.2
-  droppath: 0.0           # MaxPool backbone has no learnable blocks; droppath has no effect
+  droppath: 0.0
   label_smoothing: 0.00
   patience: 10
 

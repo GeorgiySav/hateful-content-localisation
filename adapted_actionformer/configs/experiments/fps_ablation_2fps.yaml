@@ -1,15 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# FPS Ablation: TriFuse + SGP + Trident @ 2 fps
-#
-# Architecture identical to trifuse_tridet.yaml (1fps baseline).
-# Only fps-dependent parameters change:
-#   feature_fps        1.0  → 2.0
-#   max_seq_len        512  → 1024   (covers max observed T=729; 1024÷16=64 ✓)
-#   regression_ranges  ×2          (feature-index units scale with fps)
-#
-# Feature stats @ 2fps:  min T=359  max T=729  mean T=479  p99 T=642
-# ─────────────────────────────────────────────────────────────────────────────
-
 dataset:
   name: "hateclipseg"
   video_feat_dir: "../../../data/hateclipseg/2fps/video_features"
@@ -61,7 +49,6 @@ heads:
   num_bins: 16
   iou_weight_power: 2
 
-# Ranges in feature-index units — scaled ×2 vs 1fps to cover same durations.
 regression_ranges:
   - [0,    8]
   - [8,    16]

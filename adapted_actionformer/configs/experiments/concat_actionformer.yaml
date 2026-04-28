@@ -1,59 +1,40 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# Experiment: Concat preprocessor + ActionFormer backbone
-#
-# Architecture:   concat → transformer → standard head
-# Purpose:        Baseline for trifuse_actionformer.yaml — replaces TriFuse with
-#                 simple feature concatenation, keeping all other components
-#                 identical.  Any gain from trifuse_actionformer over this config
-#                 is attributable solely to TriFuse's cross-modal fusion.
-#
-# Preprocessor:   concat (video+audio+text, d_out=2560)
-# Backbone:       transformer (ActionFormer, 5 levels, window=17)
-# Heads:          standard
-# ─────────────────────────────────────────────────────────────────────────────
-
-# Dataset
 dataset:
   name: "hateclipseg"
   video_feat_dir: "../../../data/hateclipseg/1fps/video_features"
   audio_feat_dir: "../../../data/hateclipseg/1fps/audio_features"
   text_feat_dir:  "../../../data/hateclipseg/1fps/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
-  use_json_split: false                 # use internal stratified split instead of JSON "subset" field
+  use_json_split: false
   split_seed: 42
   num_classes: 1
   feature_fps: 1.0
-  max_seq_len: 512                      # 256×2; covers all 431 videos (max feat len=350); must be multiple of 256 (=16×max_stride_at_5_levels) for sliding-window attention
+  max_seq_len: 512
   input_dims:
-    text: 768                           # HateBERT CLS
-    audio: 1024                         # Wav2Vec2 Large
-    video: 768                          # CLIP ViT-L/14
+    text: 768
+    audio: 1024
+    video: 768
 
-# Concat preprocessor (no learnable parameters; raw feature concatenation)
 preprocessor:
   type: "concat"
   modalities: ["video", "audio", "text"]
   modality_dropout: 0.1
 
-# ActionFormer backbone
 backbone:
   type: "transformer"
   d_model: 512
-  n_proj_layers: 2        # two proj convs to reduce 2560 → 512
-  n_layers: 5                           # strides: [1, 2, 4, 8, 16]
+  n_proj_layers: 2
+  n_layers: 5
   n_heads: 4
-  window_size: 17                       # window_size-1=16 divides 512, 256, 128, 64, 32 cleanly
+  window_size: 17
   downsample_start: 1
   downsample_ratio: 2
 
-# Decoder heads
 heads:
   type: "standard"
   n_layers: 2
   kernel_size: 3
   use_layer_norm: true
 
-# Regression ranges per pyramid level (seconds at 1 FPS)
 regression_ranges:
   - [0,    4]
   - [4,    8]
@@ -61,7 +42,6 @@ regression_ranges:
   - [16,  32]
   - [32,  100000]
 
-# Loss
 loss:
   focal_alpha: 0.45
   focal_gamma: 2.0
@@ -69,7 +49,6 @@ loss:
   center_sampling: true
   center_sampling_radius: 2.0
 
-# Training
 training:
   batch_size: 8
   epochs: 30
@@ -86,13 +65,11 @@ training:
   label_smoothing: 0.00
   patience: 10
 
-# Temporal augmentation (training only)
 augmentation:
   enabled: true
   feature_noise_std: 0.02
   temporal_shift_max_frames: 8
 
-# Inference
 inference:
   score_threshold: 0.001
   nms_method: "soft_nms"
