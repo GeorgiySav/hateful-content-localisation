@@ -13,9 +13,9 @@
 # Dataset
 dataset:
   name: "hateclipseg"
-  video_feat_dir: "../../../data/hateclipseg/video_features"
-  audio_feat_dir: "../../../data/hateclipseg/audio_features"
-  text_feat_dir:  "../../../data/hateclipseg/text_features"
+  video_feat_dir: "../../../data/hateclipseg/1fps/video_features"
+  audio_feat_dir: "../../../data/hateclipseg/1fps/audio_features"
+  text_feat_dir:  "../../../data/hateclipseg/1fps/text_features"
   annotation_file: "../../../data/hateclipseg/dataset/hateclipseg.json"
   use_json_split: false                 # use internal stratified split instead of JSON "subset" field
   split_seed: 42

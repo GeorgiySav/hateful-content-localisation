@@ -23,7 +23,7 @@ import torch
 
 
 CSV_PATH    = "data/hateclipseg/dataset/segment_level_annotation.csv"
-FEAT_DIR    = "data/hateclipseg/video_features"
+FEAT_DIR    = "data/hateclipseg/1fps/video_features"
 OUT_PATH    = "data/hateclipseg/dataset/hateclipseg.json"
 TRAIN_RATIO = 0.8
 SEED        = 42
