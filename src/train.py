@@ -14,6 +14,7 @@ The script:
 """
 import os
 import sys
+import json
 import argparse
 import torch
 
@@ -112,9 +113,16 @@ def main():
     no_improve    = 0
     epoch         = start_epoch - 1  # safe default if loop never executes
 
+    history_path = os.path.join(args.output_dir, 'history.json')
+    history = []
+    if os.path.isfile(history_path):
+        with open(history_path, 'r', encoding='utf-8') as f:
+            history = json.load(f)
+        history = [h for h in history if h.get('epoch', -1) < start_epoch]
+
     try:
         for epoch in range(start_epoch, epochs):
-            train_one_epoch(
+            train_losses = train_one_epoch(
                 train_loader, model, optimizer, scheduler,
                 curr_epoch=epoch,
                 model_ema=model_ema,
@@ -158,6 +166,21 @@ def main():
 
             best_mAP = max(mAP, best_mAP)
 
+            history.append({
+                'epoch'        : epoch,
+                'train_losses' : {k: float(v) for k, v in train_losses.items()},
+                'train_mAP'    : float(train_mAP),
+                'val_mAP'      : float(mAP),
+                'val_mAP_per_tiou': {
+                    f'{t:.1f}': float(ap)
+                    for t, ap in zip(tiou_thresholds, mAP_per_tiou)
+                } if mAP_per_tiou else {},
+                'best_mAP'     : float(best_mAP),
+                'lr'           : float(scheduler.get_last_lr()[0]),
+            })
+            with open(history_path, 'w', encoding='utf-8') as f:
+                json.dump(history, f, indent=2)
+
             saved_state = (model_ema.module.state_dict()
                            if model_ema is not None else model.state_dict())
             save_checkpoint(
@@ -173,6 +196,7 @@ def main():
                 },
                 is_best=is_best,
                 file_folder=args.output_dir,
+                file_name=f'checkpoint_epoch_{epoch:03d}.pth.tar',
             )
 
             if no_improve >= patience:

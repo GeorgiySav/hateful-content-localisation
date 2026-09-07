@@ -193,7 +193,7 @@ def train_one_epoch(
     clip_grad_norm=1.0,
     print_freq=20,
 ):
-    """Train for one epoch."""
+    """Train for one epoch. Returns dict of epoch-average losses."""
     batch_time    = AverageMeter()
     losses_tracker = {}
     num_iters = len(train_loader)
@@ -216,16 +216,16 @@ def train_one_epoch(
         if model_ema is not None:
             model_ema.update(model)
 
+        for key, value in losses.items():
+            if key not in losses_tracker:
+                losses_tracker[key] = AverageMeter()
+            losses_tracker[key].update(value.item())
+
         if (iter_idx != 0) and (iter_idx % print_freq == 0):
             if torch.cuda.is_available():
                 torch.cuda.synchronize()
             batch_time.update((time.time() - start) / print_freq)
             start = time.time()
-
-            for key, value in losses.items():
-                if key not in losses_tracker:
-                    losses_tracker[key] = AverageMeter()
-                losses_tracker[key].update(value.item())
 
             lr = scheduler.get_last_lr()[0]
 
@@ -236,6 +236,7 @@ def train_one_epoch(
 
     lr = scheduler.get_last_lr()[0]
     print(f"[Train] Epoch {curr_epoch} done  lr={lr:.8f}\n")
+    return {k: v.avg for k, v in losses_tracker.items()}
 
 
 def valid_one_epoch(

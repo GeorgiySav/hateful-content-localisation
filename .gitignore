@@ -1,10 +1,14 @@
-__pycache__/
-.vscode/
-.claude/
-.pytest_cache/
+__pycache__
+.vscode
+.pytest_cache
 
+1fps
+2fps
+4fps
+dataset
 runs
-videos
-video_features
-audio_features
-text_features
+
+*.ipynb
+*.pdf
+*.zip
+*.mp4
